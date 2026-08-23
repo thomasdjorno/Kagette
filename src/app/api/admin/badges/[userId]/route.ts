@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { envoyerEmailBadgeHygiene } from "@/lib/email";
 
 export async function PATCH(request: Request, { params }: { params: { userId: string } }) {
   const session = await auth();
@@ -21,6 +22,12 @@ export async function PATCH(request: Request, { params }: { params: { userId: st
       hygieneBadgeValideLe: new Date(),
       estCuisinier: decision === "VALIDE" ? true : false,
     },
+  });
+
+  await envoyerEmailBadgeHygiene({
+    to: user.email,
+    prenom: user.prenom,
+    valide: decision === "VALIDE",
   });
 
   return NextResponse.json({ user });

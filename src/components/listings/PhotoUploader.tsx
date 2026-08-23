@@ -24,12 +24,15 @@ export function PhotoUploader({
     const urlsAjoutees: string[] = [];
 
     for (const file of files) {
+      if (file.size > 5 * 1024 * 1024) {
+        setMessage(`"${file.name}" dépasse 5 Mo — choisis une image plus légère.`);
+        continue;
+      }
       try {
-        const extension = file.name.split(".").pop() ?? "jpg";
         const res = await fetch("/api/upload", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ contentType: file.type, extension }),
+          body: JSON.stringify({ contentType: file.type, size: file.size }),
         });
 
         if (!res.ok) {

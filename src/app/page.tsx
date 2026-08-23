@@ -8,7 +8,7 @@ import { HeroBanner } from "@/components/home/HeroBanner";
 export default async function HomePage() {
   const session = await auth();
 
-  const [region, fruitListings, productListings] = await Promise.all([
+  const [region, fruitListings, productListings, suivis] = await Promise.all([
     prisma.region.findFirst({ where: { isActive: true }, orderBy: { createdAt: "asc" } }),
     prisma.fruitListing.findMany({
       where: { statut: "DISPONIBLE", region: { isActive: true } },
@@ -23,7 +23,22 @@ export default async function HomePage() {
       },
       orderBy: { createdAt: "desc" },
     }),
+    session?.user
+      ? prisma.follow.findMany({ where: { suiveurId: session.user.id }, select: { suiviId: true } })
+      : Promise.resolve([]),
   ]);
+
+  const idsSuivis = new Set(suivis.map((s) => s.suiviId));
+  const favoris = [
+    ...fruitListings
+      .filter((f) => idsSuivis.has(f.donneurId))
+      .map((f) => ({ type: "fruit" as const, data: f, date: f.createdAt })),
+    ...productListings
+      .filter((p) => idsSuivis.has(p.cuisinierId))
+      .map((p) => ({ type: "produit" as const, data: p, date: p.createdAt })),
+  ]
+    .sort((a, b) => b.date.getTime() - a.date.getTime())
+    .slice(0, 6);
 
   return (
     <div className="space-y-10">
@@ -56,6 +71,42 @@ export default async function HomePage() {
             prix: produit.prix.toString(),
           }))}
         />
+      )}
+
+      {favoris.length > 0 && (
+        <div className="rounded-2xl bg-kagette-mangue-50 p-5">
+          <h2 className="mb-3 font-serif text-xl font-bold text-kagette-prune-700">
+            🔔 Nouveautés de tes favoris
+          </h2>
+          <div className="grid grid-cols-3 gap-2 sm:gap-4">
+            {favoris.map((item) =>
+              item.type === "fruit" ? (
+                <FruitListingCard
+                  key={item.data.id}
+                  id={item.data.id}
+                  variete={item.data.variete}
+                  mode={item.data.mode}
+                  montantParticipation={item.data.montantParticipation?.toString() ?? null}
+                  zoneRetrait={item.data.zoneRetrait}
+                  donneurPrenom={item.data.donneur.prenom}
+                  photoUrl={item.data.photoUrls[0]}
+                />
+              ) : (
+                <ProductListingCard
+                  key={item.data.id}
+                  id={item.data.id}
+                  titre={item.data.titre}
+                  categorie={item.data.categorie}
+                  prix={item.data.prix.toString()}
+                  zoneRetrait={item.data.zoneRetrait}
+                  cuisinierPrenom={item.data.cuisinier.prenom}
+                  donneurOriginePrenom={item.data.fruitListingOrigine?.donneur.prenom ?? null}
+                  photoUrl={item.data.photoUrls[0]}
+                />
+              )
+            )}
+          </div>
+        </div>
       )}
 
       <div>

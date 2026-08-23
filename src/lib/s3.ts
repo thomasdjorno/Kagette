@@ -19,14 +19,19 @@ export function isR2Configured() {
   return getR2Client() !== null;
 }
 
-export async function creerUrlUploadSignee(key: string, contentType: string) {
+export async function creerUrlUploadSignee(key: string, contentType: string, contentLength: number) {
   const client = getR2Client();
   if (!client) throw new Error("R2 n'est pas configuré (variables R2_* manquantes)");
 
   const bucket = process.env.R2_BUCKET_NAME;
   if (!bucket) throw new Error("R2_BUCKET_NAME manquant");
 
-  const command = new PutObjectCommand({ Bucket: bucket, Key: key, ContentType: contentType });
+  const command = new PutObjectCommand({
+    Bucket: bucket,
+    Key: key,
+    ContentType: contentType,
+    ContentLength: contentLength,
+  });
   const uploadUrl = await getSignedUrl(client, command, { expiresIn: 300 });
   const publicUrl = `${process.env.R2_PUBLIC_URL}/${key}`;
 

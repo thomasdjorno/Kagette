@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getStripe, isStripeConfigured } from "@/lib/stripe";
+import { envoyerEmailConfirmationCommande } from "@/lib/email";
 
 export async function POST(request: Request) {
   if (!isStripeConfigured() || !process.env.STRIPE_WEBHOOK_SECRET) {
@@ -33,6 +34,7 @@ async function traiterPaiementReussi(orderId: string, paymentIntentId: string | 
   const order = await prisma.order.findUnique({
     where: { id: orderId },
     include: {
+      acheteur: true,
       productListing: {
         include: { cuisinier: true, fruitListingOrigine: { include: { donneur: true } } },
       },
@@ -86,4 +88,11 @@ async function traiterPaiementReussi(orderId: string, paymentIntentId: string | 
       },
     }),
   ]);
+
+  await envoyerEmailConfirmationCommande({
+    to: order.acheteur.email,
+    prenom: order.acheteur.prenom,
+    titre: productListing.titre,
+    montant: order.montantTotal.toString(),
+  });
 }

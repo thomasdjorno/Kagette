@@ -4,6 +4,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { authConfig } from "@/lib/auth.config";
+import { verifierLimite } from "@/lib/rate-limit";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
@@ -19,6 +20,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const email = credentials?.email as string | undefined;
         const password = credentials?.password as string | undefined;
         if (!email || !password) return null;
+
+        if (!verifierLimite(`login:${email.toLowerCase()}`, 10, 15 * 60 * 1000)) {
+          return null;
+        }
 
         const user = await prisma.user.findUnique({ where: { email } });
         if (!user?.password) return null;

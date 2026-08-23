@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { verifierLimite } from "@/lib/rate-limit";
 
 const reportSchema = z.object({
   fruitListingId: z.string().optional(),
@@ -13,6 +14,10 @@ export async function POST(request: Request) {
   const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+  }
+
+  if (!verifierLimite(`report:${session.user.id}`, 5, 60 * 60 * 1000)) {
+    return NextResponse.json({ error: "Trop de signalements envoyés — réessaie plus tard" }, { status: 429 });
   }
 
   const parsed = reportSchema.safeParse(await request.json());

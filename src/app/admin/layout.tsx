@@ -1,6 +1,11 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  const session = await auth();
+  if (!session?.user?.estAdmin) redirect("/connexion");
+
   return (
     <div className="space-y-6">
       <div>
@@ -29,6 +34,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             className="rounded-full px-3 py-1.5 text-sm font-medium text-kagette-prune-700 hover:bg-kagette-prune-700/5"
           >
             Signalements
+          </Link>
+          <Link
+            href="/admin/repartition"
+            className="rounded-full px-3 py-1.5 text-sm font-medium text-kagette-prune-700 hover:bg-kagette-prune-700/5"
+          >
+            Répartition
           </Link>
         </nav>
       </div>

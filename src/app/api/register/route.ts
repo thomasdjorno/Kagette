@@ -2,8 +2,16 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { inscriptionSchema } from "@/lib/validation";
+import { verifierLimite, ipDepuisRequete } from "@/lib/rate-limit";
 
 export async function POST(request: Request) {
+  if (!verifierLimite(`register:${ipDepuisRequete(request)}`, 5, 60 * 60 * 1000)) {
+    return NextResponse.json(
+      { error: "Trop de tentatives d'inscription — réessaie plus tard" },
+      { status: 429 }
+    );
+  }
+
   const body = await request.json();
   const parsed = inscriptionSchema.safeParse(body);
 

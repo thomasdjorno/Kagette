@@ -2,11 +2,17 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { fruitRequestSchema } from "@/lib/validation";
+import { envoyerEmailNouvelleDemandeFruits } from "@/lib/email";
+import { verifierLimite } from "@/lib/rate-limit";
 
 export async function POST(request: Request) {
   const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+  }
+
+  if (!verifierLimite(`fruit-request:${session.user.id}`, 10, 60 * 60 * 1000)) {
+    return NextResponse.json({ error: "Trop de demandes envoyées — réessaie plus tard" }, { status: 429 });
   }
 
   const parsed = fruitRequestSchema.safeParse(await request.json());
@@ -21,7 +27,7 @@ export async function POST(request: Request) {
 
   const listing = await prisma.fruitListing.findUnique({
     where: { id: fruitListingId },
-    include: { demandes: { where: { statut: "ACCEPTEE" } } },
+    include: { demandes: { where: { statut: "ACCEPTEE" } }, donneur: true },
   });
 
   if (!listing || listing.statut !== "DISPONIBLE") {
@@ -49,6 +55,15 @@ export async function POST(request: Request) {
       raison,
       message: message || null,
     },
+  });
+
+  await envoyerEmailNouvelleDemandeFruits({
+    to: listing.donneur.email,
+    prenom: listing.donneur.prenom,
+    demandeurPrenom: session.user.name?.split(" ")[0] ?? "Quelqu'un",
+    variete: listing.variete,
+    quantiteDemandeeKg,
+    fruitListingId,
   });
 
   return NextResponse.json({ demande }, { status: 201 });

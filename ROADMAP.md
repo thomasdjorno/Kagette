@@ -40,29 +40,49 @@ connecter. On avance module par module — coche au fur et à mesure.
   lieu d'en dessous) — vérifié aussi sur jardin, formulaires de création,
   commandes/ventes et backoffice (vue d'ensemble + régions)
 
+- **Favoris / abonnements** *(vérifié)* : bouton "Suivre" sur le profil public
+  d'un donneur ou cuisinier, page `/profil/favoris` pour gérer qui on suit,
+  section "🔔 Nouveautés de tes favoris" mise en avant en haut de l'accueil
+  avec les annonces récentes des personnes suivies
+- **Emails transactionnels (Resend)** *(vérifié en mode dégradé)* :
+  confirmation de commande, nouveau message reçu, badge hygiène
+  validé/refusé, nouvelle demande de fruits reçue — sans clé Resend, les
+  emails sont juste loggés côté serveur au lieu d'être envoyés (aucun
+  plantage), testé en conditions réelles (requête API bout en bout)
+
+- **Audit robustesse/sécurité** *(vérifié)* — passe non demandée mais faite
+  "en coulisses" pour combler des trous qu'on ne voit pas de l'extérieur :
+  - Upload photo : l'extension de fichier n'était plus prise depuis le
+    client (risque d'écraser un fichier ailleurs sur le stockage) — dérivée
+    du type MIME côté serveur à la place ; limite de 5 Mo par photo ajoutée
+    (avant : aucune limite de taille)
+  - Emails : le prénom, le titre d'annonce, etc. étaient insérés tels quels
+    dans le HTML des emails — quelqu'un aurait pu glisser du code dans son
+    prénom et l'injecter dans un email envoyé à un autre utilisateur ;
+    toutes les valeurs sont maintenant échappées
+  - Répartition des paiements (`SplitConfig`) éditable depuis le backoffice
+    (`/admin/repartition`) — avant, seul Prisma Studio permettait de
+    changer les pourcentages donneur/cuisinier/plateforme
+  - Page d'admin protégée une seconde fois côté page (en plus du
+    middleware) — pure précaution si jamais une route admin est ajoutée
+    sans passer par le bon chemin
+  - Limite de fréquence ajoutée là où il n'y en avait aucune : inscription,
+    connexion, messages, demandes de fruits, signalements — évite qu'un
+    compte ou un script spamme ces actions. *(en mémoire process, donc à
+    revoir si l'app tourne un jour sur plusieurs serveurs en parallèle)*
+  - Tests automatisés ajoutés pour les schémas de validation (inscription,
+    annonces fruits/produits, demandes de fruits) et pour le nouveau
+    limiteur de fréquence — 25 tests au total, tous passants
+
 ## 🔲 À faire
 
-### Priorité haute (fonctionnel, manque encore)
-- [ ] **Emails transactionnels (Resend)** : rien n'est câblé côté code
-  aujourd'hui. À prévoir a minima : confirmation de commande, nouveau
-  message reçu, badge hygiène validé/refusé, nouvelle demande de fruits
-  reçue
-
 ### Priorité moyenne (qualité / robustesse)
-- [ ] Gestion des sessions "fantômes" (si la base est réinitialisée, forcer
-  une reconnexion propre plutôt que planter) — corrigé sur `/profil`, à
-  vérifier ailleurs si le cas se reproduit
-- [ ] Tests automatisés au-delà du calcul de répartition (auth, annonces,
-  demandes de fruits)
-- [ ] Édition des pourcentages de répartition (`SplitConfig`) depuis le
-  backoffice — aujourd'hui modifiable seulement via Prisma Studio
-- [ ] Passage mobile de toutes les pages (fait : accueil/header ; à
-  vérifier : backoffice, formulaires de création, commandes/ventes)
+- [ ] Gestion des sessions "fantômes" ailleurs que `/profil` (pas
+  bloquant : ces pages renvoient juste "aucune donnée" pour un compte
+  fantôme au lieu de forcer une reconnexion, mais ce serait plus propre)
 
 ### Avant un vrai lancement (hors MVP mais à garder en tête)
 - [ ] Pages légales (CGU, mentions légales, politique de confidentialité)
-- [ ] Protection anti-spam sur les formulaires publics (inscription,
-  signalement, messagerie)
 - [ ] Hébergement de production (voir section API ci-dessous)
 
 ## 🔑 Services externes à connecter (quand tu seras prêt)

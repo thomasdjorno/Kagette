@@ -1,12 +1,16 @@
 import { notFound } from "next/navigation";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Card } from "@/components/ui/Card";
 import { FruitListingCard } from "@/components/listings/FruitListingCard";
 import { ProductListingCard } from "@/components/listings/ProductListingCard";
 import { ReviewList } from "@/components/reviews/ReviewList";
 import { ArbreDisplay } from "@/components/jardin/ArbreDisplay";
+import { FollowButton } from "@/components/profil/FollowButton";
 
 export default async function ProfilPublicPage({ params }: { params: { userId: string } }) {
+  const session = await auth();
+
   const user = await prisma.user.findUnique({
     where: { id: params.userId },
     include: {
@@ -25,18 +29,30 @@ export default async function ProfilPublicPage({ params }: { params: { userId: s
 
   if (!user) notFound();
 
-  const reviews = await prisma.review.findMany({
-    where: { cibleId: user.id },
-    include: { auteur: { select: { prenom: true } } },
-    orderBy: { createdAt: "desc" },
-  });
+  const [reviews, dejaSuivi] = await Promise.all([
+    prisma.review.findMany({
+      where: { cibleId: user.id },
+      include: { auteur: { select: { prenom: true } } },
+      orderBy: { createdAt: "desc" },
+    }),
+    session?.user && session.user.id !== user.id
+      ? prisma.follow.findUnique({
+          where: { suiveurId_suiviId: { suiveurId: session.user.id, suiviId: user.id } },
+        })
+      : null,
+  ]);
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <Card>
-        <h1 className="text-2xl font-serif font-bold text-kagette-prune-700">
-          {user.prenom} {user.nom.charAt(0)}.
-        </h1>
+        <div className="flex items-start justify-between gap-3">
+          <h1 className="text-2xl font-serif font-bold text-kagette-prune-700">
+            {user.prenom} {user.nom.charAt(0)}.
+          </h1>
+          {session?.user && session.user.id !== user.id && (
+            <FollowButton userId={user.id} suiviAuDepart={!!dejaSuivi} />
+          )}
+        </div>
         <div className="mt-2 flex flex-wrap gap-2">
           {user.estDonneur && (
             <span className="rounded-full bg-kagette-feuille-50 px-3 py-1 text-xs font-semibold text-kagette-feuille-600">

@@ -39,7 +39,7 @@ export function HeroBanner({ isAuthenticated }: { isAuthenticated: boolean }) {
             alt=""
             width={220}
             height={294}
-            className="pointer-events-none w-24 shrink-0 sm:hidden"
+            className="pointer-events-none w-32 shrink-0 sm:hidden"
           />
         </div>
       </div>

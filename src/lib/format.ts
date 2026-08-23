@@ -42,6 +42,18 @@ export const libellesRaisonDemande: Record<string, string> = {
   CONSOMMER: "Consommer directement",
 };
 
+export const libellesStatutDemande: Record<string, string> = {
+  EN_ATTENTE: "En attente",
+  ACCEPTEE: "Acceptée",
+  REFUSEE: "Refusée",
+};
+
+export const couleurStatutDemande: Record<string, string> = {
+  EN_ATTENTE: "bg-kagette-mangue-50 text-kagette-mangue-600",
+  ACCEPTEE: "bg-kagette-feuille-50 text-kagette-feuille-600",
+  REFUSEE: "bg-kagette-framboise-50 text-kagette-framboise-600",
+};
+
 export const libellesSaison: Record<string, string> = {
   PRINTEMPS: "Printemps",
   ETE: "Été",

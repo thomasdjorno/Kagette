@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { Textarea } from "@/components/ui/Textarea";
@@ -20,6 +21,7 @@ export function FruitRequestForm({
   const [ouvert, setOuvert] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
   const [chargement, setChargement] = useState(false);
+  const [succes, setSucces] = useState(false);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -46,8 +48,23 @@ export function FruitRequestForm({
       return;
     }
 
-    setOuvert(false);
+    setSucces(true);
     router.refresh();
+  }
+
+  if (succes) {
+    return (
+      <div className="rounded-xl bg-kagette-feuille-50 p-4">
+        <p className="text-sm font-semibold text-kagette-feuille-600">✓ Ta demande a bien été envoyée</p>
+        <p className="mt-1 text-sm text-kagette-prune-700/70">
+          Le donneur va l&apos;examiner, retrouve son statut ci-dessus ou depuis{" "}
+          <Link href="/profil/demandes" className="underline">
+            Mes demandes
+          </Link>
+          .
+        </p>
+      </div>
+    );
   }
 
   if (restantKg <= 0) {

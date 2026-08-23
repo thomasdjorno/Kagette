@@ -7,7 +7,7 @@ import { ListingPhoto } from "@/components/listings/ListingPhoto";
 import { ReviewList } from "@/components/reviews/ReviewList";
 import { ContactButton } from "@/components/messaging/ContactButton";
 import { ReportButton } from "@/components/moderation/ReportButton";
-import { formatDate, libellesModeRecolte } from "@/lib/format";
+import { formatDate, libellesModeRecolte, libellesRaisonDemande, libellesStatutDemande, couleurStatutDemande } from "@/lib/format";
 import { FruitRequestForm } from "./FruitRequestForm";
 import { FruitRequestsManager } from "./FruitRequestsManager";
 
@@ -47,6 +47,9 @@ export default async function FruitListingPage({ params }: { params: { id: strin
     .reduce((total, d) => total + d.quantiteDemandeeKg, 0);
   const restantKg = Math.max(0, listing.quantiteKg - dejaAccepte);
   const estProprietaire = session?.user?.id === listing.donneurId;
+  const mesDemandes = session?.user
+    ? listing.demandes.filter((d) => d.demandeurId === session.user.id)
+    : [];
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
@@ -114,6 +117,32 @@ export default async function FruitListingPage({ params }: { params: { id: strin
           </div>
         )}
       </Card>
+
+      {mesDemandes.length > 0 && (
+        <Card>
+          <p className="mb-3 text-sm font-semibold text-kagette-prune-700">Tes demandes sur cette annonce</p>
+          <div className="space-y-3">
+            {mesDemandes.map((demande) => (
+              <div
+                key={demande.id}
+                className="flex items-center justify-between rounded-xl bg-kagette-prune-700/5 p-3"
+              >
+                <div>
+                  <p className="text-sm font-medium text-kagette-prune-700">
+                    {demande.quantiteDemandeeKg} kg, {libellesRaisonDemande[demande.raison]}
+                  </p>
+                  <p className="text-xs text-kagette-prune-700/50">{formatDate(demande.createdAt)}</p>
+                </div>
+                <span
+                  className={`rounded-full px-3 py-1 text-xs font-bold ${couleurStatutDemande[demande.statut]}`}
+                >
+                  {libellesStatutDemande[demande.statut]}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
 
       {session?.user && !estProprietaire && listing.statut === "DISPONIBLE" && (
         <Card>

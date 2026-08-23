@@ -56,6 +56,13 @@ export function MobileNav({
               Mes annonces
             </Link>
             <Link
+              href="/profil/demandes"
+              onClick={() => setOpen(false)}
+              className="block px-4 py-3 text-sm font-medium text-kagette-prune-700 hover:bg-kagette-feuille-50"
+            >
+              Mes demandes
+            </Link>
+            <Link
               href="/profil/favoris"
               onClick={() => setOpen(false)}
               className="block px-4 py-3 text-sm font-medium text-kagette-prune-700 hover:bg-kagette-feuille-50"

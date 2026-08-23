@@ -132,6 +132,18 @@ connecter. On avance module par module — coche au fur et à mesure.
   existe ou non (anti-énumération de comptes), lien à usage unique (supprimé
   après utilisation) — testé de bout en bout avec un vrai token généré en
   base (email juste loggé en mode dégradé sans Resend, comme les autres)
+- **Statut visible sur les demandes de fruits** *(vérifié)* : après avoir
+  envoyé une demande, la personne voit maintenant clairement "Tes demandes
+  sur cette annonce" avec le statut (en attente/acceptée/refusée) sur la
+  fiche fruit elle-même — avant, la demande partait sans aucune confirmation
+  visible
+- **Page "Mes demandes"** *(vérifié)* : nouvelle page `/profil/demandes`
+  listant tout l'historique des demandes de fruits d'un compte, avec filtre
+  par statut (toutes/en attente/acceptée/refusée)
+- **Connexion sur Netlify réparée** *(vérifié)* : ajout de `trustHost: true`
+  dans la config Auth.js, nécessaire sur Netlify (contrairement à Vercel qui
+  est auto-détecté) — sans ça, connexion et inscription échouaient
+  silencieusement sur le site déployé
 
 ## 🔲 À faire
 

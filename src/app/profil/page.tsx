@@ -99,6 +99,9 @@ export default async function ProfilPage() {
               Mes annonces →
             </Link>
           )}
+          <Link href="/profil/demandes" className="text-sm font-medium text-kagette-framboise-600 hover:underline">
+            Mes demandes →
+          </Link>
           <Link href="/profil/favoris" className="text-sm font-medium text-kagette-framboise-600 hover:underline">
             Mes favoris →
           </Link>

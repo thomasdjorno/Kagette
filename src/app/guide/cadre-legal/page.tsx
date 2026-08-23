@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 
-export const metadata = { title: "Cadre légal de la vente — Guide" };
+export const metadata = { title: "Cadre légal de la vente, Guide" };
 
 export default function GuideCadreLegalPage() {
   return (
@@ -23,7 +23,7 @@ export default function GuideCadreLegalPage() {
       <div className="rounded-xl border border-kagette-mangue-300 bg-kagette-mangue-50 p-4 text-sm text-kagette-prune-700">
         ⚠️ Cette page donne des repères généraux, pas un conseil juridique personnalisé. En cas de
         doute sur ta situation, contacte la Chambre des Métiers et de l&apos;Artisanat ou la
-        DDPP/DDETSPP de ton département — elles renseignent gratuitement les particuliers.
+        DDPP/DDETSPP de ton département, elles renseignent gratuitement les particuliers.
       </div>
 
       <Card>
@@ -42,7 +42,7 @@ export default function GuideCadreLegalPage() {
           Dès que la vente de produits transformés devient une activité répétée et organisée (même
           à petite échelle), elle doit en principe être déclarée : le statut de{" "}
           <strong>micro-entrepreneur (auto-entrepreneur)</strong> est la solution la plus simple
-          pour un particulier — inscription rapide en ligne, cotisations proportionnelles au
+          pour un particulier, inscription rapide en ligne, cotisations proportionnelles au
           chiffre d&apos;affaires réalisé, pas de TVA en dessous des seuils en vigueur.
         </p>
         <p className="mt-2 text-sm text-kagette-prune-700/80">
@@ -55,7 +55,7 @@ export default function GuideCadreLegalPage() {
       <Card>
         <h2 className="font-semibold text-kagette-prune-700">Le numéro SIRET sur Kagette</h2>
         <p className="mt-2 text-sm text-kagette-prune-700/80">
-          Le SIRET est optionnel pour demander le badge cuisinier en V1 — Kagette est un pilote à
+          Le SIRET est optionnel pour demander le badge cuisinier en V1, Kagette est un pilote à
           petite échelle. Mais si tu vends régulièrement, c&apos;est à toi de vérifier que ta
           situation est en règle : le badge Kagette atteste que tu as accepté notre charte
           d&apos;hygiène, pas que ton statut juridique est en ordre.

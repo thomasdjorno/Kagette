@@ -65,7 +65,7 @@ export default async function ConfirmationCommandePage({
 
         {order.statut === "EN_ATTENTE_PAIEMENT" && (
           <p className="mt-3 text-xs text-kagette-prune-700/50">
-            Le paiement est en cours de confirmation par Stripe — cette page se mettra à jour une
+            Le paiement est en cours de confirmation par Stripe, cette page se mettra à jour une
             fois le webhook reçu (rafraîchis si besoin).
           </p>
         )}

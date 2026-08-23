@@ -17,7 +17,7 @@ export default async function MonJardinPage() {
             Active ta casquette donneur
           </h1>
           <p className="mt-2 text-sm text-kagette-prune-700/70">
-            Le jardin permet de préparer tes fiches par arbre avant de publier des annonces —
+            Le jardin permet de préparer tes fiches par arbre avant de publier des annonces,
             active d&apos;abord la casquette donneur depuis ton profil.
           </p>
         </Card>
@@ -48,7 +48,7 @@ export default async function MonJardinPage() {
       <div className="space-y-3">
         {(jardin?.arbres.length ?? 0) === 0 ? (
           <p className="text-sm text-kagette-prune-700/60">
-            Aucun arbre pour l&apos;instant — ajoute le premier ci-dessus.
+            Aucun arbre pour l&apos;instant, ajoute le premier ci-dessus.
           </p>
         ) : (
           jardin!.arbres.map((arbre) => <ArbreCard key={arbre.id} arbre={arbre} />)

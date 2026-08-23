@@ -9,7 +9,7 @@ export default function NotFound() {
         Cette page s&apos;est envolée
       </h1>
       <p className="text-sm text-kagette-prune-700/70">
-        La page que tu cherches n&apos;existe pas, ou a été déplacée — peut-être une annonce qui
+        La page que tu cherches n&apos;existe pas, ou a été déplacée, peut-être une annonce qui
         n&apos;est plus disponible.
       </p>
       <Link href="/">

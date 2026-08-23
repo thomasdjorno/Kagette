@@ -1,4 +1,4 @@
-export const metadata = { title: "Politique de confidentialité — Kagette" };
+export const metadata = { title: "Politique de confidentialité, Kagette" };
 
 export default function ConfidentialitePage() {
   return (
@@ -10,7 +10,7 @@ export default function ConfidentialitePage() {
       <div className="rounded-xl border border-kagette-mangue-300 bg-kagette-mangue-50 p-4 text-sm text-kagette-prune-700">
         ⚠️ Cette page décrit les données réellement collectées par
         l&apos;application aujourd&apos;hui. Les champs entre crochets (contact, durée de
-        conservation) sont à définir avant un vrai lancement — idéalement avec l&apos;aide
+        conservation) sont à définir avant un vrai lancement, idéalement avec l&apos;aide
         d&apos;un professionnel pour la conformité RGPD complète.
       </div>
 
@@ -50,7 +50,7 @@ export default function ConfidentialitePage() {
 
       <section className="space-y-2 text-sm text-kagette-prune-700/80">
         <h2 className="font-semibold text-kagette-prune-700">Durée de conservation</h2>
-        <p>[À définir] — en attendant, les données sont conservées tant que ton compte existe.</p>
+        <p>[À définir], en attendant, les données sont conservées tant que ton compte existe.</p>
       </section>
 
       <section className="space-y-2 text-sm text-kagette-prune-700/80">

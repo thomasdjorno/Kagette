@@ -8,7 +8,7 @@ import { VenteActions } from "./VenteActions";
 
 const statutLibelle: Record<string, string> = {
   EN_ATTENTE_PAIEMENT: "En attente de paiement",
-  PAYEE: "Payée — à préparer",
+  PAYEE: "Payée, à préparer",
   PRETE_RETRAIT: "Prête pour le retrait",
   RECUPEREE: "Récupérée",
   ANNULEE: "Annulée",
@@ -44,7 +44,7 @@ export default async function MesVentesPage() {
                     {order.productListing.titre}
                   </Link>
                   <p className="text-xs text-kagette-prune-700/50">
-                    Acheté par {order.acheteur.prenom} {order.acheteur.nom.charAt(0)}. —{" "}
+                    Acheté par {order.acheteur.prenom} {order.acheteur.nom.charAt(0)}.,{" "}
                     {formatDate(order.createdAt)}
                   </p>
                 </div>

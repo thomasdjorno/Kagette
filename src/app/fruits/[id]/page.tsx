@@ -60,7 +60,7 @@ export default async function FruitListingPage({ params }: { params: { id: strin
       <div className="flex items-start justify-between">
         <div>
           <span className="text-xs font-medium uppercase tracking-wide text-kagette-feuille-600">
-            Fruits à récolter — {statutLibelle[listing.statut]}
+            Fruits à récolter, {statutLibelle[listing.statut]}
           </span>
           <h1 className="mt-1 font-serif text-3xl font-bold text-kagette-prune-700">{listing.variete}</h1>
           <p className="text-sm text-kagette-prune-700/60">

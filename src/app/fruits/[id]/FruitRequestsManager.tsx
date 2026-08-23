@@ -46,7 +46,7 @@ export function FruitRequestsManager({ demandes }: { demandes: Demande[] }) {
           <div className="flex flex-wrap items-start justify-between gap-2">
             <div>
               <p className="text-sm font-semibold text-kagette-prune-700">
-                {demande.demandeur.prenom} {demande.demandeur.nom.charAt(0)}. — {demande.quantiteDemandeeKg} kg
+                {demande.demandeur.prenom} {demande.demandeur.nom.charAt(0)}., {demande.quantiteDemandeeKg} kg
               </p>
               <p className="text-xs text-kagette-prune-700/60">
                 {libellesRaisonDemande[demande.raison] ?? demande.raison}

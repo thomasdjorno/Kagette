@@ -55,7 +55,7 @@ export default async function NouvelleAnnonceFruitsPage() {
           Proposer des fruits disponibles
         </h1>
         <p className="mt-1 text-sm text-kagette-prune-700/60">
-          En don ou avec une participation libre — c&apos;est toi qui choisis.
+          En don ou avec une participation libre, c&apos;est toi qui choisis.
         </p>
         <FruitListingForm regions={regionsActives} arbres={jardin?.arbres ?? []} />
       </Card>

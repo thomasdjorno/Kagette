@@ -11,7 +11,7 @@ export async function POST(request: Request, { params }: { params: { id: string 
   }
 
   if (!verifierLimite(`message:${session.user.id}`, 30, 5 * 60 * 1000)) {
-    return NextResponse.json({ error: "Trop de messages envoyés — patiente un peu" }, { status: 429 });
+    return NextResponse.json({ error: "Trop de messages envoyés, patiente un peu" }, { status: 429 });
   }
 
   const participant = await prisma.conversationParticipant.findUnique({

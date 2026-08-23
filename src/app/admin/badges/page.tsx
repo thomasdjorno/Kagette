@@ -18,7 +18,7 @@ export default async function AdminBadgesPage() {
           <Card key={user.id} className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h3 className="font-semibold text-kagette-prune-700">
-                {user.prenom} {user.nom} — {user.email}
+                {user.prenom} {user.nom}, {user.email}
               </h3>
               <p className="text-sm text-kagette-prune-700/60">
                 SIRET : {user.siret ?? "non renseigné"}

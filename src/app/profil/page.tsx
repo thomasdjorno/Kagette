@@ -19,7 +19,7 @@ export default async function ProfilPage() {
   });
 
   // Session valide mais compte introuvable (ex. base réinitialisée pendant
-  // le développement) — on force une reconnexion propre plutôt que de planter.
+  // le développement), on force une reconnexion propre plutôt que de planter.
   if (!user) redirect("/api/auth/signout?callbackUrl=/connexion");
 
   return (

@@ -32,7 +32,7 @@ export function ReviewList({ reviews }: { reviews: ReviewItem[] }) {
                 {"☆".repeat(5 - review.note)}
               </span>
               <span className="text-xs text-kagette-prune-700/40">
-                {review.auteur.prenom} — {formatDate(review.createdAt)}
+                {review.auteur.prenom}, {formatDate(review.createdAt)}
               </span>
             </div>
             {review.commentaire && (

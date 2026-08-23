@@ -17,7 +17,7 @@ export async function POST(request: Request) {
   }
 
   if (!verifierLimite(`report:${session.user.id}`, 5, 60 * 60 * 1000)) {
-    return NextResponse.json({ error: "Trop de signalements envoyés — réessaie plus tard" }, { status: 429 });
+    return NextResponse.json({ error: "Trop de signalements envoyés, réessaie plus tard" }, { status: 429 });
   }
 
   const parsed = reportSchema.safeParse(await request.json());

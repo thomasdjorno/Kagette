@@ -8,7 +8,7 @@ const MOT_DE_PASSE_DEMO = "Kagette2026!";
 async function main() {
   // Zone pilote : Mensignac et ses alentours (Dordogne). Le rayon couvre les
   // communes voisines (Beauronne, Château-l'Évêque, Saint-Astier...), pas
-  // uniquement le bourg de Mensignac — la population y est dispersée, pas
+  // uniquement le bourg de Mensignac, la population y est dispersée, pas
   // concentrée sur une seule ville.
   const regionMensignac = await prisma.region.upsert({
     where: { id: "region-mensignac" },
@@ -273,7 +273,7 @@ async function main() {
       mode: "PARTICIPATION_LIBRE",
       montantParticipation: 5,
       description:
-        "Figuier généreux cette année, les figues mûrissent vite en ce moment — à venir chercher rapidement.",
+        "Figuier généreux cette année, les figues mûrissent vite en ce moment, à venir chercher rapidement.",
       zoneRetrait: "Château-l'Évêque, près de l'église",
       latitude: 45.215,
       longitude: 0.66,
@@ -414,7 +414,7 @@ async function main() {
       modeRecolte: "A_RECOLTER_SOI_MEME",
       mode: "PARTICIPATION_LIBRE",
       montantParticipation: 4,
-      description: "Mirabellier du jardin, récolte abondante — je garde une partie pour mes propres chutneys.",
+      description: "Mirabellier du jardin, récolte abondante, je garde une partie pour mes propres chutneys.",
       zoneRetrait: "Saint-Astier, quartier de la gare",
       latitude: 45.145,
       longitude: 0.535,
@@ -605,7 +605,7 @@ async function main() {
       titre: "Assortiment de fruits secs du jardin",
       categorie: "FRUITS_SECS",
       description:
-        "Un assortiment de fruits séchés selon les récoltes de la saison — pommes, poires et prunes selon arrivage.",
+        "Un assortiment de fruits séchés selon les récoltes de la saison, pommes, poires et prunes selon arrivage.",
       photoUrls: ["/seed-images/fruits-secs-assortiment.jpg"],
       allergenes: ["fruits à coque", "sulfites"],
       dluo: new Date("2027-01-15"),
@@ -734,7 +734,7 @@ async function main() {
     },
   });
 
-  console.log(`Seed terminé — région active : ${regionMensignac.nom}`);
+  console.log(`Seed terminé, région active : ${regionMensignac.nom}`);
   console.log(`Mot de passe pour tous les comptes de démo : ${MOT_DE_PASSE_DEMO}`);
   console.log("Comptes :");
   console.log("  - admin@kagette.fr (admin)");

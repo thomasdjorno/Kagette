@@ -42,7 +42,7 @@ export default async function BadgeCuisinierPage() {
             <Link href="/guide/hygiene" className="text-kagette-framboise-600 underline">
               guide d&apos;hygiène et la charte Kagette
             </Link>{" "}
-            — les bases pour transformer des fruits en toute sécurité chez toi.
+           , les bases pour transformer des fruits en toute sécurité chez toi.
           </li>
           <li>
             Vérifier que ta situation correspond au{" "}
@@ -56,7 +56,7 @@ export default async function BadgeCuisinierPage() {
             que Kagette soit en phase pilote).
           </li>
           <li>Cocher la case d&apos;acceptation de la charte ci-dessous et envoyer ta demande.</li>
-          <li>Un membre de l&apos;équipe Kagette valide ta demande manuellement — tu reçois une confirmation dès que c&apos;est fait.</li>
+          <li>Un membre de l&apos;équipe Kagette valide ta demande manuellement, tu reçois une confirmation dès que c&apos;est fait.</li>
         </ol>
       </Card>
 

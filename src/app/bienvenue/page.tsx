@@ -55,7 +55,7 @@ export default async function BienvenuePage() {
       <Card className="border-kagette-mangue-300 bg-kagette-mangue-50">
         <h2 className="font-semibold text-kagette-prune-700">🛒 Acheteur</h2>
         <p className="mt-1 text-sm text-kagette-prune-700/70">
-          Aucune démarche nécessaire — tu peux dès maintenant parcourir les annonces et acheter des
+          Aucune démarche nécessaire, tu peux dès maintenant parcourir les annonces et acheter des
           produits transformés.
         </p>
       </Card>

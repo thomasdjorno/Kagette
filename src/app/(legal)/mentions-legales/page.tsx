@@ -1,4 +1,4 @@
-export const metadata = { title: "Mentions légales — Kagette" };
+export const metadata = { title: "Mentions légales, Kagette" };
 
 export default function MentionsLegalesPage() {
   return (
@@ -15,7 +15,7 @@ export default function MentionsLegalesPage() {
       <section className="space-y-2 text-sm text-kagette-prune-700/80">
         <h2 className="font-semibold text-kagette-prune-700">Éditeur du site</h2>
         <p>
-          [Nom / raison sociale] — [forme juridique, ex. entreprise individuelle, SASU...]
+          [Nom / raison sociale], [forme juridique, ex. entreprise individuelle, SASU...]
           <br />
           Adresse : [adresse complète]
           <br />

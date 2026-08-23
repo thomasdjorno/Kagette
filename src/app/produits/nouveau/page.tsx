@@ -58,7 +58,7 @@ export default async function NouvelleAnnonceProduitPage() {
           Publier un produit transformé
         </h1>
         <p className="mt-1 text-sm text-kagette-prune-700/60">
-          Confiture, sirop, chutney ou fruits secs — indique d&apos;où viennent tes fruits pour
+          Confiture, sirop, chutney ou fruits secs, indique d&apos;où viennent tes fruits pour
           mettre en avant leur provenance.
         </p>
         <ProductListingForm regions={regionsActives} fruitListings={fruitListings} />

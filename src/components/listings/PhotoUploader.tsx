@@ -25,7 +25,7 @@ export function PhotoUploader({
 
     for (const file of files) {
       if (file.size > 5 * 1024 * 1024) {
-        setMessage(`"${file.name}" dépasse 5 Mo — choisis une image plus légère.`);
+        setMessage(`"${file.name}" dépasse 5 Mo, choisis une image plus légère.`);
         continue;
       }
       try {
@@ -37,7 +37,7 @@ export function PhotoUploader({
 
         if (!res.ok) {
           const data = await res.json().catch(() => null);
-          setMessage(data?.error ?? "Upload indisponible pour le moment — tu peux publier sans photo.");
+          setMessage(data?.error ?? "Upload indisponible pour le moment, tu peux publier sans photo.");
           continue;
         }
 
@@ -49,7 +49,7 @@ export function PhotoUploader({
         });
         urlsAjoutees.push(publicUrl);
       } catch {
-        setMessage("Échec de l'upload — tu peux publier sans photo pour l'instant.");
+        setMessage("Échec de l'upload, tu peux publier sans photo pour l'instant.");
       }
     }
 

@@ -61,7 +61,7 @@ export default async function ConversationPage({
       <Card className="space-y-3">
         {conversation.messages.length === 0 ? (
           <p className="text-sm text-kagette-prune-700/50">
-            Aucun message pour l&apos;instant — lance la discussion pour organiser le retrait.
+            Aucun message pour l&apos;instant, lance la discussion pour organiser le retrait.
           </p>
         ) : (
           conversation.messages.map((message) => {

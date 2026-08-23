@@ -82,7 +82,7 @@ export function SplitConfigForm({
       </div>
 
       <p className={`text-sm ${Math.abs(total - 100) < 0.01 ? "text-kagette-feuille-600" : "text-kagette-framboise-600"}`}>
-        Total : {total.toFixed(2)}% {Math.abs(total - 100) < 0.01 ? "✓" : "— doit faire 100%"}
+        Total : {total.toFixed(2)}% {Math.abs(total - 100) < 0.01 ? "✓" : "(doit faire 100%)"}
       </p>
 
       <Button type="submit" disabled={chargement || Math.abs(total - 100) >= 0.01}>

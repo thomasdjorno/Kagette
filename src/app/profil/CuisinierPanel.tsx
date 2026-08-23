@@ -51,7 +51,7 @@ export function CuisinierPanel({
   return (
     <div className="mt-4 space-y-3">
       <p className="text-sm font-medium text-kagette-prune-700">
-        {estCuisinier ? "Casquette active ✅" : "Casquette non active"} —{" "}
+        {estCuisinier ? "Casquette active ✅" : "Casquette non active"},{" "}
         {libellesBadgeHygiene[hygieneBadgeStatus]}
       </p>
       <Link

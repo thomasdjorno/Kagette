@@ -43,7 +43,7 @@ export default function GuidePage() {
         </h1>
         <p className="mt-2 text-sm text-kagette-prune-700/70">
           Tout ce qu&apos;il faut savoir pour produire et vendre tes préparations en toute
-          sécurité, écrit pour des particuliers — pas besoin d&apos;être professionnel de
+          sécurité, écrit pour des particuliers, pas besoin d&apos;être professionnel de
           l&apos;agroalimentaire pour bien faire.
         </p>
       </div>

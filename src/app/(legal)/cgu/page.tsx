@@ -1,4 +1,4 @@
-export const metadata = { title: "Conditions générales d'utilisation — Kagette" };
+export const metadata = { title: "Conditions générales d'utilisation, Kagette" };
 
 export default function CguPage() {
   return (

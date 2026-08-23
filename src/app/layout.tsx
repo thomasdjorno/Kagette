@@ -12,7 +12,7 @@ const heading = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Kagette — les fruits du jardin, transformés près de chez vous",
+  title: "Kagette, les fruits du jardin, transformés près de chez vous",
   description:
     "Kagette relie donneurs de fruits, cuisiniers locaux et gourmands autour de confitures, sirops et chutneys faits maison, en Dordogne.",
 };

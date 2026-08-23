@@ -23,7 +23,7 @@ export function AvatarUploader({
     if (!file) return;
 
     if (file.size > 5 * 1024 * 1024) {
-      setErreur("L'image dépasse 5 Mo — choisis une image plus légère.");
+      setErreur("L'image dépasse 5 Mo, choisis une image plus légère.");
       event.target.value = "";
       return;
     }
@@ -65,7 +65,7 @@ export function AvatarUploader({
       setApercu(publicUrl);
       router.refresh();
     } catch {
-      setErreur("Échec de l'upload — réessaie plus tard.");
+      setErreur("Échec de l'upload, réessaie plus tard.");
     }
 
     setEnCours(false);

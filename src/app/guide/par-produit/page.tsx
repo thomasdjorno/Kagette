@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 
-export const metadata = { title: "Conseils par type de produit — Guide" };
+export const metadata = { title: "Conseils par type de produit, Guide" };
 
 export default function GuideParProduitPage() {
   return (
@@ -22,7 +22,7 @@ export default function GuideParProduitPage() {
       <Card>
         <h2 className="font-semibold text-kagette-prune-700">Confitures</h2>
         <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-kagette-prune-700/80">
-          <li>Un bon ratio sucre/fruit (classiquement autour de 800g de sucre pour 1kg de fruits) aide à la conservation — moins de sucre veut dire une DLUO plus courte.</li>
+          <li>Un bon ratio sucre/fruit (classiquement autour de 800g de sucre pour 1kg de fruits) aide à la conservation, moins de sucre veut dire une DLUO plus courte.</li>
           <li>Cuis jusqu&apos;à ce qu&apos;une goutte posée sur une assiette froide se fige (test de nappage).</li>
           <li>Mets en bocal bouillante, dès la fin de cuisson.</li>
         </ul>
@@ -40,7 +40,7 @@ export default function GuideParProduitPage() {
       <Card>
         <h2 className="font-semibold text-kagette-prune-700">Chutneys</h2>
         <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-kagette-prune-700/80">
-          <li>Le vinaigre (acidité) est ton meilleur allié pour la conservation — ne réduis pas trop la quantité par rapport à une recette éprouvée.</li>
+          <li>Le vinaigre (acidité) est ton meilleur allié pour la conservation, ne réduis pas trop la quantité par rapport à une recette éprouvée.</li>
           <li>Cuis suffisamment longtemps pour que les fruits/légumes soient bien tendres et que le mélange ait épaissi.</li>
           <li>Un chutney moins acide se rapproche d&apos;un plat cuisiné : conservation plus courte, à indiquer clairement dans la DLUO.</li>
         </ul>
@@ -49,7 +49,7 @@ export default function GuideParProduitPage() {
       <Card>
         <h2 className="font-semibold text-kagette-prune-700">Fruits secs</h2>
         <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-kagette-prune-700/80">
-          <li>Le séchage doit être complet — un fruit encore souple à cœur retient de l&apos;humidité qui favorise les moisissures.</li>
+          <li>Le séchage doit être complet, un fruit encore souple à cœur retient de l&apos;humidité qui favorise les moisissures.</li>
           <li>Laisse refroidir complètement avant de stocker, pour éviter la condensation dans le contenant.</li>
           <li>Utilise un contenant hermétique, à l&apos;abri de la lumière et de l&apos;humidité.</li>
           <li>Vérifie régulièrement l&apos;absence de moisissure pendant le stockage si tu gardes un stock avant de vendre.</li>

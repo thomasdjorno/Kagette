@@ -98,7 +98,7 @@ export function MapView({ region, fruits, produits }: MapViewProps) {
           `<div style="font-family:system-ui;min-width:160px">
              <p style="margin:0;font-size:11px;font-weight:600;color:${FEUILLE};text-transform:uppercase">Fruits à récolter</p>
              <p style="margin:4px 0 2px;font-weight:700;color:#3b2a1c">${fruit.variete}</p>
-             <p style="margin:0;font-size:12px;color:#5c453099">${fruit.zoneRetrait} — chez ${fruit.donneurPrenom}</p>
+             <p style="margin:0;font-size:12px;color:#5c453099">${fruit.zoneRetrait}, chez ${fruit.donneurPrenom}</p>
              <a href="/fruits/${fruit.id}" style="display:inline-block;margin-top:6px;font-size:12px;font-weight:600;color:${FEUILLE}">Voir l'annonce →</a>
            </div>`
         );
@@ -113,7 +113,7 @@ export function MapView({ region, fruits, produits }: MapViewProps) {
           `<div style="font-family:system-ui;min-width:160px">
              <p style="margin:0;font-size:11px;font-weight:600;color:${FRAMBOISE};text-transform:uppercase">Produit transformé</p>
              <p style="margin:4px 0 2px;font-weight:700;color:#3b2a1c">${produit.titre}</p>
-             <p style="margin:0;font-size:12px;color:#5c453099">${produit.zoneRetrait} — par ${produit.cuisinierPrenom}</p>
+             <p style="margin:0;font-size:12px;color:#5c453099">${produit.zoneRetrait}, par ${produit.cuisinierPrenom}</p>
              <a href="/produits/${produit.id}" style="display:inline-block;margin-top:6px;font-size:12px;font-weight:600;color:${FRAMBOISE}">Voir l'annonce →</a>
            </div>`
         );
@@ -185,7 +185,7 @@ export function MapView({ region, fruits, produits }: MapViewProps) {
         </span>
         <span className="flex items-center gap-1.5">
           <span className="inline-block h-3 w-3 rounded-full border-2 border-dashed border-kagette-feuille-500" />
-          Rayon de {region.rayonKm} km — {region.nom}
+          Rayon de {region.rayonKm} km, {region.nom}
         </span>
       </div>
     </div>

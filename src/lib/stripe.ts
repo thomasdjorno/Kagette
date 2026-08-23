@@ -12,7 +12,7 @@ export function isStripeConfigured() {
 
 export function getStripe() {
   if (!cleEstValide(process.env.STRIPE_SECRET_KEY)) {
-    throw new Error("STRIPE_SECRET_KEY manquant ou invalide — Stripe Connect n'est pas configuré");
+    throw new Error("STRIPE_SECRET_KEY manquant ou invalide, Stripe Connect n'est pas configuré");
   }
   if (!client) {
     client = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2024-06-20" });

@@ -99,7 +99,7 @@ export function FruitListingForm({
             onChange={(e) => onSelectArbre(e.target.value)}
             className="w-full rounded-xl border border-kagette-prune-700/15 bg-white px-4 py-2.5 text-sm"
           >
-            <option value="">Aucun — je remplis à la main</option>
+            <option value="">Aucun, je remplis à la main</option>
             {arbres.map((arbre) => (
               <option key={arbre.id} value={arbre.id}>
                 {arbre.variete} ({arbre.quantite} {arbre.unite === "KG" ? "kg" : arbre.unite.toLowerCase()})

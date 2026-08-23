@@ -31,7 +31,7 @@ export default async function MessagerieListePage() {
 
       {conversations.length === 0 ? (
         <p className="text-sm text-kagette-prune-700/60">
-          Aucune conversation pour le moment — contacte un donneur ou un cuisinier depuis une
+          Aucune conversation pour le moment, contacte un donneur ou un cuisinier depuis une
           fiche annonce.
         </p>
       ) : (

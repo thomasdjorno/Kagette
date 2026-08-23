@@ -54,7 +54,7 @@ export default async function MesAnnoncesPage() {
                     {listing.variete}
                   </Link>
                   <p className="text-xs text-kagette-prune-700/50">
-                    {listing.quantiteKg} kg — {listing.zoneRetrait}
+                    {listing.quantiteKg} kg, {listing.zoneRetrait}
                   </p>
                 </div>
                 <FruitListingStatusActions id={listing.id} statut={listing.statut} />
@@ -87,7 +87,7 @@ export default async function MesAnnoncesPage() {
                       {listing.titre}
                     </Link>
                     <p className="text-xs text-kagette-prune-700/50">
-                      {formatPrix(listing.prix.toString())} — {listing.quantiteDisponible} en stock
+                      {formatPrix(listing.prix.toString())}, {listing.quantiteDisponible} en stock
                     </p>
                   </div>
                   <ProductListingStatusActions id={listing.id} statut={listing.statut} />

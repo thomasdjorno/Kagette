@@ -22,7 +22,7 @@ export default async function AdminRepartitionPage() {
           />
         ) : (
           <p className="text-sm text-kagette-framboise-600">
-            Aucune configuration active — les paiements sont bloqués jusqu&apos;à ce qu&apos;une
+            Aucune configuration active, les paiements sont bloqués jusqu&apos;à ce qu&apos;une
             configuration soit créée en base.
           </p>
         )}

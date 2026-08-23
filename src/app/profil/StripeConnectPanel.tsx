@@ -30,7 +30,7 @@ export function StripeConnectPanel({
     <div className="mt-4">
       {stripeOnboardingComplete ? (
         <p className="text-sm font-medium text-kagette-feuille-600">
-          ✅ Compte Stripe connecté — tu peux recevoir des paiements
+          ✅ Compte Stripe connecté, tu peux recevoir des paiements
         </p>
       ) : (
         <>

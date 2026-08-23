@@ -44,7 +44,7 @@ export default async function MesCommandesPage() {
                     {order.productListing.titre}
                   </Link>
                   <p className="text-xs text-kagette-prune-700/50">
-                    Par {order.productListing.cuisinier.prenom} — {formatDate(order.createdAt)}
+                    Par {order.productListing.cuisinier.prenom}, {formatDate(order.createdAt)}
                   </p>
                 </div>
                 <div className="text-right">

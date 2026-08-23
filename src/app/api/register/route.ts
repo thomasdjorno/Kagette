@@ -7,7 +7,7 @@ import { verifierLimite, ipDepuisRequete } from "@/lib/rate-limit";
 export async function POST(request: Request) {
   if (!verifierLimite(`register:${ipDepuisRequete(request)}`, 5, 60 * 60 * 1000)) {
     return NextResponse.json(
-      { error: "Trop de tentatives d'inscription — réessaie plus tard" },
+      { error: "Trop de tentatives d'inscription, réessaie plus tard" },
       { status: 429 }
     );
   }

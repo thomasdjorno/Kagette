@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 
-export const metadata = { title: "Stériliser ses bocaux — Guide" };
+export const metadata = { title: "Stériliser ses bocaux, Guide" };
 
 export default function GuideSterilisationPage() {
   return (
@@ -63,7 +63,7 @@ export default function GuideSterilisationPage() {
       <Card className="border-kagette-feuille-300 bg-kagette-feuille-50">
         <h2 className="font-semibold text-kagette-prune-700">✅ Vérifier avant de vendre</h2>
         <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-kagette-prune-700/80">
-          <li>Le couvercle doit être creux ou plat, pas bombé — signe que le vide s&apos;est bien fait.</li>
+          <li>Le couvercle doit être creux ou plat, pas bombé, signe que le vide s&apos;est bien fait.</li>
           <li>Si tu appuies sur le centre du couvercle (type twist), il ne doit pas faire de bruit de &laquo; clic &raquo;.</li>
           <li>Aucune bulle, mousse ou odeur inhabituelle à l&apos;ouverture.</li>
           <li>En cas de doute sur un bocal : ne le vends pas.</li>

@@ -12,7 +12,7 @@ const resend = isResendConfigured() ? new Resend(process.env.RESEND_API_KEY) : n
 
 async function envoyerEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
   if (!resend) {
-    console.log(`[email désactivé — RESEND_API_KEY absente] à ${to} : ${subject}`);
+    console.log(`[email désactivé, RESEND_API_KEY absente] à ${to} : ${subject}`);
     return;
   }
   try {
@@ -36,7 +36,7 @@ function gabarit(titre: string, corps: string) {
     <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 24px; color: #3d2f26;">
       <h2 style="color:#2C4F3E; margin-bottom: 16px;">${titre}</h2>
       ${corps}
-      <p style="margin-top:32px; font-size:12px; color:#999;">Kagette — Mensignac et alentours</p>
+      <p style="margin-top:32px; font-size:12px; color:#999;">Kagette, Mensignac et alentours</p>
     </div>
   `;
 }
@@ -54,7 +54,7 @@ export async function envoyerEmailConfirmationCommande({
 }) {
   await envoyerEmail({
     to,
-    subject: `Confirmation de ta commande — ${titre}`,
+    subject: `Confirmation de ta commande, ${titre}`,
     html: gabarit(
       "Commande confirmée !",
       `<p>Bonjour ${echapper(prenom)},</p>

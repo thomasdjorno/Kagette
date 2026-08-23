@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 
-export const metadata = { title: "Étiquetage obligatoire — Guide" };
+export const metadata = { title: "Étiquetage obligatoire, Guide" };
 
 export default function GuideEtiquetagePage() {
   return (
@@ -17,7 +17,7 @@ export default function GuideEtiquetagePage() {
         <p className="mt-2 text-sm text-kagette-prune-700/70">
           Même vendu par un particulier, un produit alimentaire préemballé doit porter certaines
           mentions sur son étiquette (réglementation européenne INCO). Kagette te demande déjà les
-          informations principales à la création de ton annonce — cette page explique pourquoi, et
+          informations principales à la création de ton annonce, cette page explique pourquoi, et
           ce qu&apos;il faut aussi écrire sur le bocal lui-même.
         </p>
       </div>
@@ -30,7 +30,7 @@ export default function GuideEtiquetagePage() {
           <li>La <strong>quantité disponible</strong> et le <strong>prix</strong></li>
         </ul>
         <p className="mt-2 text-sm text-kagette-prune-700/80">
-          Ces informations apparaissent automatiquement sur ta fiche produit Kagette — mais elles
+          Ces informations apparaissent automatiquement sur ta fiche produit Kagette, mais elles
           doivent aussi figurer sur l&apos;étiquette physique du bocal que tu remets à
           l&apos;acheteur.
         </p>

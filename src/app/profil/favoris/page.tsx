@@ -20,7 +20,7 @@ export default async function FavorisPage() {
       <div>
         <h1 className="font-serif text-2xl font-bold text-kagette-prune-700">Mes favoris</h1>
         <p className="mt-1 text-sm text-kagette-prune-700/60">
-          Les personnes que tu suis — leurs nouvelles annonces apparaissent en priorité sur l&apos;accueil.
+          Les personnes que tu suis, leurs nouvelles annonces apparaissent en priorité sur l&apos;accueil.
         </p>
       </div>
 

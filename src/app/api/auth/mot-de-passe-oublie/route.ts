@@ -10,7 +10,7 @@ const schema = z.object({ email: z.string().email() });
 export async function POST(request: Request) {
   if (!verifierLimite(`mdp-oublie:${ipDepuisRequete(request)}`, 5, 60 * 60 * 1000)) {
     return NextResponse.json(
-      { error: "Trop de demandes — réessaie plus tard" },
+      { error: "Trop de demandes, réessaie plus tard" },
       { status: 429 }
     );
   }

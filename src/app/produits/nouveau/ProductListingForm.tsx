@@ -115,7 +115,7 @@ export function ProductListingForm({
           <option value="">Non renseigné</option>
           {fruitListings.map((fruit) => (
             <option key={fruit.id} value={fruit.id}>
-              {fruit.variete} — chez {fruit.donneur.prenom}
+              {fruit.variete}, chez {fruit.donneur.prenom}
             </option>
           ))}
         </select>

@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   }
 
   if (!verifierLimite(`fruit-request:${session.user.id}`, 10, 60 * 60 * 1000)) {
-    return NextResponse.json({ error: "Trop de demandes envoyées — réessaie plus tard" }, { status: 429 });
+    return NextResponse.json({ error: "Trop de demandes envoyées, réessaie plus tard" }, { status: 429 });
   }
 
   const parsed = fruitRequestSchema.safeParse(await request.json());

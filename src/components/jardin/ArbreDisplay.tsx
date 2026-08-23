@@ -52,7 +52,7 @@ export function ArbreDisplay({ arbre }: { arbre: Arbre }) {
       <div className="p-4">
         <p className="font-serif text-base font-bold text-kagette-prune-700">{arbre.variete}</p>
         <p className="text-sm text-kagette-prune-700/60">
-          {libellesSaison[arbre.saison]} — {arbre.quantite} {libellesUnite[arbre.unite]}
+          {libellesSaison[arbre.saison]}, {arbre.quantite} {libellesUnite[arbre.unite]}
         </p>
         <span className="mt-2 inline-block rounded-full bg-kagette-prune-700/5 px-2.5 py-0.5 text-xs font-medium text-kagette-prune-700/70">
           {libellesModeRecolte[arbre.modeRecolte]}

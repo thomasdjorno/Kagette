@@ -35,11 +35,11 @@ export default async function AdminRegionsPage() {
                 </span>
               </div>
               <p className="text-sm text-kagette-prune-700/60">
-                Centre : {region.latitude.toFixed(4)}, {region.longitude.toFixed(4)} — rayon{" "}
+                Centre : {region.latitude.toFixed(4)}, {region.longitude.toFixed(4)}, rayon{" "}
                 {region.rayonKm} km
               </p>
               <p className="text-xs text-kagette-prune-700/50">
-                {region._count.fruitListings} annonce(s) fruits — {region._count.productListings}{" "}
+                {region._count.fruitListings} annonce(s) fruits, {region._count.productListings}{" "}
                 produit(s)
               </p>
             </div>

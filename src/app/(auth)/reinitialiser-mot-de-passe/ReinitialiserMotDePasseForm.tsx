@@ -16,7 +16,7 @@ export function ReinitialiserMotDePasseForm() {
   if (!token) {
     return (
       <p className="mt-6 text-sm text-kagette-framboise-600">
-        Lien invalide — vérifie que tu as bien copié l&apos;URL complète depuis ton email.
+        Lien invalide, vérifie que tu as bien copié l&apos;URL complète depuis ton email.
       </p>
     );
   }

@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import type { Region, FruitListing } from "@prisma/client";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
@@ -74,6 +75,14 @@ export function ProductListingForm({
 
   return (
     <form onSubmit={onSubmit} className="mt-6 space-y-4">
+      <div className="rounded-xl border border-kagette-mangue-300 bg-kagette-mangue-50 p-4 text-sm text-kagette-prune-700">
+        📖 Pas sûr de la DLUO à indiquer, des allergènes à signaler ou de la bonne façon de
+        stériliser tes bocaux ?{" "}
+        <Link href="/guide" target="_blank" className="font-medium underline">
+          Consulte le guide du Kagetteur →
+        </Link>
+      </div>
+
       <div>
         <Label htmlFor="titre">Titre</Label>
         <Input id="titre" name="titre" placeholder="Ex : Confiture de pommes reinette" required />

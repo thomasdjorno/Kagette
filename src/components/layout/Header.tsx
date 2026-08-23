@@ -50,6 +50,7 @@ export async function Header() {
           <HeaderAuthActions
             isAuthenticated={!!session?.user}
             prenom={session?.user?.name?.split(" ")[0]}
+            photoUrl={session?.user?.image}
           />
         </nav>
       </div>

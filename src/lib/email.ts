@@ -113,6 +113,28 @@ export async function envoyerEmailBadgeHygiene({
   });
 }
 
+export async function envoyerEmailReinitialisationMotDePasse({
+  to,
+  prenom,
+  token,
+}: {
+  to: string;
+  prenom: string;
+  token: string;
+}) {
+  await envoyerEmail({
+    to,
+    subject: "Réinitialise ton mot de passe Kagette",
+    html: gabarit(
+      "Réinitialisation de mot de passe",
+      `<p>Bonjour ${echapper(prenom)},</p>
+       <p>Tu as demandé à réinitialiser ton mot de passe Kagette. Ce lien est valable 1 heure :</p>
+       <p><a href="${BASE_URL}/reinitialiser-mot-de-passe?token=${encodeURIComponent(token)}">Choisir un nouveau mot de passe →</a></p>
+       <p>Si tu n'es pas à l'origine de cette demande, ignore simplement cet email.</p>`
+    ),
+  });
+}
+
 export async function envoyerEmailNouvelleDemandeFruits({
   to,
   prenom,

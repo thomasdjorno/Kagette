@@ -73,6 +73,65 @@ connecter. On avance module par module — coche au fur et à mesure.
   - Tests automatisés ajoutés pour les schémas de validation (inscription,
     annonces fruits/produits, demandes de fruits) et pour le nouveau
     limiteur de fréquence — 25 tests au total, tous passants
+- **Pages légales** *(brouillon à valider — voir ci-dessous)* : Mentions
+  légales, CGU et Politique de confidentialité créées et liées depuis un
+  nouveau footer sur toutes les pages (`/mentions-legales`, `/cgu`,
+  `/confidentialite`)
+- **Guide du Kagetteur** *(vérifié)* : nouvelle section `/guide` avec 5
+  articles pratiques — hygiène de base + charte Kagette, stérilisation des
+  bocaux, étiquetage obligatoire (DLUO, allergènes, ingrédients...), cadre
+  légal de la vente (occasionnelle vs micro-entreprise), conseils par
+  type de produit (confitures/sirops/chutneys/fruits secs). Lié depuis le
+  footer, le formulaire de création de produit, et la casquette cuisinier
+  du profil
+- **Page badge cuisinier** *(vérifié)* : nouvelle page `/profil/badge-cuisinier`
+  qui explique ce qu'est le badge, pourquoi il rassure les acheteurs, et les
+  étapes pour l'obtenir (lire la charte, vérifier son cadre légal, SIRET
+  optionnel, accepter et envoyer) — la case à cocher pour accepter la
+  charte pointe maintenant vers le vrai texte de la charte (`/guide/hygiene`)
+  au lieu de faire référence à un document qui n'existait pas
+- **DLUO et allergènes sur les produits** *(déjà en place, vérifié)* : ces
+  champs existaient déjà dans le formulaire de création et sur la fiche
+  produit — pas de nouveau développement nécessaire ici, juste vérifié que
+  ça fonctionne et bien mis en avant dans le nouveau guide d'étiquetage
+- **Design — avatar utilisateur** *(vérifié)* : photo de profil réelle
+  (upload + affichage), avec repli propre sur des initiales colorées si pas
+  de photo ou si l'image ne charge pas (corrige au passage un bug trouvé en
+  testant : une photo Google OAuth aurait fait planter toute la page avant
+  ce correctif). Visible dans le header, le profil, et les profils publics
+- **Design — onboarding première visite** *(vérifié)* : nouvelle page
+  `/bienvenue` juste après l'inscription, qui explique les 3 rôles
+  (donneur/cuisinier/acheteur) et permet d'activer la casquette donneur ou
+  de démarrer la demande de badge cuisinier directement
+- **Design — états de chargement** *(vérifié)* : spinner de chargement
+  Kagette affiché automatiquement pendant le chargement de n'importe quelle
+  page (convention `loading.tsx` de Next.js)
+- **Design — pages d'erreur personnalisées** *(vérifié)* : page 404
+  ("Cette page s'est envolée") et page d'erreur générique aux couleurs
+  Kagette, au lieu des écrans par défaut Next.js
+- **Pagination sur l'accueil** *(vérifié)* : les grilles fruits/produits de
+  la page d'accueil sont paginées (6 par page, navigation indépendante pour
+  chaque section) — la carte continue d'afficher toutes les annonces, seule
+  la liste est paginée
+- **Recherche & filtre sur l'accueil** *(vérifié)* : barre de recherche
+  (variété de fruit ou titre de produit) et filtre par catégorie de produit,
+  combinables, avec bouton "Réinitialiser" quand un filtre est actif
+- **Édition du profil** *(vérifié)* : prénom, nom et téléphone modifiables
+  depuis `/profil` (le téléphone existait déjà en base mais n'avait aucune
+  interface avant) — la photo se change juste au-dessus (avatar)
+- **Suppression de compte** *(vérifié)* : "Zone dangereuse" dans le profil,
+  confirmation par mot de passe + case à cocher. Techniquement c'est une
+  anonymisation plutôt qu'une suppression physique (email/nom/photo/tél.
+  effacés, casquettes désactivées, annonces actives retirées) car les
+  commandes/avis/messages n'ont aucune règle de suppression en cascade en
+  base — les supprimer physiquement casserait l'historique des autres
+  utilisateurs. Politique de confidentialité mise à jour en conséquence
+- **Mot de passe oublié** *(vérifié)* : lien "Mot de passe oublié ?" sur la
+  page de connexion → email avec lien de réinitialisation valable 1h →
+  nouveau mot de passe. Réponse volontairement identique que le compte
+  existe ou non (anti-énumération de comptes), lien à usage unique (supprimé
+  après utilisation) — testé de bout en bout avec un vrai token généré en
+  base (email juste loggé en mode dégradé sans Resend, comme les autres)
 
 ## 🔲 À faire
 
@@ -81,8 +140,19 @@ connecter. On avance module par module — coche au fur et à mesure.
   bloquant : ces pages renvoient juste "aucune donnée" pour un compte
   fantôme au lieu de forcer une reconnexion, mais ce serait plus propre)
 
-### Avant un vrai lancement (hors MVP mais à garder en tête)
-- [ ] Pages légales (CGU, mentions légales, politique de confidentialité)
+### ⚠️ Avant un vrai lancement — pages légales à compléter
+Les 3 pages légales sont rédigées avec un contenu réel pour tout ce que
+l'app fait déjà (rôles, répartition des paiements, données collectées),
+mais contiennent des champs entre crochets `[...]` que **toi seul** peux
+remplir (tu es le seul à connaître ton statut juridique réel) :
+- `/mentions-legales` : nom/raison sociale, forme juridique, adresse,
+  SIRET, email de contact, nom de l'hébergeur définitif
+- `/confidentialite` : email de contact RGPD, durée de conservation des
+  données
+- Avant un vrai lancement commercial, fais relire ces 3 pages par un
+  professionnel (avocat ou service en ligne type Legalstart/Captain
+  Contrat) — ce que j'ai écrit décrit fidèlement le fonctionnement de
+  l'app mais n'a pas de valeur de conseil juridique
 - [ ] Hébergement de production (voir section API ci-dessous)
 
 ## 🔑 Services externes à connecter (quand tu seras prêt)

@@ -2,17 +2,12 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import type { HygieneBadgeStatus } from "@prisma/client";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { Button } from "@/components/ui/Button";
-
-const libelles: Record<HygieneBadgeStatus, string> = {
-  NON_DEMANDE: "Aucune demande en cours",
-  EN_ATTENTE: "Badge en attente de validation par un admin",
-  VALIDE: "Badge hygiène validé",
-  REFUSE: "Demande refusée — vous pouvez la soumettre à nouveau",
-};
+import { libellesBadgeHygiene } from "@/lib/format";
 
 export function CuisinierPanel({
   estCuisinier,
@@ -56,8 +51,15 @@ export function CuisinierPanel({
   return (
     <div className="mt-4 space-y-3">
       <p className="text-sm font-medium text-kagette-prune-700">
-        {estCuisinier ? "Casquette active ✅" : "Casquette non active"} — {libelles[hygieneBadgeStatus]}
+        {estCuisinier ? "Casquette active ✅" : "Casquette non active"} —{" "}
+        {libellesBadgeHygiene[hygieneBadgeStatus]}
       </p>
+      <Link
+        href="/profil/badge-cuisinier"
+        className="inline-block text-sm font-medium text-kagette-framboise-600 hover:underline"
+      >
+        En savoir plus sur le badge cuisinier →
+      </Link>
 
       {peutSoumettre && (
         <form onSubmit={onSubmit} className="space-y-3 rounded-xl bg-kagette-mangue-50 p-4">
@@ -74,8 +76,11 @@ export function CuisinierPanel({
               className="mt-1"
             />
             <Label htmlFor="charteAcceptee" className="mb-0 font-normal">
-              J&apos;ai lu et j&apos;accepte la charte d&apos;hygiène Kagette pour la
-              préparation de produits de conservation.
+              J&apos;ai lu et j&apos;accepte la{" "}
+              <Link href="/guide/hygiene" target="_blank" className="underline">
+                charte d&apos;hygiène Kagette
+              </Link>{" "}
+              pour la préparation de produits de conservation.
             </Label>
           </div>
 

@@ -77,6 +77,13 @@ export const unitesQuantite = ["KG", "CAGETTE", "AUTRE"] as const;
 export const urgencesRecolte = ["PAS_PRESSE", "BIENTOT", "URGENT"] as const;
 export const modesRecolte = ["A_RECOLTER_SOI_MEME", "DEJA_RECOLTE"] as const;
 
+export const modifierProfilSchema = z.object({
+  prenom: z.string().min(1, "Le prénom est requis").optional(),
+  nom: z.string().min(1, "Le nom est requis").optional(),
+  telephone: z.string().max(20).optional().or(z.literal("")),
+  photoUrl: z.string().url().optional().or(z.literal("")),
+});
+
 export const arbreSchema = z.object({
   variete: z.string().min(1, "La variété est requise"),
   saison: z.enum(saisons),

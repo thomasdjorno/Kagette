@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
@@ -60,6 +61,13 @@ export function ConnexionForm() {
         <Button type="submit" disabled={chargement} className="w-full">
           {chargement ? "Connexion..." : "Se connecter"}
         </Button>
+
+        <Link
+          href="/mot-de-passe-oublie"
+          className="block text-center text-sm text-kagette-prune-700/60 hover:underline"
+        >
+          Mot de passe oublié ?
+        </Link>
       </form>
 
       <div className="mt-4 flex items-center gap-3 text-xs text-kagette-prune-700/50">

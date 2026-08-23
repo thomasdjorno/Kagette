@@ -7,6 +7,7 @@ import { ProductListingCard } from "@/components/listings/ProductListingCard";
 import { ReviewList } from "@/components/reviews/ReviewList";
 import { ArbreDisplay } from "@/components/jardin/ArbreDisplay";
 import { FollowButton } from "@/components/profil/FollowButton";
+import { Avatar } from "@/components/ui/Avatar";
 
 export default async function ProfilPublicPage({ params }: { params: { userId: string } }) {
   const session = await auth();
@@ -46,9 +47,12 @@ export default async function ProfilPublicPage({ params }: { params: { userId: s
     <div className="mx-auto max-w-3xl space-y-6">
       <Card>
         <div className="flex items-start justify-between gap-3">
-          <h1 className="text-2xl font-serif font-bold text-kagette-prune-700">
-            {user.prenom} {user.nom.charAt(0)}.
-          </h1>
+          <div className="flex items-center gap-3">
+            <Avatar photoUrl={user.photoUrl} prenom={user.prenom} nom={user.nom} size="lg" />
+            <h1 className="text-2xl font-serif font-bold text-kagette-prune-700">
+              {user.prenom} {user.nom.charAt(0)}.
+            </h1>
+          </div>
           {session?.user && session.user.id !== user.id && (
             <FollowButton userId={user.id} suiviAuDepart={!!dejaSuivi} />
           )}

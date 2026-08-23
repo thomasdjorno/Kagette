@@ -51,6 +51,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           token.estDonneur = dbUser.estDonneur;
           token.estCuisinier = dbUser.estCuisinier;
           token.estAdmin = dbUser.estAdmin;
+          token.picture = dbUser.photoUrl;
+          token.name = `${dbUser.prenom} ${dbUser.nom}`;
         }
       }
       return token;

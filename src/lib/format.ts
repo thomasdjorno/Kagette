@@ -10,6 +10,13 @@ export function formatDate(date: Date | string) {
   );
 }
 
+export const libellesBadgeHygiene: Record<string, string> = {
+  NON_DEMANDE: "Aucune demande en cours",
+  EN_ATTENTE: "Badge en attente de validation par un admin",
+  VALIDE: "Badge hygiène validé",
+  REFUSE: "Demande refusée — vous pouvez la soumettre à nouveau",
+};
+
 export const libellesCategorie: Record<string, string> = {
   CONFITURE: "Confiture",
   SIROP: "Sirop",

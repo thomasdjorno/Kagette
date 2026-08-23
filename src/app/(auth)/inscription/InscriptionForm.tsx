@@ -44,7 +44,7 @@ export function InscriptionForm() {
       redirect: false,
     });
 
-    router.push("/profil");
+    router.push("/bienvenue");
     router.refresh();
   }
 

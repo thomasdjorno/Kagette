@@ -6,6 +6,7 @@ import Google from "next-auth/providers/google";
 // L'enrichissement des claims (casquettes, badge) via Prisma se fait
 // uniquement dans le callback jwt de src/lib/auth.ts.
 export const authConfig = {
+  trustHost: true,
   session: { strategy: "jwt" },
   pages: {
     signIn: "/connexion",

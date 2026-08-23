@@ -1,0 +1,36 @@
+import { prisma } from "@/lib/prisma";
+
+export async function getOrCreateConversation(params: {
+  currentUserId: string;
+  otherUserId: string;
+  fruitListingId?: string;
+  productListingId?: string;
+  orderId?: string;
+}) {
+  const { currentUserId, otherUserId, fruitListingId, productListingId, orderId } = params;
+
+  const existing = await prisma.conversation.findFirst({
+    where: {
+      fruitListingId: fruitListingId ?? null,
+      productListingId: productListingId ?? null,
+      orderId: orderId ?? null,
+      AND: [
+        { participants: { some: { userId: currentUserId } } },
+        { participants: { some: { userId: otherUserId } } },
+      ],
+    },
+  });
+
+  if (existing) return existing;
+
+  return prisma.conversation.create({
+    data: {
+      fruitListingId,
+      productListingId,
+      orderId,
+      participants: {
+        create: [{ userId: currentUserId }, { userId: otherUserId }],
+      },
+    },
+  });
+}

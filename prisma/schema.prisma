@@ -1,0 +1,425 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ───────────────────────── Auth.js ─────────────────────────
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ───────────────────────── Domaine ─────────────────────────
+
+enum HygieneBadgeStatus {
+  NON_DEMANDE
+  EN_ATTENTE
+  VALIDE
+  REFUSE
+}
+
+enum FruitListingMode {
+  DON
+  PARTICIPATION_LIBRE
+}
+
+enum FruitListingStatus {
+  DISPONIBLE
+  RESERVE
+  TERMINE
+  ANNULE
+}
+
+enum ModeRecolte {
+  DEJA_RECOLTE
+  A_RECOLTER_SOI_MEME
+}
+
+// Extensible pour la V2 (pâtisserie fraîche, etc.) : ne jamais faire de switch
+// exhaustif sur cet enum dans la logique métier sans un cas par défaut.
+enum ProductCategory {
+  CONFITURE
+  SIROP
+  CHUTNEY
+  FRUITS_SECS
+}
+
+enum ProductListingStatus {
+  EN_VENTE
+  RUPTURE
+  ARCHIVE
+  SIGNALE
+}
+
+enum OrderStatus {
+  EN_ATTENTE_PAIEMENT
+  PAYEE
+  PRETE_RETRAIT
+  RECUPEREE
+  ANNULEE
+  REMBOURSEE
+}
+
+enum ReportTargetType {
+  FRUIT_LISTING
+  PRODUCT_LISTING
+}
+
+enum ReportStatus {
+  EN_ATTENTE
+  TRAITE
+  REJETE
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String? // null si compte 100% OAuth
+  prenom    String
+  nom       String
+  photoUrl  String?
+  telephone String?
+
+  // casquettes — indépendantes, un même compte peut cumuler
+  estDonneur   Boolean @default(false)
+  estCuisinier Boolean @default(false)
+  estAdmin     Boolean @default(false)
+
+  // requis pour activer la casquette cuisinier
+  siret                   String?
+  charteHygieneAccepteeLe DateTime?
+  hygieneBadgeStatus      HygieneBadgeStatus @default(NON_DEMANDE)
+  hygieneBadgeValideParId String?
+  hygieneBadgeValideLe    DateTime?
+  // champ prévu pour la V2 (validation automatisée), inutilisé en V1
+  hygieneBadgeAutoScore   Float?
+
+  stripeAccountId          String? // compte Connect Express
+  stripeOnboardingComplete Boolean @default(false)
+
+  latitude  Float?
+  longitude Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+
+  fruitListings   FruitListing[]
+  productListings ProductListing[]
+  orders          Order[]
+  reviewsEcrites  Review[]                  @relation("ReviewsEcrites")
+  reviewsRecues   Review[]                  @relation("ReviewsRecues")
+  messages        Message[]
+  conversations   ConversationParticipant[]
+  reports         Report[]                  @relation("ReportsSoumis")
+  fruitRequests   FruitRequest[]
+  jardin          Jardin?
+}
+
+model Region {
+  id        String   @id @default(cuid())
+  nom       String
+  isActive  Boolean  @default(false)
+  latitude  Float
+  longitude Float
+  rayonKm   Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  fruitListings   FruitListing[]
+  productListings ProductListing[]
+}
+
+model FruitListing {
+  id        String @id @default(cuid())
+  donneurId String
+  donneur   User   @relation(fields: [donneurId], references: [id])
+
+  arbreId String?
+  arbre   Arbre?  @relation(fields: [arbreId], references: [id])
+
+  variete              String
+  photoUrls            String[]
+  quantiteEstimee      String // ex: "environ 8 kg"
+  quantiteKg           Float            @default(0)
+  mode                 FruitListingMode
+  montantParticipation Decimal?         @db.Decimal(10, 2)
+  modeRecolte          ModeRecolte      @default(A_RECOLTER_SOI_MEME)
+  description          String?
+
+  zoneRetrait String
+  latitude    Float
+  longitude   Float
+
+  regionId String
+  region   Region @relation(fields: [regionId], references: [id])
+
+  statut       FruitListingStatus @default(DISPONIBLE)
+  disponibleDu DateTime
+  disponibleAu DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  productListings ProductListing[]
+  conversations   Conversation[]
+  reports         Report[]
+  demandes        FruitRequest[]
+}
+
+// ───────────────────────── Jardin ─────────────────────────
+// Un donneur organise son jardin en fiches par arbre, réutilisables d'une
+// saison à l'autre. Une annonce de fruits (FruitListing) peut optionnellement
+// être créée à partir d'un arbre (arbreId), qui préremplit variété/photo.
+
+enum Saison {
+  PRINTEMPS
+  ETE
+  AUTOMNE
+  HIVER
+}
+
+enum UniteQuantite {
+  KG
+  CAGETTE
+  AUTRE
+}
+
+enum UrgenceRecolte {
+  PAS_PRESSE
+  BIENTOT
+  URGENT
+}
+
+model Jardin {
+  id             String @id @default(cuid())
+  proprietaireId String @unique
+  proprietaire   User   @relation(fields: [proprietaireId], references: [id])
+
+  nom String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  arbres Arbre[]
+}
+
+model Arbre {
+  id       String @id @default(cuid())
+  jardinId String
+  jardin   Jardin @relation(fields: [jardinId], references: [id])
+
+  variete        String
+  saison         Saison
+  quantite       Float
+  unite          UniteQuantite  @default(KG)
+  modeRecolte    ModeRecolte    @default(A_RECOLTER_SOI_MEME)
+  urgenceRecolte UrgenceRecolte @default(PAS_PRESSE)
+  photoUrl       String?
+  notes          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  fruitListings FruitListing[]
+}
+
+enum RaisonDemande {
+  TRANSFORMER_VENDRE
+  TRANSFORMER_CONSOMMER
+  CONSOMMER
+}
+
+enum FruitRequestStatus {
+  EN_ATTENTE
+  ACCEPTEE
+  REFUSEE
+}
+
+model FruitRequest {
+  id             String @id @default(cuid())
+  fruitListingId String
+  fruitListing   FruitListing @relation(fields: [fruitListingId], references: [id])
+  demandeurId    String
+  demandeur      User   @relation(fields: [demandeurId], references: [id])
+
+  quantiteDemandeeKg Float
+  raison             RaisonDemande
+  message            String?
+  statut             FruitRequestStatus @default(EN_ATTENTE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProductListing {
+  id          String @id @default(cuid())
+  cuisinierId String
+  cuisinier   User   @relation(fields: [cuisinierId], references: [id])
+
+  fruitListingOrigineId String?
+  fruitListingOrigine   FruitListing? @relation(fields: [fruitListingOrigineId], references: [id])
+
+  titre       String
+  categorie   ProductCategory
+  description String
+  photoUrls   String[]
+  allergenes  String[]
+  dluo        DateTime
+
+  prix               Decimal @db.Decimal(10, 2)
+  quantiteDisponible Int
+
+  zoneRetrait String
+  latitude    Float
+  longitude   Float
+
+  regionId String
+  region   Region @relation(fields: [regionId], references: [id])
+
+  statut ProductListingStatus @default(EN_VENTE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orders        Order[]
+  conversations Conversation[]
+  reports       Report[]
+}
+
+// Pourcentages de répartition, modifiables depuis le backoffice.
+// Une seule ligne "actif=true" à la fois ; on conserve l'historique.
+model SplitConfig {
+  id                String   @id @default(cuid())
+  donneurPercent    Decimal  @default(18) @db.Decimal(5, 2)
+  cuisinierPercent  Decimal  @default(67) @db.Decimal(5, 2)
+  commissionPercent Decimal  @default(15) @db.Decimal(5, 2)
+  actif             Boolean  @default(true)
+  createdAt         DateTime @default(now())
+}
+
+model Order {
+  id         String @id @default(cuid())
+  acheteurId String
+  acheteur   User   @relation(fields: [acheteurId], references: [id])
+
+  productListingId String
+  productListing   ProductListing @relation(fields: [productListingId], references: [id])
+
+  quantite Int @default(1)
+
+  montantTotal      Decimal @db.Decimal(10, 2)
+  montantDonneur    Decimal @db.Decimal(10, 2)
+  montantCuisinier  Decimal @db.Decimal(10, 2)
+  montantPlateforme Decimal @db.Decimal(10, 2)
+
+  statut OrderStatus @default(EN_ATTENTE_PAIEMENT)
+
+  stripePaymentIntentId     String?
+  stripeTransferDonneurId   String?
+  stripeTransferCuisinierId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  review       Review?
+  conversation Conversation?
+}
+
+model Review {
+  id          String   @id @default(cuid())
+  orderId     String   @unique
+  order       Order    @relation(fields: [orderId], references: [id])
+  auteurId    String
+  auteur      User     @relation("ReviewsEcrites", fields: [auteurId], references: [id])
+  cibleId     String
+  cible       User     @relation("ReviewsRecues", fields: [cibleId], references: [id])
+  note        Int // 1 à 5
+  commentaire String?
+  createdAt   DateTime @default(now())
+}
+
+model Conversation {
+  id               String          @id @default(cuid())
+  fruitListingId   String?
+  fruitListing     FruitListing?   @relation(fields: [fruitListingId], references: [id])
+  productListingId String?
+  productListing   ProductListing? @relation(fields: [productListingId], references: [id])
+  orderId          String?         @unique
+  order            Order?          @relation(fields: [orderId], references: [id])
+  createdAt        DateTime        @default(now())
+
+  participants ConversationParticipant[]
+  messages     Message[]
+}
+
+model ConversationParticipant {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  userId         String
+  user           User         @relation(fields: [userId], references: [id])
+
+  @@unique([conversationId, userId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  auteurId       String
+  auteur         User         @relation(fields: [auteurId], references: [id])
+  contenu        String
+  createdAt      DateTime     @default(now())
+  luLe           DateTime?
+}
+
+model Report {
+  id               String          @id @default(cuid())
+  reporterId       String
+  reporter         User            @relation("ReportsSoumis", fields: [reporterId], references: [id])
+  targetType       ReportTargetType
+  fruitListingId   String?
+  fruitListing     FruitListing?   @relation(fields: [fruitListingId], references: [id])
+  productListingId String?
+  productListing   ProductListing? @relation(fields: [productListingId], references: [id])
+  motif            String
+  statut           ReportStatus    @default(EN_ATTENTE)
+  createdAt        DateTime        @default(now())
+}

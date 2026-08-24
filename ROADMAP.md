@@ -144,6 +144,12 @@ connecter. On avance module par module — coche au fur et à mesure.
   dans la config Auth.js, nécessaire sur Netlify (contrairement à Vercel qui
   est auto-détecté) — sans ça, connexion et inscription échouaient
   silencieusement sur le site déployé
+- **Provenance enrichie sur les produits** *(vérifié)* : le bloc "Origine"
+  d'un produit affiche maintenant une vraie photo (celle de l'arbre si le
+  donneur en a renseigné une dans son jardin, sinon celle de l'annonce de
+  fruits) et l'avatar du donneur à côté de son nom, au lieu d'un simple
+  emoji générique. Ajout aussi d'une liste d'ingrédients (nouveau champ,
+  séparé des allergènes) et d'un intitulé "Description" plus visible
 
 ## 🔲 À faire
 

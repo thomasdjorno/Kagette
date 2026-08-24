@@ -51,6 +51,7 @@ export const productListingSchema = z.object({
   titre: z.string().min(1, "Le titre est requis"),
   categorie: z.enum(productCategories),
   description: z.string().min(1, "La description est requise").max(2000),
+  ingredients: z.array(z.string()).default([]),
   allergenes: z.array(z.string()).default([]),
   dluo: z.coerce.date(),
   prix: z.coerce.number().positive("Le prix doit être positif"),

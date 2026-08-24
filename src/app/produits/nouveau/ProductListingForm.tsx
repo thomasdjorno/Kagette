@@ -24,6 +24,7 @@ export function ProductListingForm({
   const router = useRouter();
   const regionParDefaut = regions[0];
   const [photoUrls, setPhotoUrls] = useState<string[]>([]);
+  const [ingredientsTexte, setIngredientsTexte] = useState("");
   const [allergenesTexte, setAllergenesTexte] = useState("");
   const [erreur, setErreur] = useState<string | null>(null);
   const [chargement, setChargement] = useState(false);
@@ -34,6 +35,10 @@ export function ProductListingForm({
     setChargement(true);
 
     const formData = new FormData(event.currentTarget);
+    const ingredients = ingredientsTexte
+      .split(",")
+      .map((i) => i.trim())
+      .filter(Boolean);
     const allergenes = allergenesTexte
       .split(",")
       .map((a) => a.trim())
@@ -43,6 +48,7 @@ export function ProductListingForm({
       titre: formData.get("titre"),
       categorie: formData.get("categorie"),
       description: formData.get("description"),
+      ingredients,
       allergenes,
       dluo: formData.get("dluo"),
       prix: formData.get("prix"),
@@ -124,6 +130,16 @@ export function ProductListingForm({
       <div>
         <Label htmlFor="description">Description</Label>
         <Textarea id="description" name="description" rows={3} required />
+      </div>
+
+      <div>
+        <Label htmlFor="ingredients">Ingrédients (séparés par des virgules)</Label>
+        <Input
+          id="ingredients"
+          placeholder="Ex : pommes, sucre, jus de citron"
+          value={ingredientsTexte}
+          onChange={(e) => setIngredientsTexte(e.target.value)}
+        />
       </div>
 
       <div>

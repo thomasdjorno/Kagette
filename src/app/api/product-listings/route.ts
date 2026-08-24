@@ -51,6 +51,7 @@ export async function POST(request: Request) {
       titre: data.titre,
       categorie: data.categorie,
       description: data.description,
+      ingredients: data.ingredients,
       allergenes: data.allergenes,
       dluo: data.dluo,
       prix: data.prix,

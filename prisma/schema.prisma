@@ -316,6 +316,7 @@ model ProductListing {
   categorie   ProductCategory
   description String
   photoUrls   String[]
+  ingredients String[]
   allergenes  String[]
   dluo        DateTime
 

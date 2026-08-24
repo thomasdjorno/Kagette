@@ -18,7 +18,7 @@ export default async function ProductListingPage({ params }: { params: { id: str
       where: { id: params.id },
       include: {
         cuisinier: true,
-        fruitListingOrigine: { include: { donneur: true } },
+        fruitListingOrigine: { include: { donneur: true, arbre: true } },
       },
     }),
     auth(),
@@ -76,14 +76,30 @@ export default async function ProductListingPage({ params }: { params: { id: str
         <ProvenanceBlock
           donneurId={listing.fruitListingOrigine.donneur.id}
           donneurPrenom={listing.fruitListingOrigine.donneur.prenom}
+          donneurNom={listing.fruitListingOrigine.donneur.nom}
+          donneurPhotoUrl={listing.fruitListingOrigine.donneur.photoUrl}
           variete={listing.fruitListingOrigine.variete}
           zoneRetrait={listing.fruitListingOrigine.zoneRetrait}
           fruitListingId={listing.fruitListingOrigine.id}
+          fruitPhotoUrl={listing.fruitListingOrigine.photoUrls[0]}
+          arbrePhotoUrl={listing.fruitListingOrigine.arbre?.photoUrl}
         />
       )}
 
       <Card>
-        <p className="text-sm text-kagette-prune-700/80">{listing.description}</p>
+        <p className="text-xs font-medium uppercase tracking-wide text-kagette-framboise-600">
+          Description
+        </p>
+        <p className="mt-1 text-sm text-kagette-prune-700/80">{listing.description}</p>
+      </Card>
+
+      <Card>
+        <p className="text-xs font-medium uppercase tracking-wide text-kagette-framboise-600">
+          Ingrédients
+        </p>
+        <p className="mt-1 text-sm text-kagette-prune-700">
+          {listing.ingredients.length > 0 ? listing.ingredients.join(", ") : "Non renseignés"}
+        </p>
       </Card>
 
       <div className="grid grid-cols-2 gap-4">

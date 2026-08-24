@@ -187,6 +187,15 @@ connecter. On avance module par module — coche au fur et à mesure.
     arbre du jardin, qui n'ont qu'une saison et une urgence déclarées
     manuellement, sans date précise)
 
+- **Recherche d'adresse au lieu de latitude/longitude à la main** *(vérifié)* :
+  sur les deux formulaires de création (fruits et produits), on tape
+  maintenant une adresse ou une commune ("Mensignac") et on choisit dans une
+  liste de suggestions (Mapbox Geocoding) — les coordonnées se remplissent
+  toutes seules en arrière-plan. Avant, il fallait taper des coordonnées GPS
+  en décimal, un vrai frein pour un utilisateur non technique. Dégradation
+  propre : si `NEXT_PUBLIC_MAPBOX_TOKEN` n'est pas configuré, les champs
+  latitude/longitude manuels reviennent automatiquement
+
 ## 🔲 À faire
 
 ### Priorité moyenne (qualité / robustesse)

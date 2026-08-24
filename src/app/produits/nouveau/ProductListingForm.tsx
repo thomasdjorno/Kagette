@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/Label";
 import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 import { PhotoUploader } from "@/components/listings/PhotoUploader";
+import { AddressSearchInput } from "@/components/ui/AddressSearchInput";
 import { productCategories } from "@/lib/validation";
 import { libellesCategorie, formatPrix } from "@/lib/format";
 import { calculerRepartition, type Pourcentages } from "@/lib/payment-split";
@@ -35,8 +36,11 @@ export function ProductListingForm({
   const [allergenesTexte, setAllergenesTexte] = useState("");
   const [prixTexte, setPrixTexte] = useState("");
   const [origineId, setOrigineId] = useState(fruitListingIdPreselectionne ?? "");
+  const [latitude, setLatitude] = useState(regionParDefaut?.latitude ?? 0);
+  const [longitude, setLongitude] = useState(regionParDefaut?.longitude ?? 0);
   const [erreur, setErreur] = useState<string | null>(null);
   const [chargement, setChargement] = useState(false);
+  const mapboxConfigure = !!process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
   const prixNombre = parseFloat(prixTexte.replace(",", "."));
   const repartition =
@@ -233,30 +237,44 @@ export function ProductListingForm({
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      {mapboxConfigure ? (
         <div>
-          <Label htmlFor="latitude">Latitude approx.</Label>
-          <Input
-            id="latitude"
-            name="latitude"
-            type="number"
-            step="0.0001"
-            defaultValue={regionParDefaut?.latitude}
-            required
+          <Label>Adresse ou commune la plus proche</Label>
+          <AddressSearchInput
+            onSelect={({ latitude, longitude }) => {
+              setLatitude(latitude);
+              setLongitude(longitude);
+            }}
           />
+          <input type="hidden" name="latitude" value={latitude} />
+          <input type="hidden" name="longitude" value={longitude} />
         </div>
-        <div>
-          <Label htmlFor="longitude">Longitude approx.</Label>
-          <Input
-            id="longitude"
-            name="longitude"
-            type="number"
-            step="0.0001"
-            defaultValue={regionParDefaut?.longitude}
-            required
-          />
+      ) : (
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <Label htmlFor="latitude">Latitude approx.</Label>
+            <Input
+              id="latitude"
+              name="latitude"
+              type="number"
+              step="0.0001"
+              defaultValue={regionParDefaut?.latitude}
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="longitude">Longitude approx.</Label>
+            <Input
+              id="longitude"
+              name="longitude"
+              type="number"
+              step="0.0001"
+              defaultValue={regionParDefaut?.longitude}
+              required
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       {regions.length > 1 ? (
         <div>

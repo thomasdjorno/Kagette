@@ -36,54 +36,75 @@ export default async function RecherchesFruitsPage() {
           Recherches de fruits
         </h1>
         <p className="mt-1 text-sm text-kagette-prune-700/60">
-          Des cuisiniers cherchent des fruits pour leurs prochaines préparations. Si tu en as chez
-          toi, propose-les-leur.
+          Un espace pour que cuisiniers et donneurs se retrouvent, dans les deux sens : les
+          cuisiniers indiquent ce qui leur manque, les donneurs proposent leurs fruits.
         </p>
       </div>
 
       {session?.user?.estCuisinier && regionParDefaut && (
-        <NouvelleRechercheForm regionId={regionParDefaut.id} />
-      )}
-
-      {recherchesDesAutres.length === 0 ? (
-        <p className="text-sm text-kagette-prune-700/60">Aucune recherche active pour l&apos;instant.</p>
-      ) : (
-        <div className="space-y-3">
-          {recherchesDesAutres.map((recherche) => (
-            <Card key={recherche.id} className="flex items-start gap-3">
-              <Avatar
-                photoUrl={recherche.cuisinier.photoUrl}
-                prenom={recherche.cuisinier.prenom}
-                nom={recherche.cuisinier.nom}
-              />
-              <div className="flex-1">
-                <p className="font-semibold text-kagette-prune-700">
-                  {recherche.cuisinier.prenom} recherche des {recherche.variete}
-                  {recherche.quantiteSouhaiteeKg ? ` (environ ${recherche.quantiteSouhaiteeKg} kg)` : ""}
-                </p>
-                {recherche.message && (
-                  <p className="mt-1 text-sm text-kagette-prune-700/70">{recherche.message}</p>
-                )}
-                <p className="mt-1 text-xs text-kagette-prune-700/50">
-                  Publié le {formatDate(recherche.createdAt)}
-                </p>
-                {session?.user && (
-                  <div className="mt-3">
-                    <ContactButton
-                      label={`Proposer mes fruits à ${recherche.cuisinier.prenom}`}
-                      fruitSearchRequestId={recherche.id}
-                    />
-                  </div>
-                )}
-              </div>
-            </Card>
-          ))}
+        <div className="rounded-2xl border-2 border-dashed border-kagette-mangue-300 p-4">
+          <h2 className="font-semibold text-kagette-prune-700">
+            📣 Tu es cuisinier et il te manque des fruits ?
+          </h2>
+          <p className="mt-1 text-sm text-kagette-prune-700/60">
+            Publie ta recherche, les donneurs près de chez toi pourront te contacter directement.
+          </p>
+          <div className="mt-3">
+            <NouvelleRechercheForm regionId={regionParDefaut.id} />
+          </div>
         </div>
       )}
 
+      <div>
+        <h2 className="mb-1 font-semibold text-kagette-prune-700">
+          🔍 Ce que les cuisiniers recherchent en ce moment
+        </h2>
+        <p className="mb-3 text-sm text-kagette-prune-700/60">
+          Si tu as des fruits chez toi, tu peux les proposer directement à la personne concernée.
+        </p>
+        {recherchesDesAutres.length === 0 ? (
+          <p className="text-sm text-kagette-prune-700/60">Aucune recherche active pour l&apos;instant.</p>
+        ) : (
+          <div className="space-y-3">
+            {recherchesDesAutres.map((recherche) => (
+              <Card key={recherche.id} className="flex items-start gap-3">
+                <Avatar
+                  photoUrl={recherche.cuisinier.photoUrl}
+                  prenom={recherche.cuisinier.prenom}
+                  nom={recherche.cuisinier.nom}
+                />
+                <div className="flex-1">
+                  <p className="font-semibold text-kagette-prune-700">
+                    {recherche.cuisinier.prenom} recherche des {recherche.variete}
+                    {recherche.quantiteSouhaiteeKg ? ` (environ ${recherche.quantiteSouhaiteeKg} kg)` : ""}
+                  </p>
+                  {recherche.message && (
+                    <p className="mt-1 text-sm text-kagette-prune-700/70">{recherche.message}</p>
+                  )}
+                  <p className="mt-1 text-xs text-kagette-prune-700/50">
+                    Publié le {formatDate(recherche.createdAt)}
+                  </p>
+                  {session?.user && (
+                    <div className="mt-3">
+                      <ContactButton
+                        label={`Proposer mes fruits à ${recherche.cuisinier.prenom}`}
+                        fruitSearchRequestId={recherche.id}
+                      />
+                    </div>
+                  )}
+                </div>
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
+
       {mesRecherches.length > 0 && (
-        <div>
-          <h2 className="mb-3 font-semibold text-kagette-prune-700">Mes recherches</h2>
+        <div className="rounded-2xl bg-kagette-prune-700/5 p-4">
+          <h2 className="font-semibold text-kagette-prune-700">📋 Mes recherches publiées</h2>
+          <p className="mb-3 mt-1 text-sm text-kagette-prune-700/60">
+            Gère le statut de tes propres recherches ci-dessous.
+          </p>
           <div className="space-y-3">
             {mesRecherches.map((recherche) => (
               <Card key={recherche.id}>

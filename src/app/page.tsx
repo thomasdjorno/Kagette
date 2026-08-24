@@ -7,6 +7,7 @@ import { HeroBanner } from "@/components/home/HeroBanner";
 import { Pagination } from "@/components/ui/Pagination";
 import { productCategories } from "@/lib/validation";
 import { libellesCategorie } from "@/lib/format";
+import { distanceKm } from "@/lib/geo";
 
 const TAILLE_PAGE = 6;
 
@@ -55,6 +56,18 @@ export default async function HomePage({
       ? prisma.follow.findMany({ where: { suiveurId: session.user.id }, select: { suiviId: true } })
       : Promise.resolve([]),
   ]);
+
+  const moi = session?.user
+    ? await prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: { latitude: true, longitude: true },
+      })
+    : null;
+
+  function distancePourAnnonce(lat: number, lng: number): number | null {
+    if (!moi?.latitude || !moi?.longitude) return null;
+    return distanceKm(moi.latitude, moi.longitude, lat, lng);
+  }
 
   const idsSuivis = new Set(suivis.map((s) => s.suiviId));
   const favoris = [
@@ -165,6 +178,9 @@ export default async function HomePage({
                   zoneRetrait={item.data.zoneRetrait}
                   donneurPrenom={item.data.donneur.prenom}
                   photoUrl={item.data.photoUrls[0]}
+                  disponibleDu={item.data.disponibleDu}
+                  disponibleAu={item.data.disponibleAu}
+                  distanceKm={distancePourAnnonce(item.data.latitude, item.data.longitude)}
                 />
               ) : (
                 <ProductListingCard
@@ -177,6 +193,7 @@ export default async function HomePage({
                   cuisinierPrenom={item.data.cuisinier.prenom}
                   donneurOriginePrenom={item.data.fruitListingOrigine?.donneur.prenom ?? null}
                   photoUrl={item.data.photoUrls[0]}
+                  distanceKm={distancePourAnnonce(item.data.latitude, item.data.longitude)}
                 />
               )
             )}
@@ -206,6 +223,9 @@ export default async function HomePage({
                   zoneRetrait={fruit.zoneRetrait}
                   donneurPrenom={fruit.donneur.prenom}
                   photoUrl={fruit.photoUrls[0]}
+                  disponibleDu={fruit.disponibleDu}
+                  disponibleAu={fruit.disponibleAu}
+                  distanceKm={distancePourAnnonce(fruit.latitude, fruit.longitude)}
                 />
               ))}
             </div>
@@ -242,6 +262,7 @@ export default async function HomePage({
                   cuisinierPrenom={produit.cuisinier.prenom}
                   donneurOriginePrenom={produit.fruitListingOrigine?.donneur.prenom ?? null}
                   photoUrl={produit.photoUrls[0]}
+                  distanceKm={distancePourAnnonce(produit.latitude, produit.longitude)}
                 />
               ))}
             </div>

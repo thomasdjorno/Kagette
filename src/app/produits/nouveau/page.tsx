@@ -33,7 +33,7 @@ export default async function NouvelleAnnonceProduitPage({
     );
   }
 
-  const [regionsActives, fruitListings, demandesAcceptees] = await Promise.all([
+  const [regionsActives, fruitListings, demandesAcceptees, splitConfig] = await Promise.all([
     prisma.region.findMany({ where: { isActive: true } }),
     prisma.fruitListing.findMany({
       where: { region: { isActive: true }, statut: { not: "ANNULE" } },
@@ -46,6 +46,7 @@ export default async function NouvelleAnnonceProduitPage({
       include: { fruitListing: { include: { donneur: { select: { prenom: true } } } } },
       orderBy: { createdAt: "desc" },
     }),
+    prisma.splitConfig.findFirst({ where: { actif: true } }),
   ]);
 
   const fruitListingsPrioritaires = Array.from(
@@ -81,6 +82,15 @@ export default async function NouvelleAnnonceProduitPage({
           fruitListings={fruitListingsRestants}
           fruitListingsPrioritaires={fruitListingsPrioritaires}
           fruitListingIdPreselectionne={searchParams.fruitListingId}
+          splitConfig={
+            splitConfig
+              ? {
+                  donneurPercent: Number(splitConfig.donneurPercent),
+                  cuisinierPercent: Number(splitConfig.cuisinierPercent),
+                  commissionPercent: Number(splitConfig.commissionPercent),
+                }
+              : null
+          }
         />
       </Card>
     </div>

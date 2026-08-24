@@ -106,8 +106,8 @@ enum ReportStatus {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
+  id        String  @id @default(cuid())
+  email     String  @unique
   password  String? // null si compte 100% OAuth
   prenom    String
   nom       String
@@ -140,18 +140,19 @@ model User {
   accounts Account[]
   sessions Session[]
 
-  fruitListings   FruitListing[]
-  productListings ProductListing[]
-  orders          Order[]
-  reviewsEcrites  Review[]                  @relation("ReviewsEcrites")
-  reviewsRecues   Review[]                  @relation("ReviewsRecues")
-  messages        Message[]
-  conversations   ConversationParticipant[]
-  reports         Report[]                  @relation("ReportsSoumis")
-  fruitRequests   FruitRequest[]
-  jardin          Jardin?
-  suivis          Follow[]                  @relation("Suivis")
-  abonnes         Follow[]                  @relation("Abonnes")
+  fruitListings       FruitListing[]
+  productListings     ProductListing[]
+  orders              Order[]
+  reviewsEcrites      Review[]                  @relation("ReviewsEcrites")
+  reviewsRecues       Review[]                  @relation("ReviewsRecues")
+  messages            Message[]
+  conversations       ConversationParticipant[]
+  reports             Report[]                  @relation("ReportsSoumis")
+  fruitRequests       FruitRequest[]
+  jardin              Jardin?
+  suivis              Follow[]                  @relation("Suivis")
+  abonnes             Follow[]                  @relation("Abonnes")
+  fruitSearchRequests FruitSearchRequest[]
 }
 
 model Follow {
@@ -178,8 +179,9 @@ model Region {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  fruitListings   FruitListing[]
-  productListings ProductListing[]
+  fruitListings       FruitListing[]
+  productListings     ProductListing[]
+  fruitSearchRequests FruitSearchRequest[]
 }
 
 model FruitListing {
@@ -289,11 +291,11 @@ enum FruitRequestStatus {
 }
 
 model FruitRequest {
-  id             String @id @default(cuid())
+  id             String       @id @default(cuid())
   fruitListingId String
   fruitListing   FruitListing @relation(fields: [fruitListingId], references: [id])
   demandeurId    String
-  demandeur      User   @relation(fields: [demandeurId], references: [id])
+  demandeur      User         @relation(fields: [demandeurId], references: [id])
 
   quantiteDemandeeKg Float
   raison             RaisonDemande
@@ -393,17 +395,45 @@ model Review {
 }
 
 model Conversation {
-  id               String          @id @default(cuid())
-  fruitListingId   String?
-  fruitListing     FruitListing?   @relation(fields: [fruitListingId], references: [id])
-  productListingId String?
-  productListing   ProductListing? @relation(fields: [productListingId], references: [id])
-  orderId          String?         @unique
-  order            Order?          @relation(fields: [orderId], references: [id])
-  createdAt        DateTime        @default(now())
+  id                   String              @id @default(cuid())
+  fruitListingId       String?
+  fruitListing         FruitListing?       @relation(fields: [fruitListingId], references: [id])
+  productListingId     String?
+  productListing       ProductListing?     @relation(fields: [productListingId], references: [id])
+  orderId              String?             @unique
+  order                Order?              @relation(fields: [orderId], references: [id])
+  fruitSearchRequestId String?
+  fruitSearchRequest   FruitSearchRequest? @relation(fields: [fruitSearchRequestId], references: [id])
+  createdAt            DateTime            @default(now())
 
   participants ConversationParticipant[]
   messages     Message[]
+}
+
+enum FruitSearchStatus {
+  OUVERTE
+  COMBLEE
+  ANNULEE
+}
+
+model FruitSearchRequest {
+  id          String @id @default(cuid())
+  cuisinierId String
+  cuisinier   User   @relation(fields: [cuisinierId], references: [id])
+
+  variete             String
+  quantiteSouhaiteeKg Float?
+  message             String?
+
+  regionId String
+  region   Region @relation(fields: [regionId], references: [id])
+
+  statut FruitSearchStatus @default(OUVERTE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  conversations Conversation[]
 }
 
 model ConversationParticipant {
@@ -428,15 +458,15 @@ model Message {
 }
 
 model Report {
-  id               String          @id @default(cuid())
+  id               String           @id @default(cuid())
   reporterId       String
-  reporter         User            @relation("ReportsSoumis", fields: [reporterId], references: [id])
+  reporter         User             @relation("ReportsSoumis", fields: [reporterId], references: [id])
   targetType       ReportTargetType
   fruitListingId   String?
-  fruitListing     FruitListing?   @relation(fields: [fruitListingId], references: [id])
+  fruitListing     FruitListing?    @relation(fields: [fruitListingId], references: [id])
   productListingId String?
-  productListing   ProductListing? @relation(fields: [productListingId], references: [id])
+  productListing   ProductListing?  @relation(fields: [productListingId], references: [id])
   motif            String
-  statut           ReportStatus    @default(EN_ATTENTE)
-  createdAt        DateTime        @default(now())
+  statut           ReportStatus     @default(EN_ATTENTE)
+  createdAt        DateTime         @default(now())
 }

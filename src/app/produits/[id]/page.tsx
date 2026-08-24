@@ -5,7 +5,8 @@ import { auth } from "@/lib/auth";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { ListingPhoto } from "@/components/listings/ListingPhoto";
-import { ProvenanceBlock } from "@/components/provenance/ProvenanceBlock";
+import { ProvenanceTimeline } from "@/components/provenance/ProvenanceTimeline";
+import { Avatar } from "@/components/ui/Avatar";
 import { ReviewList } from "@/components/reviews/ReviewList";
 import { ContactButton } from "@/components/messaging/ContactButton";
 import { ReportButton } from "@/components/moderation/ReportButton";
@@ -73,16 +74,82 @@ export default async function ProductListingPage({ params }: { params: { id: str
       </Card>
 
       {listing.fruitListingOrigine && (
-        <ProvenanceBlock
-          donneurId={listing.fruitListingOrigine.donneur.id}
-          donneurPrenom={listing.fruitListingOrigine.donneur.prenom}
-          donneurNom={listing.fruitListingOrigine.donneur.nom}
-          donneurPhotoUrl={listing.fruitListingOrigine.donneur.photoUrl}
-          variete={listing.fruitListingOrigine.variete}
-          zoneRetrait={listing.fruitListingOrigine.zoneRetrait}
-          fruitListingId={listing.fruitListingOrigine.id}
-          fruitPhotoUrl={listing.fruitListingOrigine.photoUrls[0]}
-          arbrePhotoUrl={listing.fruitListingOrigine.arbre?.photoUrl}
+        <ProvenanceTimeline
+          etapes={[
+            {
+              emoji: "🌳",
+              contenu: (
+                <>
+                  <p className="font-semibold text-kagette-prune-700">
+                    {listing.fruitListingOrigine.variete} chez{" "}
+                    <Link
+                      href={`/profil/${listing.fruitListingOrigine.donneur.id}`}
+                      className="underline decoration-dotted"
+                    >
+                      {listing.fruitListingOrigine.donneur.prenom}
+                    </Link>
+                  </p>
+                  <div className="mt-2 flex items-center gap-2">
+                    <ListingPhoto
+                      photoUrl={listing.fruitListingOrigine.arbre?.photoUrl || listing.fruitListingOrigine.photoUrls[0]}
+                      emoji="🌳"
+                      alt={listing.fruitListingOrigine.variete}
+                      className="h-14 w-14 rounded-lg"
+                    />
+                    <Avatar
+                      photoUrl={listing.fruitListingOrigine.donneur.photoUrl}
+                      prenom={listing.fruitListingOrigine.donneur.prenom}
+                      nom={listing.fruitListingOrigine.donneur.nom}
+                      size="sm"
+                    />
+                  </div>
+                  <p className="mt-1 text-xs text-kagette-prune-700/50">
+                    Récoltés à {listing.fruitListingOrigine.zoneRetrait}
+                  </p>
+                </>
+              ),
+            },
+            {
+              emoji: "🧺",
+              contenu: (
+                <>
+                  <p className="font-semibold text-kagette-prune-700">
+                    {listing.fruitListingOrigine.modeRecolte === "DEJA_RECOLTE"
+                      ? "Fruits déjà récoltés"
+                      : "À récolter par celui qui les transforme"}
+                  </p>
+                  <p className="text-xs text-kagette-prune-700/50">
+                    Disponibles depuis le {formatDate(listing.fruitListingOrigine.disponibleDu)}
+                  </p>
+                  <Link
+                    href={`/fruits/${listing.fruitListingOrigine.id}`}
+                    className="mt-1 inline-block text-sm font-medium text-kagette-feuille-600 hover:underline"
+                  >
+                    Voir l&apos;annonce de fruits d&apos;origine →
+                  </Link>
+                </>
+              ),
+            },
+            {
+              emoji: "🍯",
+              contenu: (
+                <>
+                  <p className="font-semibold text-kagette-prune-700">
+                    Transformé par{" "}
+                    <Link
+                      href={`/profil/${listing.cuisinier.id}`}
+                      className="underline decoration-dotted"
+                    >
+                      {listing.cuisinier.prenom}
+                    </Link>
+                  </p>
+                  <p className="text-xs text-kagette-prune-700/50">
+                    Publié le {formatDate(listing.createdAt)}
+                  </p>
+                </>
+              ),
+            },
+          ]}
         />
       )}
 

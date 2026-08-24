@@ -50,6 +50,12 @@ export async function Header() {
             {session?.user && (
               <>
                 <Link
+                  href="/fruits/recherches"
+                  className="hidden text-sm font-medium text-kagette-prune-700 hover:text-kagette-framboise-500 sm:block"
+                >
+                  Recherches
+                </Link>
+                <Link
                   href="/messagerie"
                   className="hidden text-sm font-medium text-kagette-prune-700 hover:text-kagette-framboise-500 sm:block"
                 >

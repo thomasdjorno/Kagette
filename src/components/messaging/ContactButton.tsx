@@ -8,9 +8,15 @@ interface ContactButtonProps {
   label: string;
   fruitListingId?: string;
   productListingId?: string;
+  fruitSearchRequestId?: string;
 }
 
-export function ContactButton({ label, fruitListingId, productListingId }: ContactButtonProps) {
+export function ContactButton({
+  label,
+  fruitListingId,
+  productListingId,
+  fruitSearchRequestId,
+}: ContactButtonProps) {
   const router = useRouter();
   const [erreur, setErreur] = useState<string | null>(null);
   const [chargement, setChargement] = useState(false);
@@ -22,7 +28,7 @@ export function ContactButton({ label, fruitListingId, productListingId }: Conta
     const res = await fetch("/api/conversations", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ fruitListingId, productListingId }),
+      body: JSON.stringify({ fruitListingId, productListingId, fruitSearchRequestId }),
     });
 
     const data = await res.json().catch(() => null);

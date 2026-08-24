@@ -90,6 +90,8 @@ export default async function ProfilPublicPage({ params }: { params: { userId: s
                 zoneRetrait={fruit.zoneRetrait}
                 donneurPrenom={user.prenom}
                 photoUrl={fruit.photoUrls[0]}
+                disponibleDu={fruit.disponibleDu}
+                disponibleAu={fruit.disponibleAu}
               />
             ))}
           </div>

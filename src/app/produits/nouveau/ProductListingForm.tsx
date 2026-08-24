@@ -10,7 +10,8 @@ import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 import { PhotoUploader } from "@/components/listings/PhotoUploader";
 import { productCategories } from "@/lib/validation";
-import { libellesCategorie } from "@/lib/format";
+import { libellesCategorie, formatPrix } from "@/lib/format";
+import { calculerRepartition, type Pourcentages } from "@/lib/payment-split";
 
 type FruitListingAvecDonneur = FruitListing & { donneur: { prenom: string } };
 
@@ -19,19 +20,29 @@ export function ProductListingForm({
   fruitListings,
   fruitListingsPrioritaires = [],
   fruitListingIdPreselectionne,
+  splitConfig,
 }: {
   regions: Region[];
   fruitListings: FruitListingAvecDonneur[];
   fruitListingsPrioritaires?: FruitListingAvecDonneur[];
   fruitListingIdPreselectionne?: string;
+  splitConfig?: Pourcentages | null;
 }) {
   const router = useRouter();
   const regionParDefaut = regions[0];
   const [photoUrls, setPhotoUrls] = useState<string[]>([]);
   const [ingredientsTexte, setIngredientsTexte] = useState("");
   const [allergenesTexte, setAllergenesTexte] = useState("");
+  const [prixTexte, setPrixTexte] = useState("");
+  const [origineId, setOrigineId] = useState(fruitListingIdPreselectionne ?? "");
   const [erreur, setErreur] = useState<string | null>(null);
   const [chargement, setChargement] = useState(false);
+
+  const prixNombre = parseFloat(prixTexte.replace(",", "."));
+  const repartition =
+    splitConfig && Number.isFinite(prixNombre) && prixNombre > 0
+      ? calculerRepartition(prixNombre, splitConfig, !!origineId)
+      : null;
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -120,7 +131,8 @@ export function ProductListingForm({
           id="fruitListingOrigineId"
           name="fruitListingOrigineId"
           className="w-full rounded-xl border border-kagette-prune-700/15 bg-white px-4 py-2.5 text-sm"
-          defaultValue={fruitListingIdPreselectionne || ""}
+          value={origineId}
+          onChange={(e) => setOrigineId(e.target.value)}
         >
           <option value="">Non renseigné</option>
           {fruitListingsPrioritaires.length > 0 && (
@@ -175,13 +187,41 @@ export function ProductListingForm({
       <div className="grid grid-cols-2 gap-3">
         <div>
           <Label htmlFor="prix">Prix (€)</Label>
-          <Input id="prix" name="prix" type="number" min="0.5" step="0.1" required />
+          <Input
+            id="prix"
+            name="prix"
+            type="number"
+            min="0.5"
+            step="0.1"
+            required
+            value={prixTexte}
+            onChange={(e) => setPrixTexte(e.target.value)}
+          />
         </div>
         <div>
           <Label htmlFor="quantiteDisponible">Quantité disponible</Label>
           <Input id="quantiteDisponible" name="quantiteDisponible" type="number" min="0" required />
         </div>
       </div>
+
+      {repartition && (
+        <div className="rounded-xl bg-kagette-feuille-50 p-4 text-sm">
+          <p className="font-semibold text-kagette-feuille-600">
+            Tu recevras {formatPrix(repartition.montantCuisinier)}
+          </p>
+          {origineId ? (
+            <p className="mt-1 text-xs text-kagette-prune-700/60">
+              Le donneur des fruits recevra {formatPrix(repartition.montantDonneur)}, Kagette{" "}
+              {formatPrix(repartition.montantPlateforme)} (commission de mise en relation)
+            </p>
+          ) : (
+            <p className="mt-1 text-xs text-kagette-prune-700/60">
+              Kagette recevra {formatPrix(repartition.montantPlateforme)} (commission de mise en
+              relation) — renseigne des fruits d&apos;origine pour reverser une part au donneur
+            </p>
+          )}
+        </div>
+      )}
 
       <div>
         <Label htmlFor="zoneRetrait">Lieu de retrait</Label>

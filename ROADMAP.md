@@ -162,6 +162,31 @@ connecter. On avance module par module — coche au fur et à mesure.
   premier ("Tes demandes acceptées") les fruits pour lesquels le cuisinier
   a déjà un accord, avant la liste complète des annonces de la région
 
+- **5 fonctionnalités "premium"** *(vérifiées en live)* :
+  - **Timeline "Du jardin à ton bocal"** : sur la fiche produit, le bloc
+    "Origine" devient une vraie frise visuelle (🌳 arbre → 🧺 récolte →
+    🍯 transformation), avec photo et avatar, plutôt qu'un simple bloc de
+    texte
+  - **Répartition en direct** : sur le formulaire de création de produit,
+    dès que le prix est tapé, un encart affiche en temps réel "Tu
+    recevras X€, le donneur Y€, Kagette Z€" — se recalcule aussi si on
+    change les fruits d'origine
+  - **Distance réelle sur les annonces** : "à 2,3 km" affiché directement
+    sur chaque carte fruit/produit de l'accueil (calculé depuis la
+    position du compte connecté, si elle est renseignée)
+  - **Mode "Je cherche" pour les cuisiniers** : nouvelle section
+    `/fruits/recherches` où un cuisinier publie ce qu'il recherche
+    (variété, quantité, message), les donneurs la voient et peuvent le
+    contacter directement. Nouveau modèle `FruitSearchRequest`, statut
+    ouverte/comblée/annulée gérable par le cuisinier
+  - **Décompte de fraîcheur** : sur les annonces de fruits, un badge
+    dynamique ("Encore 3 jours pour passer") calculé depuis la vraie date
+    de fin de disponibilité, avec mise en évidence si c'est urgent (≤3
+    jours) — remplace l'idée initiale d'un badge statique, appliqué aux
+    annonces de fruits qui ont de vraies dates (contrairement aux fiches
+    arbre du jardin, qui n'ont qu'une saison et une urgence déclarées
+    manuellement, sans date précise)
+
 ## 🔲 À faire
 
 ### Priorité moyenne (qualité / robustesse)

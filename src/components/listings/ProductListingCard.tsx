@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ListingPhoto } from "./ListingPhoto";
-import { formatPrix, libellesCategorie, emojiCategorie } from "@/lib/format";
+import { formatPrix, libellesCategorie, emojiCategorie, formatDistance } from "@/lib/format";
 
 interface ProductListingCardProps {
   id: string;
@@ -11,6 +11,7 @@ interface ProductListingCardProps {
   cuisinierPrenom: string;
   donneurOriginePrenom: string | null;
   photoUrl?: string | null;
+  distanceKm?: number | null;
 }
 
 export function ProductListingCard({
@@ -22,6 +23,7 @@ export function ProductListingCard({
   cuisinierPrenom,
   donneurOriginePrenom,
   photoUrl,
+  distanceKm,
 }: ProductListingCardProps) {
   return (
     <Link
@@ -41,7 +43,10 @@ export function ProductListingCard({
       </div>
       <div className="p-1.5 sm:p-4">
         <h3 className="line-clamp-1 font-serif text-xs font-bold text-kagette-prune-700 sm:text-base">{titre}</h3>
-        <p className="mt-0.5 line-clamp-1 text-[10px] text-kagette-prune-700/60 sm:mt-1 sm:text-sm">{zoneRetrait}</p>
+        <p className="mt-0.5 line-clamp-1 text-[10px] text-kagette-prune-700/60 sm:mt-1 sm:text-sm">
+          {zoneRetrait}
+          {typeof distanceKm === "number" && ` · ${formatDistance(distanceKm)}`}
+        </p>
         {donneurOriginePrenom && (
           <p className="mt-0.5 hidden text-xs italic text-kagette-mangue-600 sm:block">
             Fait avec les fruits de {donneurOriginePrenom}

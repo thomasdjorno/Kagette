@@ -3,6 +3,11 @@ export function formatPrix(montant: number | string) {
   return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(valeur);
 }
 
+export function formatDistance(km: number) {
+  if (km < 1) return `à ${Math.round(km * 1000)} m`;
+  return `à ${km.toFixed(1).replace(".", ",")} km`;
+}
+
 export function formatDate(date: Date | string) {
   const valeur = typeof date === "string" ? new Date(date) : date;
   return new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", year: "numeric" }).format(
@@ -85,3 +90,28 @@ export const couleurUrgence: Record<string, string> = {
   BIENTOT: "bg-kagette-mangue-50 text-kagette-mangue-600",
   URGENT: "bg-kagette-framboise-50 text-kagette-framboise-600",
 };
+
+export function fraicheurRecolte(
+  disponibleDu: Date | string,
+  disponibleAu: Date | string
+): { texte: string; urgent: boolean } | null {
+  const maintenant = new Date();
+  const debut = typeof disponibleDu === "string" ? new Date(disponibleDu) : disponibleDu;
+  const fin = typeof disponibleAu === "string" ? new Date(disponibleAu) : disponibleAu;
+
+  if (maintenant < debut) {
+    return { texte: `Récolte à partir du ${formatDate(debut)}`, urgent: false };
+  }
+  if (maintenant > fin) {
+    return null;
+  }
+
+  const joursRestants = Math.ceil((fin.getTime() - maintenant.getTime()) / (1000 * 60 * 60 * 24));
+  if (joursRestants <= 0) {
+    return { texte: "Dernier jour pour passer !", urgent: true };
+  }
+  if (joursRestants === 1) {
+    return { texte: "Encore 1 jour pour passer", urgent: true };
+  }
+  return { texte: `Encore ${joursRestants} jours pour passer`, urgent: joursRestants <= 3 };
+}

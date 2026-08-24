@@ -6,14 +6,17 @@ export async function getOrCreateConversation(params: {
   fruitListingId?: string;
   productListingId?: string;
   orderId?: string;
+  fruitSearchRequestId?: string;
 }) {
-  const { currentUserId, otherUserId, fruitListingId, productListingId, orderId } = params;
+  const { currentUserId, otherUserId, fruitListingId, productListingId, orderId, fruitSearchRequestId } =
+    params;
 
   const existing = await prisma.conversation.findFirst({
     where: {
       fruitListingId: fruitListingId ?? null,
       productListingId: productListingId ?? null,
       orderId: orderId ?? null,
+      fruitSearchRequestId: fruitSearchRequestId ?? null,
       AND: [
         { participants: { some: { userId: currentUserId } } },
         { participants: { some: { userId: otherUserId } } },
@@ -28,6 +31,7 @@ export async function getOrCreateConversation(params: {
       fruitListingId,
       productListingId,
       orderId,
+      fruitSearchRequestId,
       participants: {
         create: [{ userId: currentUserId }, { userId: otherUserId }],
       },

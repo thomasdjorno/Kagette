@@ -73,6 +73,13 @@ export const fruitRequestSchema = z.object({
   message: z.string().max(500).optional().or(z.literal("")),
 });
 
+export const fruitSearchRequestSchema = z.object({
+  variete: z.string().min(1, "Indique quel fruit tu recherches"),
+  quantiteSouhaiteeKg: z.coerce.number().positive().optional(),
+  message: z.string().max(500).optional().or(z.literal("")),
+  regionId: z.string().min(1),
+});
+
 export const saisons = ["PRINTEMPS", "ETE", "AUTOMNE", "HIVER"] as const;
 export const unitesQuantite = ["KG", "CAGETTE", "AUTRE"] as const;
 export const urgencesRecolte = ["PAS_PRESSE", "BIENTOT", "URGENT"] as const;

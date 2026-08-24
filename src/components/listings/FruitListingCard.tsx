@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ListingPhoto } from "./ListingPhoto";
+import { fraicheurRecolte, formatDistance } from "@/lib/format";
 
 interface FruitListingCardProps {
   id: string;
@@ -9,6 +10,9 @@ interface FruitListingCardProps {
   zoneRetrait: string;
   donneurPrenom: string;
   photoUrl?: string | null;
+  disponibleDu: Date | string;
+  disponibleAu: Date | string;
+  distanceKm?: number | null;
 }
 
 export function FruitListingCard({
@@ -19,7 +23,12 @@ export function FruitListingCard({
   zoneRetrait,
   donneurPrenom,
   photoUrl,
+  disponibleDu,
+  disponibleAu,
+  distanceKm,
 }: FruitListingCardProps) {
+  const fraicheur = fraicheurRecolte(disponibleDu, disponibleAu);
+
   return (
     <Link
       href={`/fruits/${id}`}
@@ -30,10 +39,18 @@ export function FruitListingCard({
         <span className="absolute left-1.5 top-1.5 rounded-full bg-kagette-feuille-500 px-1.5 py-0.5 text-[9px] font-bold text-white sm:left-3 sm:top-3 sm:px-2.5 sm:py-1 sm:text-[11px]">
           Fruits
         </span>
+        {fraicheur?.urgent && (
+          <span className="absolute bottom-1.5 right-1.5 rounded-full bg-kagette-framboise-500 px-1.5 py-0.5 text-[9px] font-bold text-white sm:bottom-3 sm:right-3 sm:px-2.5 sm:py-1 sm:text-[11px]">
+            ⏳ {fraicheur.texte}
+          </span>
+        )}
       </div>
       <div className="p-1.5 sm:p-4">
         <h3 className="line-clamp-1 font-serif text-xs font-bold text-kagette-prune-700 sm:text-base">{variete}</h3>
-        <p className="mt-0.5 line-clamp-1 text-[10px] text-kagette-prune-700/60 sm:mt-1 sm:text-sm">{zoneRetrait}</p>
+        <p className="mt-0.5 line-clamp-1 text-[10px] text-kagette-prune-700/60 sm:mt-1 sm:text-sm">
+          {zoneRetrait}
+          {typeof distanceKm === "number" && ` · ${formatDistance(distanceKm)}`}
+        </p>
         <div className="mt-1 flex flex-col items-start gap-1 sm:mt-3 sm:flex-row sm:items-center sm:justify-between">
           <span className="text-[10px] text-kagette-prune-700/70 sm:text-sm">Chez {donneurPrenom}</span>
           <span className="rounded-full bg-kagette-feuille-50 px-1.5 py-0.5 text-[10px] font-bold text-kagette-feuille-600 sm:px-3 sm:py-1 sm:text-sm">

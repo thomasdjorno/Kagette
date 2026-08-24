@@ -7,7 +7,7 @@ import { ListingPhoto } from "@/components/listings/ListingPhoto";
 import { ReviewList } from "@/components/reviews/ReviewList";
 import { ContactButton } from "@/components/messaging/ContactButton";
 import { ReportButton } from "@/components/moderation/ReportButton";
-import { formatDate, libellesModeRecolte, libellesRaisonDemande, libellesStatutDemande, couleurStatutDemande } from "@/lib/format";
+import { formatDate, libellesModeRecolte, libellesRaisonDemande, libellesStatutDemande, couleurStatutDemande, fraicheurRecolte } from "@/lib/format";
 import { FruitRequestForm } from "./FruitRequestForm";
 import { FruitRequestsManager } from "./FruitRequestsManager";
 
@@ -77,9 +77,26 @@ export default async function FruitListingPage({ params }: { params: { id: strin
         </div>
       </div>
 
-      <span className="inline-block rounded-full bg-kagette-mangue-50 px-3 py-1 text-xs font-bold text-kagette-mangue-600">
-        {libellesModeRecolte[listing.modeRecolte] ?? listing.modeRecolte}
-      </span>
+      <div className="flex flex-wrap gap-2">
+        <span className="inline-block rounded-full bg-kagette-mangue-50 px-3 py-1 text-xs font-bold text-kagette-mangue-600">
+          {libellesModeRecolte[listing.modeRecolte] ?? listing.modeRecolte}
+        </span>
+        {(() => {
+          const fraicheur = fraicheurRecolte(listing.disponibleDu, listing.disponibleAu);
+          if (!fraicheur) return null;
+          return (
+            <span
+              className={`inline-block rounded-full px-3 py-1 text-xs font-bold ${
+                fraicheur.urgent
+                  ? "bg-kagette-framboise-50 text-kagette-framboise-600"
+                  : "bg-kagette-feuille-50 text-kagette-feuille-600"
+              }`}
+            >
+              ⏳ {fraicheur.texte}
+            </span>
+          );
+        })()}
+      </div>
 
       {listing.description && (
         <Card>

@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
   }
 
-  const { fruitListingId, productListingId, orderId } = await request.json();
+  const { fruitListingId, productListingId, orderId, fruitSearchRequestId } = await request.json();
   const currentUserId = session.user.id;
   let otherUserId: string;
 
@@ -38,6 +38,15 @@ export async function POST(request: Request) {
     }
     otherUserId =
       order.acheteurId === currentUserId ? order.productListing.cuisinierId : order.acheteurId;
+  } else if (fruitSearchRequestId) {
+    const recherche = await prisma.fruitSearchRequest.findUnique({
+      where: { id: fruitSearchRequestId },
+    });
+    if (!recherche) return NextResponse.json({ error: "Recherche introuvable" }, { status: 404 });
+    if (recherche.cuisinierId === currentUserId) {
+      return NextResponse.json({ error: "C'est ta propre recherche" }, { status: 400 });
+    }
+    otherUserId = recherche.cuisinierId;
   } else {
     return NextResponse.json({ error: "Paramètres manquants" }, { status: 400 });
   }
@@ -48,6 +57,7 @@ export async function POST(request: Request) {
     fruitListingId,
     productListingId,
     orderId,
+    fruitSearchRequestId,
   });
 
   return NextResponse.json({ conversationId: conversation.id });

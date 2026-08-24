@@ -17,9 +17,13 @@ type FruitListingAvecDonneur = FruitListing & { donneur: { prenom: string } };
 export function ProductListingForm({
   regions,
   fruitListings,
+  fruitListingsPrioritaires = [],
+  fruitListingIdPreselectionne,
 }: {
   regions: Region[];
   fruitListings: FruitListingAvecDonneur[];
+  fruitListingsPrioritaires?: FruitListingAvecDonneur[];
+  fruitListingIdPreselectionne?: string;
 }) {
   const router = useRouter();
   const regionParDefaut = regions[0];
@@ -116,14 +120,25 @@ export function ProductListingForm({
           id="fruitListingOrigineId"
           name="fruitListingOrigineId"
           className="w-full rounded-xl border border-kagette-prune-700/15 bg-white px-4 py-2.5 text-sm"
-          defaultValue=""
+          defaultValue={fruitListingIdPreselectionne || ""}
         >
           <option value="">Non renseigné</option>
-          {fruitListings.map((fruit) => (
-            <option key={fruit.id} value={fruit.id}>
-              {fruit.variete}, chez {fruit.donneur.prenom}
-            </option>
-          ))}
+          {fruitListingsPrioritaires.length > 0 && (
+            <optgroup label="Tes demandes acceptées">
+              {fruitListingsPrioritaires.map((fruit) => (
+                <option key={fruit.id} value={fruit.id}>
+                  {fruit.variete}, chez {fruit.donneur.prenom}
+                </option>
+              ))}
+            </optgroup>
+          )}
+          <optgroup label="Toutes les annonces disponibles">
+            {fruitListings.map((fruit) => (
+              <option key={fruit.id} value={fruit.id}>
+                {fruit.variete}, chez {fruit.donneur.prenom}
+              </option>
+            ))}
+          </optgroup>
         </select>
       </div>
 

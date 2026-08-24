@@ -86,6 +86,14 @@ export default async function MesDemandesPage({
                       &laquo; {demande.message} &raquo;
                     </p>
                   )}
+                  {demande.statut === "ACCEPTEE" && session.user.estCuisinier && (
+                    <Link
+                      href={`/produits/nouveau?fruitListingId=${demande.fruitListingId}`}
+                      className="mt-2 inline-block text-sm font-medium text-kagette-feuille-600 hover:underline"
+                    >
+                      Créer un produit avec ces fruits →
+                    </Link>
+                  )}
                 </div>
                 <span
                   className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold ${couleurStatutDemande[demande.statut]}`}

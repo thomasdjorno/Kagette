@@ -7,9 +7,11 @@ import { signOut } from "next-auth/react";
 export function MobileNav({
   isAuthenticated,
   isAdmin,
+  isDonneur,
 }: {
   isAuthenticated: boolean;
   isAdmin: boolean;
+  isDonneur: boolean;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -69,6 +71,15 @@ export function MobileNav({
             >
               Mes favoris
             </Link>
+            {isDonneur && (
+              <Link
+                href="/profil/gains"
+                onClick={() => setOpen(false)}
+                className="block px-4 py-3 text-sm font-medium text-kagette-prune-700 hover:bg-kagette-feuille-50"
+              >
+                Mes gains
+              </Link>
+            )}
             {isAdmin && (
               <Link
                 href="/admin"

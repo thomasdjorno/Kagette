@@ -150,6 +150,17 @@ connecter. On avance module par module — coche au fur et à mesure.
   fruits) et l'avatar du donneur à côté de son nom, au lieu d'un simple
   emoji générique. Ajout aussi d'une liste d'ingrédients (nouveau champ,
   séparé des allergènes) et d'un intitulé "Description" plus visible
+- **"Mes gains" pour les donneurs** *(vérifié)* : nouvelle page
+  `/profil/gains` listant les commandes où les fruits d'un donneur ont
+  servi, avec montant par commande, total cumulé, et statut du versement
+  Stripe. Le cuisinier avait déjà "Mes ventes" avec ses propres montants,
+  le donneur n'avait aucun équivalent
+- **Boucle demande de fruits → création de produit** *(vérifié)* : sur
+  "Mes demandes", une demande acceptée affiche maintenant "Créer un
+  produit avec ces fruits →", qui ouvre le formulaire produit avec cette
+  annonce de fruits pré-sélectionnée. Le formulaire met aussi en avant en
+  premier ("Tes demandes acceptées") les fruits pour lesquels le cuisinier
+  a déjà un accord, avant la liste complète des annonces de la région
 
 ## 🔲 À faire
 

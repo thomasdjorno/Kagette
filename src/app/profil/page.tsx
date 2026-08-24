@@ -94,6 +94,11 @@ export default async function ProfilPage() {
               Mes ventes →
             </Link>
           )}
+          {user.estDonneur && (
+            <Link href="/profil/gains" className="text-sm font-medium text-kagette-framboise-600 hover:underline">
+              Mes gains →
+            </Link>
+          )}
           {(user.estDonneur || user.estCuisinier) && (
             <Link href="/profil/annonces" className="text-sm font-medium text-kagette-framboise-600 hover:underline">
               Mes annonces →

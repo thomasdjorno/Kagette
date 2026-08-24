@@ -71,7 +71,11 @@ export async function Header() {
                 Backoffice
               </Link>
             )}
-            <MobileNav isAuthenticated={!!session?.user} isAdmin={!!session?.user?.estAdmin} />
+            <MobileNav
+              isAuthenticated={!!session?.user}
+              isAdmin={!!session?.user?.estAdmin}
+              isDonneur={!!session?.user?.estDonneur}
+            />
             <HeaderAuthActions
               isAuthenticated={!!session?.user}
               prenom={session?.user?.name?.split(" ")[0]}

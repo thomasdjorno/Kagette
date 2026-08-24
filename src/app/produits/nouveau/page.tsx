@@ -6,7 +6,11 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { ProductListingForm } from "./ProductListingForm";
 
-export default async function NouvelleAnnonceProduitPage() {
+export default async function NouvelleAnnonceProduitPage({
+  searchParams,
+}: {
+  searchParams: { fruitListingId?: string };
+}) {
   const session = await auth();
   if (!session?.user) redirect("/connexion?callbackUrl=/produits/nouveau");
 
@@ -29,7 +33,7 @@ export default async function NouvelleAnnonceProduitPage() {
     );
   }
 
-  const [regionsActives, fruitListings] = await Promise.all([
+  const [regionsActives, fruitListings, demandesAcceptees] = await Promise.all([
     prisma.region.findMany({ where: { isActive: true } }),
     prisma.fruitListing.findMany({
       where: { region: { isActive: true }, statut: { not: "ANNULE" } },
@@ -37,7 +41,18 @@ export default async function NouvelleAnnonceProduitPage() {
       orderBy: { createdAt: "desc" },
       take: 50,
     }),
+    prisma.fruitRequest.findMany({
+      where: { demandeurId: session.user.id, statut: "ACCEPTEE" },
+      include: { fruitListing: { include: { donneur: { select: { prenom: true } } } } },
+      orderBy: { createdAt: "desc" },
+    }),
   ]);
+
+  const fruitListingsPrioritaires = Array.from(
+    new Map(demandesAcceptees.map((d) => [d.fruitListing.id, d.fruitListing])).values()
+  );
+  const idsPrioritaires = new Set(fruitListingsPrioritaires.map((f) => f.id));
+  const fruitListingsRestants = fruitListings.filter((f) => !idsPrioritaires.has(f.id));
 
   if (regionsActives.length === 0) {
     return (
@@ -61,7 +76,12 @@ export default async function NouvelleAnnonceProduitPage() {
           Confiture, sirop, chutney ou fruits secs, indique d&apos;où viennent tes fruits pour
           mettre en avant leur provenance.
         </p>
-        <ProductListingForm regions={regionsActives} fruitListings={fruitListings} />
+        <ProductListingForm
+          regions={regionsActives}
+          fruitListings={fruitListingsRestants}
+          fruitListingsPrioritaires={fruitListingsPrioritaires}
+          fruitListingIdPreselectionne={searchParams.fruitListingId}
+        />
       </Card>
     </div>
   );

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { creerNotification } from "@/lib/notifications";
 
 export async function PATCH(request: Request, { params }: { params: { id: string } }) {
   const session = await auth();
@@ -31,6 +32,15 @@ export async function PATCH(request: Request, { params }: { params: { id: string
   const updated = await prisma.fruitRequest.update({
     where: { id: params.id },
     data: { statut: decision },
+  });
+
+  await creerNotification({
+    userId: demande.demandeurId,
+    message:
+      decision === "ACCEPTEE"
+        ? `Ta demande de ${demande.quantiteDemandeeKg} kg de ${demande.fruitListing.variete} a été acceptée`
+        : `Ta demande de ${demande.quantiteDemandeeKg} kg de ${demande.fruitListing.variete} a été refusée`,
+    lien: `/fruits/${demande.fruitListingId}`,
   });
 
   return NextResponse.json({ demande: updated });

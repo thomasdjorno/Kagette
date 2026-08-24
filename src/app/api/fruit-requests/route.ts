@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { fruitRequestSchema } from "@/lib/validation";
 import { envoyerEmailNouvelleDemandeFruits } from "@/lib/email";
 import { verifierLimite } from "@/lib/rate-limit";
+import { creerNotification } from "@/lib/notifications";
 
 export async function POST(request: Request) {
   const session = await auth();
@@ -57,14 +58,23 @@ export async function POST(request: Request) {
     },
   });
 
-  await envoyerEmailNouvelleDemandeFruits({
-    to: listing.donneur.email,
-    prenom: listing.donneur.prenom,
-    demandeurPrenom: session.user.name?.split(" ")[0] ?? "Quelqu'un",
-    variete: listing.variete,
-    quantiteDemandeeKg,
-    fruitListingId,
-  });
+  const demandeurPrenom = session.user.name?.split(" ")[0] ?? "Quelqu'un";
+
+  await Promise.all([
+    envoyerEmailNouvelleDemandeFruits({
+      to: listing.donneur.email,
+      prenom: listing.donneur.prenom,
+      demandeurPrenom,
+      variete: listing.variete,
+      quantiteDemandeeKg,
+      fruitListingId,
+    }),
+    creerNotification({
+      userId: listing.donneurId,
+      message: `${demandeurPrenom} souhaite ${quantiteDemandeeKg} kg de tes ${listing.variete}`,
+      lien: `/fruits/${fruitListingId}`,
+    }),
+  ]);
 
   return NextResponse.json({ demande }, { status: 201 });
 }

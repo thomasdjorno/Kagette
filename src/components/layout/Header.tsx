@@ -3,6 +3,7 @@ import Image from "next/image";
 import { auth } from "@/lib/auth";
 import { HeaderAuthActions } from "./HeaderAuthActions";
 import { MobileNav } from "./MobileNav";
+import { NotificationBell } from "./NotificationBell";
 
 export async function Header() {
   const session = await auth();
@@ -77,6 +78,7 @@ export async function Header() {
                 Backoffice
               </Link>
             )}
+            {session?.user && <NotificationBell />}
             <MobileNav
               isAuthenticated={!!session?.user}
               isAdmin={!!session?.user?.estAdmin}

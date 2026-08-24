@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { envoyerEmailBadgeHygiene } from "@/lib/email";
+import { creerNotification } from "@/lib/notifications";
 
 export async function PATCH(request: Request, { params }: { params: { userId: string } }) {
   const session = await auth();
@@ -24,11 +25,21 @@ export async function PATCH(request: Request, { params }: { params: { userId: st
     },
   });
 
-  await envoyerEmailBadgeHygiene({
-    to: user.email,
-    prenom: user.prenom,
-    valide: decision === "VALIDE",
-  });
+  await Promise.all([
+    envoyerEmailBadgeHygiene({
+      to: user.email,
+      prenom: user.prenom,
+      valide: decision === "VALIDE",
+    }),
+    creerNotification({
+      userId: user.id,
+      message:
+        decision === "VALIDE"
+          ? "Ton badge hygiène Kagette est validé !"
+          : "Ta demande de badge hygiène n'a pas été validée",
+      lien: "/profil",
+    }),
+  ]);
 
   return NextResponse.json({ user });
 }

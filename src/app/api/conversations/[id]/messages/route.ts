@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { envoyerEmailNouveauMessage } from "@/lib/email";
 import { verifierLimite } from "@/lib/rate-limit";
+import { creerNotification } from "@/lib/notifications";
 
 export async function POST(request: Request, { params }: { params: { id: string } }) {
   const session = await auth();
@@ -41,14 +42,19 @@ export async function POST(request: Request, { params }: { params: { id: string 
 
   const expediteurPrenom = session.user.name?.split(" ")[0] ?? "Quelqu'un";
   await Promise.all(
-    autresParticipants.map((participant) =>
+    autresParticipants.flatMap((participant) => [
       envoyerEmailNouveauMessage({
         to: participant.user.email,
         prenom: participant.user.prenom,
         expediteurPrenom,
         conversationId: params.id,
-      })
-    )
+      }),
+      creerNotification({
+        userId: participant.userId,
+        message: `Nouveau message de ${expediteurPrenom}`,
+        lien: `/messagerie/${params.id}`,
+      }),
+    ])
   );
 
   return NextResponse.json({ message }, { status: 201 });

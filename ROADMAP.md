@@ -196,6 +196,15 @@ connecter. On avance module par module — coche au fur et à mesure.
   propre : si `NEXT_PUBLIC_MAPBOX_TOKEN` n'est pas configuré, les champs
   latitude/longitude manuels reviennent automatiquement
 
+- **Cloche de notifications dans l'app** *(vérifiée en live)* : nouveau
+  modèle `Notification`, une cloche dans le header (badge avec le nombre
+  non lu, se rafraîchit toutes les 30s) prévient en direct : nouvelle
+  demande de fruits reçue, demande acceptée/refusée, nouveau message,
+  badge hygiène validé/refusé. Ça comble une partie du frein "aucun email
+  ne part vraiment" (Resend non configuré) sans dépendre d'un service
+  externe — testé de bout en bout (demande créée par un compte, notif
+  reçue et cliquable par l'autre, marquage lu vérifié en base)
+
 ## 🔲 À faire
 
 ### Priorité moyenne (qualité / robustesse)

@@ -10,6 +10,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { ReviewList } from "@/components/reviews/ReviewList";
 import { ContactButton } from "@/components/messaging/ContactButton";
 import { ReportButton } from "@/components/moderation/ReportButton";
+import { ProductListingCard } from "@/components/listings/ProductListingCard";
 import { formatDate, formatPrix, libellesCategorie, emojiCategorie } from "@/lib/format";
 import { BadgeConfiance } from "@/components/ui/BadgeConfiance";
 import { calculerReputation } from "@/lib/reputation";
@@ -29,14 +30,44 @@ export default async function ProductListingPage({ params }: { params: { id: str
 
   if (!listing) notFound();
 
-  const [reviews, reputation] = await Promise.all([
+  const [reviews, reputation, memeOrigine, autresCreations] = await Promise.all([
     prisma.review.findMany({
       where: { cibleId: listing.cuisinierId },
       include: { auteur: { select: { prenom: true } } },
       orderBy: { createdAt: "desc" },
     }),
     calculerReputation(listing.cuisinierId),
+    listing.fruitListingOrigineId
+      ? prisma.productListing.findMany({
+          where: {
+            fruitListingOrigineId: listing.fruitListingOrigineId,
+            id: { not: listing.id },
+            statut: "EN_VENTE",
+          },
+          include: {
+            cuisinier: { select: { prenom: true } },
+            fruitListingOrigine: { include: { donneur: { select: { prenom: true } } } },
+          },
+          take: 4,
+        })
+      : Promise.resolve([]),
+    prisma.productListing.findMany({
+      where: {
+        cuisinierId: listing.cuisinierId,
+        id: { not: listing.id },
+        statut: "EN_VENTE",
+      },
+      include: {
+        cuisinier: { select: { prenom: true } },
+        fruitListingOrigine: { include: { donneur: { select: { prenom: true } } } },
+      },
+      orderBy: { createdAt: "desc" },
+      take: 4,
+    }),
   ]);
+
+  const idsMemeOrigine = new Set(memeOrigine.map((p) => p.id));
+  const autresCreationsFiltrees = autresCreations.filter((p) => !idsMemeOrigine.has(p.id));
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
@@ -237,6 +268,53 @@ export default async function ProductListingPage({ params }: { params: { id: str
           </div>
         )}
       </Card>
+
+      {memeOrigine.length > 0 && (
+        <div>
+          <p className="mb-3 text-sm font-semibold text-kagette-prune-700">
+            Autres transformations des fruits de{" "}
+            {listing.fruitListingOrigine?.donneur.prenom}
+          </p>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {memeOrigine.map((p) => (
+              <ProductListingCard
+                key={p.id}
+                id={p.id}
+                titre={p.titre}
+                categorie={p.categorie}
+                prix={p.prix.toString()}
+                zoneRetrait={p.zoneRetrait}
+                cuisinierPrenom={p.cuisinier.prenom}
+                donneurOriginePrenom={p.fruitListingOrigine?.donneur.prenom ?? null}
+                photoUrl={p.photoUrls[0]}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {autresCreationsFiltrees.length > 0 && (
+        <div>
+          <p className="mb-3 text-sm font-semibold text-kagette-prune-700">
+            Autres créations de {listing.cuisinier.prenom}
+          </p>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {autresCreationsFiltrees.map((p) => (
+              <ProductListingCard
+                key={p.id}
+                id={p.id}
+                titre={p.titre}
+                categorie={p.categorie}
+                prix={p.prix.toString()}
+                zoneRetrait={p.zoneRetrait}
+                cuisinierPrenom={p.cuisinier.prenom}
+                donneurOriginePrenom={p.fruitListingOrigine?.donneur.prenom ?? null}
+                photoUrl={p.photoUrls[0]}
+              />
+            ))}
+          </div>
+        </div>
+      )}
 
       <Card>
         <p className="mb-3 text-sm font-semibold text-kagette-prune-700">

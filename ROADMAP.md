@@ -254,6 +254,14 @@ connecter. On avance module par module — coche au fur et à mesure.
   la recherche filtrée), et grille annuelle complète avec le mois courant
   surligné. Accessible depuis le header (desktop et menu mobile)
 
+- **Suggestions complémentaires** *(vérifié en live)* : sur une fiche
+  produit, deux sections optionnelles poussent à explorer plus loin —
+  "Autres transformations des fruits de {donneur}" (autres produits issus
+  du même fruit d'origine, même s'ils viennent d'un autre cuisinier) et
+  "Autres créations de {cuisinier}" (le reste du catalogue du même
+  cuisinier), sans doublon entre les deux. N'apparaît que s'il y a
+  effectivement quelque chose à suggérer
+
 ## 🔲 À faire
 
 ### Priorité moyenne (qualité / robustesse)

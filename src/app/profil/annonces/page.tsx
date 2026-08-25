@@ -89,6 +89,12 @@ export default async function MesAnnoncesPage() {
                     <p className="text-xs text-kagette-prune-700/50">
                       {formatPrix(listing.prix.toString())}, {listing.quantiteDisponible} en stock
                     </p>
+                    <Link
+                      href={`/produits/${listing.id}/etiquette`}
+                      className="text-xs font-medium text-kagette-feuille-600 hover:underline"
+                    >
+                      🏷️ Étiquette
+                    </Link>
                   </div>
                   <ProductListingStatusActions id={listing.id} statut={listing.statut} />
                 </Card>

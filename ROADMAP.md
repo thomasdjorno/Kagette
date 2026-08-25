@@ -222,6 +222,14 @@ connecter. On avance module par module — coche au fur et à mesure.
   `ParticipationRecolte` — testé de bout en bout (création par un compte,
   inscription par un autre, notification reçue, données vérifiées en base)
 
+- **Générateur d'étiquettes avec QR code** *(vérifié en live)* : depuis sa
+  fiche produit ou "Mes annonces", un cuisinier génère une étiquette
+  imprimable (ingrédients, allergènes en gras, DLUO, nom du producteur) avec
+  un QR code qui renvoie vers la fiche produit Kagette. Page réservée au
+  propriétaire du produit (redirection sinon, vérifié), mise en page
+  optimisée pour l'impression (header/footer masqués automatiquement à
+  l'impression). Ancienne idée notée "pour plus tard", maintenant faite
+
 ## 🔲 À faire
 
 ### Priorité moyenne (qualité / robustesse)
@@ -264,7 +272,4 @@ Détails de configuration pas à pas déjà écrits dans le [README](README.md).
 
 ## 💡 Idées notées pour plus tard
 
-- **Générateur d'étiquettes** : un outil avec des templates aux couleurs et
-  au logo Kagette, pour que les cuisiniers impriment des étiquettes pour
-  leurs bocaux/produits (peut aussi servir à afficher proprement les mentions
-  obligatoires : allergènes, DLUO, nom du producteur — déjà en base).
+(rien pour l'instant)

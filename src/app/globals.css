@@ -6,3 +6,11 @@ body {
   background-color: theme("colors.kagette.creme");
   color: theme("colors.kagette.prune.700");
 }
+
+@media print {
+  header,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+}

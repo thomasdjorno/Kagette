@@ -72,7 +72,15 @@ export default async function ProductListingPage({ params }: { params: { id: str
             </Link>
           </>
         ) : session.user.id === listing.cuisinierId ? (
-          <p className="text-sm text-kagette-prune-700/60">C&apos;est ton propre produit.</p>
+          <>
+            <p className="text-sm text-kagette-prune-700/60">C&apos;est ton propre produit.</p>
+            <Link
+              href={`/produits/${listing.id}/etiquette`}
+              className="mt-2 inline-block text-sm font-medium text-kagette-feuille-600 hover:underline"
+            >
+              🏷️ Générer l&apos;étiquette à imprimer →
+            </Link>
+          </>
         ) : (
           <BuyButton productListingId={listing.id} />
         )}

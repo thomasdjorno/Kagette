@@ -8,12 +8,6 @@ export async function POST(request: Request) {
   if (!session?.user) {
     return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
   }
-  if (!session.user.estDonneur) {
-    return NextResponse.json(
-      { error: "Active d'abord ta casquette donneur depuis ton profil" },
-      { status: 403 }
-    );
-  }
 
   const parsed = arbreSchema.safeParse(await request.json());
   if (!parsed.success) {

@@ -9,22 +9,6 @@ export default async function MonJardinPage() {
   const session = await auth();
   if (!session?.user) redirect("/connexion?callbackUrl=/profil/jardin");
 
-  if (!session.user.estDonneur) {
-    return (
-      <div className="mx-auto max-w-md">
-        <Card>
-          <h1 className="font-serif text-xl font-bold text-kagette-prune-700">
-            Active ta casquette donneur
-          </h1>
-          <p className="mt-2 text-sm text-kagette-prune-700/70">
-            Le jardin permet de préparer tes fiches par arbre avant de publier des annonces,
-            active d&apos;abord la casquette donneur depuis ton profil.
-          </p>
-        </Card>
-      </div>
-    );
-  }
-
   const jardin = await prisma.jardin.findUnique({
     where: { proprietaireId: session.user.id },
     include: { arbres: { orderBy: { createdAt: "desc" } } },

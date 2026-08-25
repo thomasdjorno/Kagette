@@ -5,7 +5,6 @@ import { prisma } from "@/lib/prisma";
 import { Card } from "@/components/ui/Card";
 import { CopierLienButton } from "@/components/profil/CopierLienButton";
 import { genererQrCodeDataUrl } from "@/lib/qrcode";
-import { DonneurToggle } from "./DonneurToggle";
 import { CuisinierPanel } from "./CuisinierPanel";
 import { StripeConnectPanel } from "./StripeConnectPanel";
 import { AvatarUploader } from "./AvatarUploader";
@@ -86,31 +85,34 @@ export default async function ProfilPage() {
       <ModifierProfilForm prenom={user.prenom} nom={user.nom} telephone={user.telephone} />
 
       <Card>
-        <h2 className="font-semibold text-kagette-prune-700">Casquette donneur</h2>
+        <h2 className="font-semibold text-kagette-prune-700">Donner des fruits</h2>
         <p className="mt-1 text-sm text-kagette-prune-700/60">
-          Proposez vos surplus de fruits de jardin, en don ou avec une participation libre.
+          Proposez vos surplus de fruits de jardin, en don ou avec une participation libre —
+          aucune démarche préalable, publie une annonce quand tu veux.
         </p>
-        <DonneurToggle estDonneur={user.estDonneur} />
-        {user.estDonneur && (
+        <div className="mt-3 flex flex-wrap gap-3">
+          <Link
+            href="/fruits/nouveau"
+            className="text-sm font-medium text-kagette-framboise-600 hover:underline"
+          >
+            Proposer des fruits →
+          </Link>
           <Link
             href="/profil/jardin"
-            className="mt-3 inline-block text-sm font-medium text-kagette-framboise-600 hover:underline"
+            className="text-sm font-medium text-kagette-framboise-600 hover:underline"
           >
             Gérer mon jardin →
           </Link>
-        )}
+        </div>
       </Card>
 
       <Card>
-        <h2 className="font-semibold text-kagette-prune-700">Casquette cuisinier</h2>
+        <h2 className="font-semibold text-kagette-prune-700">Vendre des produits transformés</h2>
         <p className="mt-1 text-sm text-kagette-prune-700/60">
-          Transformez les fruits récupérés en confitures, sirops, chutneys ou fruits secs
-          et vendez-les sur Kagette.
+          Transformez les fruits récupérés en confitures, sirops, chutneys ou fruits secs et
+          vendez-les sur Kagette — seule condition : ton badge hygiène validé.
         </p>
-        <CuisinierPanel
-          estCuisinier={user.estCuisinier}
-          hygieneBadgeStatus={user.hygieneBadgeStatus}
-        />
+        <CuisinierPanel hygieneBadgeStatus={user.hygieneBadgeStatus} />
         <Link
           href="/guide"
           className="mt-3 inline-block text-sm font-medium text-kagette-framboise-600 hover:underline"
@@ -119,15 +121,13 @@ export default async function ProfilPage() {
         </Link>
       </Card>
 
-      {(user.estDonneur || user.estCuisinier) && (
-        <Card>
-          <h2 className="font-semibold text-kagette-prune-700">Paiements</h2>
-          <p className="mt-1 text-sm text-kagette-prune-700/60">
-            Nécessaire pour recevoir ta part des ventes (donneur et/ou cuisinier).
-          </p>
-          <StripeConnectPanel stripeOnboardingComplete={user.stripeOnboardingComplete} />
-        </Card>
-      )}
+      <Card>
+        <h2 className="font-semibold text-kagette-prune-700">Paiements</h2>
+        <p className="mt-1 text-sm text-kagette-prune-700/60">
+          Nécessaire pour recevoir ta part des ventes (donneur et/ou cuisinier).
+        </p>
+        <StripeConnectPanel stripeOnboardingComplete={user.stripeOnboardingComplete} />
+      </Card>
 
       <Card>
         <h2 className="font-semibold text-kagette-prune-700">Achats & ventes</h2>
@@ -135,21 +135,15 @@ export default async function ProfilPage() {
           <Link href="/commandes" className="text-sm font-medium text-kagette-framboise-600 hover:underline">
             Mes achats →
           </Link>
-          {user.estCuisinier && (
-            <Link href="/ventes" className="text-sm font-medium text-kagette-framboise-600 hover:underline">
-              Mes ventes →
-            </Link>
-          )}
-          {user.estDonneur && (
-            <Link href="/profil/gains" className="text-sm font-medium text-kagette-framboise-600 hover:underline">
-              Mes gains →
-            </Link>
-          )}
-          {(user.estDonneur || user.estCuisinier) && (
-            <Link href="/profil/annonces" className="text-sm font-medium text-kagette-framboise-600 hover:underline">
-              Mes annonces →
-            </Link>
-          )}
+          <Link href="/ventes" className="text-sm font-medium text-kagette-framboise-600 hover:underline">
+            Mes ventes →
+          </Link>
+          <Link href="/profil/gains" className="text-sm font-medium text-kagette-framboise-600 hover:underline">
+            Mes gains →
+          </Link>
+          <Link href="/profil/annonces" className="text-sm font-medium text-kagette-framboise-600 hover:underline">
+            Mes annonces →
+          </Link>
           <Link href="/profil/demandes" className="text-sm font-medium text-kagette-framboise-600 hover:underline">
             Mes demandes →
           </Link>

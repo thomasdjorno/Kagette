@@ -10,10 +10,8 @@ import { Button } from "@/components/ui/Button";
 import { libellesBadgeHygiene } from "@/lib/format";
 
 export function CuisinierPanel({
-  estCuisinier,
   hygieneBadgeStatus,
 }: {
-  estCuisinier: boolean;
   hygieneBadgeStatus: HygieneBadgeStatus;
 }) {
   const router = useRouter();
@@ -51,8 +49,7 @@ export function CuisinierPanel({
   return (
     <div className="mt-4 space-y-3">
       <p className="text-sm font-medium text-kagette-prune-700">
-        {estCuisinier ? "Casquette active ✅" : "Casquette non active"},{" "}
-        {libellesBadgeHygiene[hygieneBadgeStatus]}
+        Statut : {libellesBadgeHygiene[hygieneBadgeStatus]}
       </p>
       <Link
         href="/profil/badge-cuisinier"

@@ -14,35 +14,31 @@ export default async function MonImpactPage() {
   if (!user) redirect("/api/auth/signout?callbackUrl=/connexion");
 
   const [mesFruitListings, mesProduits, mesAchats] = await Promise.all([
-    user.estDonneur
-      ? prisma.fruitListing.findMany({
-          where: { donneurId: user.id },
+    prisma.fruitListing.findMany({
+      where: { donneurId: user.id },
+      include: {
+        demandes: {
+          where: { statut: "ACCEPTEE" },
+          include: { demandeur: { select: { id: true, prenom: true } } },
+        },
+        productListings: {
           include: {
-            demandes: {
-              where: { statut: "ACCEPTEE" },
-              include: { demandeur: { select: { id: true, prenom: true } } },
-            },
-            productListings: {
-              include: {
-                cuisinier: { select: { id: true, prenom: true } },
-                orders: { where: ordersAboutis, select: { acheteurId: true } },
-              },
-            },
+            cuisinier: { select: { id: true, prenom: true } },
+            orders: { where: ordersAboutis, select: { acheteurId: true } },
           },
-        })
-      : Promise.resolve([]),
-    user.estCuisinier
-      ? prisma.productListing.findMany({
-          where: { cuisinierId: user.id },
-          include: {
-            fruitListingOrigine: { include: { donneur: { select: { id: true, prenom: true } } } },
-            orders: {
-              where: ordersAboutis,
-              include: { acheteur: { select: { id: true, prenom: true } } },
-            },
-          },
-        })
-      : Promise.resolve([]),
+        },
+      },
+    }),
+    prisma.productListing.findMany({
+      where: { cuisinierId: user.id },
+      include: {
+        fruitListingOrigine: { include: { donneur: { select: { id: true, prenom: true } } } },
+        orders: {
+          where: ordersAboutis,
+          include: { acheteur: { select: { id: true, prenom: true } } },
+        },
+      },
+    }),
     prisma.order.findMany({
       where: { acheteurId: user.id, ...ordersAboutis },
       include: {
@@ -127,7 +123,7 @@ export default async function MonImpactPage() {
         </Card>
       )}
 
-      {user.estDonneur && listingsValorisees.length > 0 && (
+      {listingsValorisees.length > 0 && (
         <div>
           <h2 className="mb-3 font-semibold text-kagette-prune-700">🌱 En tant que donneur</h2>
           <div className="grid grid-cols-3 gap-3">
@@ -172,7 +168,7 @@ export default async function MonImpactPage() {
         </div>
       )}
 
-      {user.estCuisinier && mesProduits.length > 0 && (
+      {mesProduits.length > 0 && (
         <div>
           <h2 className="mb-3 font-semibold text-kagette-prune-700">👩‍🍳 En tant que cuisinier</h2>
           <div className="grid grid-cols-3 gap-3">

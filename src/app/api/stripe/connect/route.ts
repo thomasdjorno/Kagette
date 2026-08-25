@@ -8,12 +8,6 @@ export async function POST() {
   if (!session?.user) {
     return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
   }
-  if (!session.user.estDonneur && !session.user.estCuisinier) {
-    return NextResponse.json(
-      { error: "Active une casquette donneur ou cuisinier pour connecter un compte de paiement" },
-      { status: 403 }
-    );
-  }
   if (!isStripeConfigured()) {
     return NextResponse.json(
       { error: "Stripe Connect n'est pas encore configuré (STRIPE_SECRET_KEY manquant)." },

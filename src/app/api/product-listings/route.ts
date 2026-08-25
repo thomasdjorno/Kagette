@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          "Ta casquette cuisinier doit être active (badge hygiène validé) pour publier un produit",
+          "Ton badge hygiène doit être validé par un admin pour publier un produit",
       },
       { status: 403 }
     );

@@ -21,8 +21,8 @@ export async function POST(request: Request) {
 
   const { siret } = parsed.data;
 
-  // La casquette cuisinier n'est activée qu'à la validation manuelle du badge
-  // par un admin (cf. backoffice), ici on enregistre uniquement la demande.
+  // estCuisinier n'est activé qu'à la validation manuelle du badge par un
+  // admin (cf. backoffice), ici on enregistre uniquement la demande.
   await prisma.user.update({
     where: { id: session.user.id },
     data: {

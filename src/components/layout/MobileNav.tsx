@@ -13,13 +13,9 @@ interface MenuItem {
 export function MobileNav({
   isAuthenticated,
   isAdmin,
-  isDonneur,
-  isCuisinier,
 }: {
   isAuthenticated: boolean;
   isAdmin: boolean;
-  isDonneur: boolean;
-  isCuisinier: boolean;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -35,8 +31,8 @@ export function MobileNav({
     { href: "/profil/demandes", icon: "🙋", label: "Mes demandes" },
     { href: "/profil/favoris", icon: "⭐", label: "Mes favoris" },
     { href: "/commandes", icon: "🛍️", label: "Mes achats" },
-    ...(isCuisinier ? [{ href: "/ventes", icon: "🏷️", label: "Mes ventes" }] : []),
-    ...(isDonneur ? [{ href: "/profil/gains", icon: "💰", label: "Mes gains" }] : []),
+    { href: "/ventes", icon: "🏷️", label: "Mes ventes" },
+    { href: "/profil/gains", icon: "💰", label: "Mes gains" },
     ...(isAdmin ? [{ href: "/admin", icon: "⚙️", label: "Backoffice" }] : []),
   ];
 

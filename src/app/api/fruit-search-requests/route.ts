@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   }
   if (!session.user.estCuisinier) {
     return NextResponse.json(
-      { error: "Ta casquette cuisinier doit être active pour publier une recherche" },
+      { error: "Ton badge hygiène doit être validé pour publier une recherche de fruits" },
       { status: 403 }
     );
   }

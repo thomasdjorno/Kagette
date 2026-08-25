@@ -8,12 +8,6 @@ export async function POST(request: Request) {
   if (!session?.user) {
     return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
   }
-  if (!session.user.estDonneur) {
-    return NextResponse.json(
-      { error: "Active d'abord ta casquette donneur depuis ton profil" },
-      { status: 403 }
-    );
-  }
 
   const body = await request.json();
   const parsed = fruitListingSchema.safeParse(body);
@@ -44,26 +38,31 @@ export async function POST(request: Request) {
     arbreId = arbre.id;
   }
 
-  const listing = await prisma.fruitListing.create({
-    data: {
-      donneurId: session.user.id,
-      arbreId,
-      variete: data.variete,
-      quantiteKg: data.quantiteKg,
-      quantiteEstimee: `environ ${data.quantiteKg} kg`,
-      mode: data.mode,
-      montantParticipation: data.mode === "PARTICIPATION_LIBRE" ? data.montantParticipation : null,
-      modeRecolte: data.modeRecolte,
-      description: data.description || null,
-      zoneRetrait: data.zoneRetrait,
-      latitude: data.latitude,
-      longitude: data.longitude,
-      regionId: data.regionId,
-      disponibleDu: data.disponibleDu,
-      disponibleAu: data.disponibleAu,
-      photoUrls: data.photoUrls,
-    },
-  });
+  const [listing] = await prisma.$transaction([
+    prisma.fruitListing.create({
+      data: {
+        donneurId: session.user.id,
+        arbreId,
+        variete: data.variete,
+        quantiteKg: data.quantiteKg,
+        quantiteEstimee: `environ ${data.quantiteKg} kg`,
+        mode: data.mode,
+        montantParticipation: data.mode === "PARTICIPATION_LIBRE" ? data.montantParticipation : null,
+        modeRecolte: data.modeRecolte,
+        description: data.description || null,
+        zoneRetrait: data.zoneRetrait,
+        latitude: data.latitude,
+        longitude: data.longitude,
+        regionId: data.regionId,
+        disponibleDu: data.disponibleDu,
+        disponibleAu: data.disponibleAu,
+        photoUrls: data.photoUrls,
+      },
+    }),
+    // N'importe qui peut donner des fruits, pas besoin d'activer une
+    // casquette au préalable : le statut "donneur" se déduit du premier don.
+    prisma.user.update({ where: { id: session.user.id }, data: { estDonneur: true } }),
+  ]);
 
   return NextResponse.json({ listing }, { status: 201 });
 }

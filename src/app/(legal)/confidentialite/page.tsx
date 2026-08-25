@@ -21,7 +21,7 @@ export default function ConfidentialitePage() {
           <li>Prénom, nom, email et mot de passe (chiffré, jamais lisible en clair)</li>
           <li>Localisation approximative (latitude/longitude) pour situer tes annonces sur la carte</li>
           <li>Numéro de téléphone, si tu choisis de le renseigner</li>
-          <li>Numéro SIRET, si tu actives la casquette cuisinier</li>
+          <li>Numéro SIRET, si tu demandes le badge cuisinier</li>
           <li>Photos que tu ajoutes à tes annonces ou à ton jardin</li>
           <li>Contenu des messages échangés via la messagerie Kagette</li>
           <li>Identifiant de ton compte Stripe Connect, si tu reçois des paiements</li>

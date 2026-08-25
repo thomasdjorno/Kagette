@@ -1,32 +1,12 @@
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
 import { FruitListingForm } from "./FruitListingForm";
 
 export default async function NouvelleAnnonceFruitsPage() {
   const session = await auth();
   if (!session?.user) redirect("/connexion?callbackUrl=/fruits/nouveau");
-
-  if (!session.user.estDonneur) {
-    return (
-      <div className="mx-auto max-w-md">
-        <Card>
-          <h1 className="text-lg font-serif font-bold text-kagette-prune-700">
-            Active ta casquette donneur
-          </h1>
-          <p className="mt-2 text-sm text-kagette-prune-700/70">
-            Pour proposer des fruits, active d&apos;abord la casquette donneur depuis ton profil.
-          </p>
-          <Link href="/profil" className="mt-4 inline-block">
-            <Button>Aller à mon profil</Button>
-          </Link>
-        </Card>
-      </div>
-    );
-  }
 
   const [regionsActives, jardin] = await Promise.all([
     prisma.region.findMany({ where: { isActive: true } }),

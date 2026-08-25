@@ -304,6 +304,33 @@ connecter. On avance module par module — coche au fur et à mesure.
     `kgFruitsVersCo2`/`co2VersKmVoiture` (23 tests, suite passée de 25 à
     48)
 
+- **Suppression des "casquettes" à activer** *(vérifié en live)* : donner
+  des fruits ou publier un produit ne demandait pas vraiment d'approbation
+  côté donneur (juste un interrupteur sans porte réelle derrière), et côté
+  cuisinier le vrai verrou était déjà le badge hygiène — la case à cocher
+  "casquette cuisinier" était une pré-étape redondante. Changement : tout
+  le monde peut proposer des fruits ou tenter de publier un produit à tout
+  moment, sans rien activer au préalable :
+  - `estDonneur` n'est plus un interrupteur manuel : il passe à `true`
+    automatiquement dès la première annonce de fruits publiée (purement
+    déclaratif, sert juste au badge "🌱 Donneur" affiché ailleurs)
+  - `estCuisinier` ne change pas de mécanisme (toujours activé uniquement
+    par la validation admin du badge hygiène), mais son message de blocage
+    sur `/produits/nouveau` explique maintenant directement le vrai
+    prérequis (badge hygiène) avec un lien direct vers la demande, au lieu
+    de renvoyer vers "active ta casquette depuis ton profil"
+  - Supprimé : le composant `DonneurToggle`, sa route API, et tous les
+    verrous `estDonneur`/`estCuisinier` qui bloquaient l'accès à
+    `/fruits/nouveau`, `/profil/jardin`, la création d'arbres et la
+    connexion Stripe
+  - Menu mobile et page `/profil` : "Mes gains", "Mes ventes", "Mes
+    annonces" etc. sont maintenant toujours visibles (avant filtrés par
+    rôle), section Paiements toujours affichée
+  - Testé avec un compte n'ayant activé aucun rôle : accès direct à
+    `/fruits/nouveau`, publication réussie, `estDonneur` bien passé à
+    `true` en base, badge "Mes ventes"/"Mes gains" visibles dans le menu
+    mobile dès avant toute activité
+
 ## 🔲 À faire
 
 ### Priorité moyenne (qualité / robustesse)

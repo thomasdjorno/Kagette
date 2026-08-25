@@ -62,7 +62,7 @@ export default async function BadgeCuisinierPage() {
 
       <Card>
         <h2 className="mb-1 font-semibold text-kagette-prune-700">Demander le badge</h2>
-        <CuisinierPanel estCuisinier={user.estCuisinier} hygieneBadgeStatus={user.hygieneBadgeStatus} />
+        <CuisinierPanel hygieneBadgeStatus={user.hygieneBadgeStatus} />
       </Card>
 
       <p className="text-sm text-kagette-prune-700/60">

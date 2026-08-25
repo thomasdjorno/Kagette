@@ -15,18 +15,25 @@ export default async function NouvelleAnnonceProduitPage({
   if (!session?.user) redirect("/connexion?callbackUrl=/produits/nouveau");
 
   if (!session.user.estCuisinier) {
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { hygieneBadgeStatus: true },
+    });
+    const enAttente = user?.hygieneBadgeStatus === "EN_ATTENTE";
+
     return (
       <div className="mx-auto max-w-md">
         <Card>
           <h1 className="text-lg font-serif font-bold text-kagette-prune-700">
-            Casquette cuisinier non active
+            Badge hygiène requis
           </h1>
           <p className="mt-2 text-sm text-kagette-prune-700/70">
-            Il faut que ton badge hygiène soit validé par un admin pour publier un produit
-            transformé. Fais ta demande depuis ton profil si ce n&apos;est pas déjà fait.
+            {enAttente
+              ? "Ta demande de badge hygiène est en cours d'examen par un admin, tu pourras publier dès qu'elle sera validée."
+              : "Pour vendre des produits transformés, ton badge hygiène doit d'abord être validé par un admin — c'est la seule condition, aucune autre démarche préalable."}
           </p>
-          <Link href="/profil" className="mt-4 inline-block">
-            <Button>Aller à mon profil</Button>
+          <Link href="/profil/badge-cuisinier" className="mt-4 inline-block">
+            <Button>{enAttente ? "Voir ma demande" : "Demander le badge hygiène"}</Button>
           </Link>
         </Card>
       </div>

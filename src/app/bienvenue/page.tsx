@@ -4,7 +4,6 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { DonneurToggle } from "@/app/profil/DonneurToggle";
 
 export default async function BienvenuePage() {
   const session = await auth();
@@ -27,16 +26,16 @@ export default async function BienvenuePage() {
       </div>
 
       <Card className="border-kagette-feuille-300 bg-kagette-feuille-50">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <h2 className="font-semibold text-kagette-prune-700">🌱 Donneur</h2>
-            <p className="mt-1 text-sm text-kagette-prune-700/70">
-              Tu as un jardin qui déborde de fruits ? Propose-les en don ou avec une petite
-              participation.
-            </p>
-          </div>
-        </div>
-        <DonneurToggle estDonneur={user.estDonneur} />
+        <h2 className="font-semibold text-kagette-prune-700">🌱 Donneur</h2>
+        <p className="mt-1 text-sm text-kagette-prune-700/70">
+          Tu as un jardin qui déborde de fruits ? Propose-les en don ou avec une petite
+          participation, aucune démarche préalable nécessaire.
+        </p>
+        <Link href="/fruits/nouveau">
+          <Button variant="secondary" className="mt-3">
+            Proposer des fruits →
+          </Button>
+        </Link>
       </Card>
 
       <Card className="border-kagette-framboise-300 bg-kagette-framboise-50">

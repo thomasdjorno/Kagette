@@ -41,3 +41,31 @@ export const libellesMois = [
 export function fruitsDeSaison(mois: number, data: FruitSaison[] = fruitsSaisonDordogne): FruitSaison[] {
   return data.filter((f) => f.mois.includes(mois));
 }
+
+const libellesMoisComplets = [
+  "janvier",
+  "février",
+  "mars",
+  "avril",
+  "mai",
+  "juin",
+  "juillet",
+  "août",
+  "septembre",
+  "octobre",
+  "novembre",
+  "décembre",
+];
+
+/**
+ * Formate une liste de mois (triée, éventuellement à cheval sur le
+ * changement d'année comme le kiwi [11, 12, 1]) en texte lisible, ex.
+ * "Août - Octobre" ou "Novembre - Janvier".
+ */
+export function periodeTexte(mois: number[]): string {
+  if (mois.length === 0) return "";
+  const debut = mois[0];
+  const fin = mois[mois.length - 1];
+  if (debut === fin) return libellesMoisComplets[debut - 1];
+  return `${libellesMoisComplets[debut - 1]} - ${libellesMoisComplets[fin - 1]}`;
+}

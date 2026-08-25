@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { Card } from "@/components/ui/Card";
-import { fruitsSaisonDordogne, fruitsDeSaison, libellesMois } from "@/lib/saisonnalite";
+import { fruitsSaisonDordogne, fruitsDeSaison, libellesMois, periodeTexte } from "@/lib/saisonnalite";
 
 export const metadata = {
   title: "Calendrier des fruits en Dordogne - Kagette",
@@ -65,53 +65,43 @@ export default async function CalendrierPage() {
 
       <div>
         <h2 className="mb-3 font-semibold text-kagette-prune-700">Toute l&apos;année</h2>
-        <Card className="overflow-x-auto p-0">
-          <table className="w-full min-w-[640px] border-collapse text-xs">
-            <thead>
-              <tr>
-                <th className="sticky left-0 bg-white p-2 text-left font-medium text-kagette-prune-700">
-                  Fruit
-                </th>
-                {libellesMois.map((m, i) => (
-                  <th
-                    key={m}
-                    className={`p-2 font-medium ${
-                      i + 1 === moisActuel ? "text-kagette-framboise-600" : "text-kagette-prune-700/50"
-                    }`}
-                  >
-                    {m}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {fruitsSaisonDordogne.map((fruit) => (
-                <tr key={fruit.nom} className="border-t border-kagette-prune-700/5">
-                  <td className="sticky left-0 whitespace-nowrap bg-white p-2 font-medium text-kagette-prune-700">
+        <div className="space-y-2">
+          {fruitsSaisonDordogne.map((fruit) => {
+            const enSaison = fruit.mois.includes(moisActuel);
+            return (
+              <Card
+                key={fruit.nom}
+                className={`p-3 ${enSaison ? "border-kagette-feuille-500" : ""}`}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-sm font-medium text-kagette-prune-700">
                     {fruit.emoji} {fruit.nom}
-                  </td>
-                  {libellesMois.map((_, i) => {
+                  </p>
+                  <p className="text-xs text-kagette-prune-700/50">{periodeTexte(fruit.mois)}</p>
+                </div>
+                <div className="mt-2 flex justify-between gap-0.5">
+                  {libellesMois.map((m, i) => {
                     const actif = fruit.mois.includes(i + 1);
                     const estMoisActuel = i + 1 === moisActuel;
                     return (
-                      <td key={i} className="p-1 text-center">
-                        <div
-                          className={`mx-auto h-4 w-4 rounded-sm ${
-                            actif
-                              ? estMoisActuel
-                                ? "bg-kagette-framboise-500"
-                                : "bg-kagette-feuille-400"
-                              : "bg-kagette-prune-700/5"
-                          }`}
-                        />
-                      </td>
+                      <div
+                        key={m}
+                        title={m}
+                        className={`h-3 flex-1 rounded-sm ${
+                          actif
+                            ? estMoisActuel
+                              ? "bg-kagette-framboise-500"
+                              : "bg-kagette-feuille-400"
+                            : "bg-kagette-prune-700/5"
+                        }`}
+                      />
                     );
                   })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Card>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

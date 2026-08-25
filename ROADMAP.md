@@ -333,18 +333,23 @@ remplir (tu es le seul à connaître ton statut juridique réel) :
   au fil de l'eau
 - **Hébergement** — Netlify (`kagette.netlify.app`), déploiement continu
   depuis `main`
+- **Cloudflare R2** — bucket `kagette` avec accès public (sous-domaine
+  r2.dev) + policy CORS pour les uploads directs depuis le navigateur
+  (localhost + kagette.netlify.app). Testé de bout en bout en local (upload
+  réel via le formulaire, lecture publique, suppression) — **à répliquer
+  sur Netlify** : ajouter les 5 variables `R2_*` dans Site configuration →
+  Environment variables, puis redéployer
 
 ## 🔑 Services externes encore à connecter (quand tu seras prêt)
 
 Rien de bloquant aujourd'hui — l'app se dégrade proprement partout tant que
 ces clés sont absentes (messages clairs à la place de plantages). C'est ce
 qu'il reste à faire pour tester le parcours réel de bout en bout avec de
-vrais paiements, photos et emails :
+vrais paiements et emails :
 
 | Service | Variables `.env` | Sert à | Où l'obtenir |
 |---|---|---|---|
 | **Stripe Connect** | `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET` | Paiement + split 3 parts + onboarding vendeurs | dashboard.stripe.com (mode test) |
-| **Cloudflare R2** | `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` (bucket et URL publique déjà renseignés) | Upload de vraies photos sur les annonces | dash.cloudflare.com → R2 |
 | **Resend** | `RESEND_API_KEY` (adresse d'expédition déjà renseignée) | Emails transactionnels (confirmation de commande, etc.) | resend.com/api-keys |
 | **Google OAuth** | `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` | Connexion "avec Google" | console.cloud.google.com/apis/credentials |
 

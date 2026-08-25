@@ -49,6 +49,12 @@ export async function Header() {
           </Link>
 
           <nav className="flex items-center gap-4">
+            <Link
+              href="/calendrier"
+              className="hidden text-sm font-medium text-kagette-prune-700 hover:text-kagette-framboise-500 sm:block"
+            >
+              Calendrier
+            </Link>
             {session?.user && (
               <>
                 <Link

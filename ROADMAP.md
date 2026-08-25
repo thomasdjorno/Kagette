@@ -247,6 +247,13 @@ connecter. On avance module par module — coche au fur et à mesure.
   Icône panier avec compteur dans le header, testé avec 2 produits de 2
   cuisiniers différents (total et quantités recalculés correctement)
 
+- **Calendrier de saisonnalité** *(vérifié en live)* : page `/calendrier`
+  listant 15 fruits typiques de Dordogne avec leur période de récolte,
+  section "de saison en ce moment" mise en avant selon le mois en cours
+  avec le nombre d'annonces disponibles pour chaque fruit (lien direct vers
+  la recherche filtrée), et grille annuelle complète avec le mois courant
+  surligné. Accessible depuis le header (desktop et menu mobile)
+
 ## 🔲 À faire
 
 ### Priorité moyenne (qualité / robustesse)

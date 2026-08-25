@@ -37,6 +37,13 @@ export function MobileNav({
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
           <div className="absolute right-0 top-11 z-50 w-48 overflow-hidden rounded-2xl border border-kagette-prune-700/10 bg-white py-1 shadow-lg">
             <Link
+              href="/calendrier"
+              onClick={() => setOpen(false)}
+              className="block px-4 py-3 text-sm font-medium text-kagette-prune-700 hover:bg-kagette-feuille-50"
+            >
+              Calendrier
+            </Link>
+            <Link
               href="/fruits/recherches"
               onClick={() => setOpen(false)}
               className="block px-4 py-3 text-sm font-medium text-kagette-prune-700 hover:bg-kagette-feuille-50"

@@ -64,7 +64,35 @@ export default async function CalendrierPage() {
       </div>
 
       <div>
-        <h2 className="mb-3 font-semibold text-kagette-prune-700">Toute l&apos;année</h2>
+        <h2 className="mb-1 font-semibold text-kagette-prune-700">Toute l&apos;année</h2>
+        <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-kagette-prune-700/60">
+          <span className="flex items-center gap-1.5">
+            <span className="h-3 w-3 rounded-sm bg-kagette-feuille-500" /> en saison
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="h-3 w-3 rounded-sm bg-kagette-framboise-500" /> ce mois-ci
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="h-3 w-3 rounded-sm border border-kagette-prune-700/20 bg-white" /> hors
+            saison
+          </span>
+        </div>
+
+        <div className="mb-1 flex justify-between gap-0.5 px-3">
+          {libellesMois.map((m, i) => (
+            <span
+              key={m}
+              className={`flex-1 text-center text-[10px] ${
+                i + 1 === moisActuel
+                  ? "font-bold text-kagette-framboise-600"
+                  : "text-kagette-prune-700/40"
+              }`}
+            >
+              {m[0]}
+            </span>
+          ))}
+        </div>
+
         <div className="space-y-2">
           {fruitsSaisonDordogne.map((fruit) => {
             const enSaison = fruit.mois.includes(moisActuel);
@@ -87,12 +115,12 @@ export default async function CalendrierPage() {
                       <div
                         key={m}
                         title={m}
-                        className={`h-3 flex-1 rounded-sm ${
+                        className={`h-4 flex-1 rounded-sm ${
                           actif
                             ? estMoisActuel
                               ? "bg-kagette-framboise-500"
-                              : "bg-kagette-feuille-400"
-                            : "bg-kagette-prune-700/5"
+                              : "bg-kagette-feuille-500"
+                            : "border border-kagette-prune-700/15 bg-white"
                         }`}
                       />
                     );

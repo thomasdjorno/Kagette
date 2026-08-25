@@ -70,6 +70,19 @@ export default async function ProfilPage() {
         </div>
       </Card>
 
+      <Link href="/profil/impact">
+        <Card className="flex items-center gap-4 transition-colors hover:border-kagette-feuille-500">
+          <span className="text-2xl">🌍</span>
+          <div className="flex-1">
+            <h2 className="font-semibold text-kagette-prune-700">Mon impact</h2>
+            <p className="mt-1 text-sm text-kagette-prune-700/60">
+              Découvre ce que tu as concrètement changé, fruit par fruit.
+            </p>
+          </div>
+          <span className="text-kagette-prune-700/40">→</span>
+        </Card>
+      </Link>
+
       <ModifierProfilForm prenom={user.prenom} nom={user.nom} telephone={user.telephone} />
 
       <Card>

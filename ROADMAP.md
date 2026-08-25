@@ -269,6 +269,21 @@ connecter. On avance module par module — coche au fur et à mesure.
   voisins retrouvent facilement ses annonces sur Kagette. Réutilise le
   générateur de QR code déjà en place pour les étiquettes produit
 
+- **Tableau d'impact** *(vérifié en live)* : deux pages complémentaires.
+  `/impact` (publique) affiche les chiffres de toute la communauté (kg de
+  fruits sauvés du gaspillage, nombre de donneurs/cuisiniers/acheteurs
+  actifs, produits créés, échanges réalisés, équivalent CO2 évité en km
+  voiture — estimation clairement annoncée comme telle) ainsi qu'une
+  "chaîne locale en action" listant qui a donné quoi, transformé par qui,
+  acheté par combien de personnes. `/profil/impact` fait la même chose à
+  l'échelle personnelle, section par section selon les casquettes actives
+  (donneur / cuisinier / acheteur), avec la chaîne nominative de chaque
+  transaction ("Tu as acheté X de {cuisinier}, avec les fruits de
+  {donneur}") : l'objectif explicite était de créer du lien concret entre
+  les trois parties, pas juste des statistiques abstraites. Testé avec 3
+  comptes aux profils différents (donneur seul, cuisinier+donneur,
+  acheteur) — chiffres et chaînes vérifiés exacts par recoupement SQL
+
 ## 🔲 À faire
 
 ### Priorité moyenne (qualité / robustesse)

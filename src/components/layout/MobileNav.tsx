@@ -44,6 +44,13 @@ export function MobileNav({
               Calendrier
             </Link>
             <Link
+              href="/profil/impact"
+              onClick={() => setOpen(false)}
+              className="block px-4 py-3 text-sm font-medium text-kagette-prune-700 hover:bg-kagette-feuille-50"
+            >
+              Mon impact
+            </Link>
+            <Link
               href="/fruits/recherches"
               onClick={() => setOpen(false)}
               className="block px-4 py-3 text-sm font-medium text-kagette-prune-700 hover:bg-kagette-feuille-50"

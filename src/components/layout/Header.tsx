@@ -70,6 +70,12 @@ export async function Header() {
                   Messagerie
                 </Link>
                 <Link
+                  href="/profil/impact"
+                  className="hidden text-sm font-medium text-kagette-prune-700 hover:text-kagette-framboise-500 sm:block"
+                >
+                  Mon impact
+                </Link>
+                <Link
                   href="/profil"
                   className="hidden text-sm font-medium text-kagette-prune-700 hover:text-kagette-framboise-500 sm:block"
                 >

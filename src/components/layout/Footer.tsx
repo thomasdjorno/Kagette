@@ -6,6 +6,9 @@ export function Footer() {
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 text-xs text-kagette-prune-700/50">
         <span>© {new Date().getFullYear()} Kagette</span>
         <nav className="flex flex-wrap gap-4">
+          <Link href="/impact" className="hover:text-kagette-prune-700">
+            Impact
+          </Link>
           <Link href="/guide" className="hover:text-kagette-prune-700">
             Guide du Kagetteur
           </Link>

@@ -237,6 +237,16 @@ connecter. On avance module par module — coche au fur et à mesure.
   (auquel cas son choix est respecté). Une note rappelle que c'est une
   suggestion à ajuster selon la recette, pas une garantie
 
+- **Panier multi-produits** *(vérifié en live)* : un acheteur peut ajouter
+  des produits de plusieurs cuisiniers différents dans un même panier
+  (persisté en local sur son appareil), ajuster les quantités, retirer un
+  article, puis payer en une seule fois. Une seule session Stripe Checkout
+  est créée pour tout le panier ; chaque produit garde sa propre commande
+  en base (split de paiement par vendeur inchangé), regroupées sous un même
+  identifiant de panier pour n'afficher qu'une seule page de confirmation.
+  Icône panier avec compteur dans le header, testé avec 2 produits de 2
+  cuisiniers différents (total et quantités recalculés correctement)
+
 ## 🔲 À faire
 
 ### Priorité moyenne (qualité / robustesse)

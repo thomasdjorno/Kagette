@@ -402,6 +402,10 @@ model Order {
 
   statut OrderStatus @default(EN_ATTENTE_PAIEMENT)
 
+  // Regroupe les commandes issues d'un même passage en caisse (panier
+  // multi-produits) pour n'afficher qu'une seule confirmation au client.
+  panierGroupId String?
+
   stripePaymentIntentId     String?
   stripeTransferDonneurId   String?
   stripeTransferCuisinierId String?
@@ -411,6 +415,8 @@ model Order {
 
   review       Review?
   conversation Conversation?
+
+  @@index([panierGroupId])
 }
 
 model Review {

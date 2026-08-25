@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getStripe, isStripeConfigured } from "@/lib/stripe";
 import { envoyerEmailConfirmationCommande } from "@/lib/email";
+import type { Order, ProductListing, User, FruitListing } from "@prisma/client";
 
 export async function POST(request: Request) {
   if (!isStripeConfigured() || !process.env.STRIPE_WEBHOOK_SECRET) {
@@ -20,19 +21,30 @@ export async function POST(request: Request) {
   }
 
   if (event.type === "checkout.session.completed") {
-    const checkoutSession = event.data.object as { metadata?: { orderId?: string }; payment_intent?: string };
-    const orderId = checkoutSession.metadata?.orderId;
-    if (orderId) {
-      await traiterPaiementReussi(orderId, checkoutSession.payment_intent ?? null);
+    const checkoutSession = event.data.object as {
+      metadata?: { panierGroupId?: string };
+      payment_intent?: string;
+    };
+    const panierGroupId = checkoutSession.metadata?.panierGroupId;
+    if (panierGroupId) {
+      await traiterPaiementReussi(panierGroupId, checkoutSession.payment_intent ?? null);
     }
   }
 
   return NextResponse.json({ received: true });
 }
 
-async function traiterPaiementReussi(orderId: string, paymentIntentId: string | null) {
-  const order = await prisma.order.findUnique({
-    where: { id: orderId },
+type OrderAvecRelations = Order & {
+  acheteur: User;
+  productListing: ProductListing & {
+    cuisinier: User;
+    fruitListingOrigine: (FruitListing & { donneur: User }) | null;
+  };
+};
+
+async function traiterPaiementReussi(panierGroupId: string, paymentIntentId: string | null) {
+  const orders = await prisma.order.findMany({
+    where: { panierGroupId, statut: "EN_ATTENTE_PAIEMENT" },
     include: {
       acheteur: true,
       productListing: {
@@ -41,8 +53,24 @@ async function traiterPaiementReussi(orderId: string, paymentIntentId: string | 
     },
   });
 
-  if (!order || order.statut !== "EN_ATTENTE_PAIEMENT") return;
+  if (orders.length === 0) return;
 
+  for (const order of orders) {
+    await traiterUneCommande(order, paymentIntentId);
+  }
+
+  const acheteur = orders[0].acheteur;
+  const montantTotal = orders.reduce((somme, o) => somme + Number(o.montantTotal), 0);
+
+  await envoyerEmailConfirmationCommande({
+    to: acheteur.email,
+    prenom: acheteur.prenom,
+    titres: orders.map((o) => o.productListing.titre),
+    montant: montantTotal.toFixed(2),
+  });
+}
+
+async function traiterUneCommande(order: OrderAvecRelations, paymentIntentId: string | null) {
   const stripe = getStripe();
   const { productListing } = order;
 
@@ -88,11 +116,4 @@ async function traiterPaiementReussi(orderId: string, paymentIntentId: string | 
       },
     }),
   ]);
-
-  await envoyerEmailConfirmationCommande({
-    to: order.acheteur.email,
-    prenom: order.acheteur.prenom,
-    titre: productListing.titre,
-    montant: order.montantTotal.toString(),
-  });
 }

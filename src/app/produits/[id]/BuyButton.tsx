@@ -1,39 +1,47 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/Button";
+import { useCart } from "@/lib/CartContext";
 
-export function BuyButton({ productListingId }: { productListingId: string }) {
-  const [erreur, setErreur] = useState<string | null>(null);
-  const [chargement, setChargement] = useState(false);
+export function BuyButton({
+  productListingId,
+  titre,
+  prix,
+  photoUrl,
+  cuisinierPrenom,
+  quantiteDisponible,
+}: {
+  productListingId: string;
+  titre: string;
+  prix: number;
+  photoUrl: string | null;
+  cuisinierPrenom: string;
+  quantiteDisponible: number;
+}) {
+  const { ajouter } = useCart();
+  const [ajoute, setAjoute] = useState(false);
 
-  async function acheter() {
-    setErreur(null);
-    setChargement(true);
+  function ajouterAuPanier() {
+    ajouter({ productListingId, titre, prix, photoUrl, cuisinierPrenom, quantiteDisponible });
+    setAjoute(true);
+  }
 
-    const res = await fetch("/api/stripe/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productListingId, quantite: 1 }),
-    });
-
-    const data = await res.json().catch(() => null);
-
-    if (!res.ok) {
-      setErreur(data?.error ?? "Une erreur est survenue");
-      setChargement(false);
-      return;
-    }
-
-    window.location.href = data.url;
+  if (ajoute) {
+    return (
+      <div className="flex flex-wrap items-center gap-3">
+        <p className="text-sm font-medium text-kagette-feuille-600">✓ Ajouté au panier</p>
+        <Link href="/panier" className="text-sm font-medium text-kagette-framboise-600 hover:underline">
+          Voir mon panier →
+        </Link>
+      </div>
+    );
   }
 
   return (
-    <div>
-      <Button onClick={acheter} disabled={chargement} className="w-full sm:w-auto">
-        {chargement ? "Redirection vers le paiement..." : "Acheter"}
-      </Button>
-      {erreur && <p className="mt-2 text-sm text-kagette-framboise-600">{erreur}</p>}
-    </div>
+    <Button onClick={ajouterAuPanier} className="w-full sm:w-auto">
+      🧺 Ajouter au panier
+    </Button>
   );
 }

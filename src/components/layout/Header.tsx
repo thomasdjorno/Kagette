@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { HeaderAuthActions } from "./HeaderAuthActions";
 import { MobileNav } from "./MobileNav";
 import { NotificationBell } from "./NotificationBell";
+import { CartIcon } from "./CartIcon";
 
 export async function Header() {
   const session = await auth();
@@ -79,6 +80,7 @@ export async function Header() {
               </Link>
             )}
             {session?.user && <NotificationBell />}
+            <CartIcon />
             <MobileNav
               isAuthenticated={!!session?.user}
               isAdmin={!!session?.user?.estAdmin}

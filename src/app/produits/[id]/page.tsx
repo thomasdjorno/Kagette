@@ -82,7 +82,14 @@ export default async function ProductListingPage({ params }: { params: { id: str
             </Link>
           </>
         ) : (
-          <BuyButton productListingId={listing.id} />
+          <BuyButton
+            productListingId={listing.id}
+            titre={listing.titre}
+            prix={Number(listing.prix)}
+            photoUrl={listing.photoUrls[0] ?? null}
+            cuisinierPrenom={listing.cuisinier.prenom}
+            quantiteDisponible={listing.quantiteDisponible}
+          />
         )}
       </Card>
 

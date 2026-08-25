@@ -44,22 +44,27 @@ function gabarit(titre: string, corps: string) {
 export async function envoyerEmailConfirmationCommande({
   to,
   prenom,
-  titre,
+  titres,
   montant,
 }: {
   to: string;
   prenom: string;
-  titre: string;
+  titres: string[];
   montant: string;
 }) {
+  const listeArticles =
+    titres.length > 1
+      ? `<ul>${titres.map((t) => `<li>${echapper(t)}</li>`).join("")}</ul>`
+      : `<strong>${echapper(titres[0] ?? "")}</strong>`;
+
   await envoyerEmail({
     to,
-    subject: `Confirmation de ta commande, ${titre}`,
+    subject: titres.length > 1 ? "Confirmation de ta commande" : `Confirmation de ta commande, ${titres[0]}`,
     html: gabarit(
       "Commande confirmée !",
       `<p>Bonjour ${echapper(prenom)},</p>
-       <p>Ta commande <strong>${echapper(titre)}</strong> (${montant} €) a bien été payée.
-       Le vendeur va te contacter via la messagerie Kagette pour organiser la remise.</p>`
+       <p>Ta commande ${listeArticles} (${montant} €) a bien été payée.
+       Le(s) vendeur(s) vont te contacter via la messagerie Kagette pour organiser la remise.</p>`
     ),
   });
 }

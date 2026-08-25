@@ -87,6 +87,17 @@ export const recolteCollectiveSchema = z.object({
   notes: z.string().max(500).optional().or(z.literal("")),
 });
 
+export const panierCheckoutSchema = z.object({
+  items: z
+    .array(
+      z.object({
+        productListingId: z.string().min(1),
+        quantite: z.coerce.number().int().positive(),
+      })
+    )
+    .min(1, "Le panier est vide"),
+});
+
 export const saisons = ["PRINTEMPS", "ETE", "AUTOMNE", "HIVER"] as const;
 export const unitesQuantite = ["KG", "CAGETTE", "AUTRE"] as const;
 export const urgencesRecolte = ["PAS_PRESSE", "BIENTOT", "URGENT"] as const;

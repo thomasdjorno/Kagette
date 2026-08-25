@@ -97,6 +97,7 @@ export async function Header() {
               isAuthenticated={!!session?.user}
               isAdmin={!!session?.user?.estAdmin}
               isDonneur={!!session?.user?.estDonneur}
+              isCuisinier={!!session?.user?.estCuisinier}
             />
             <HeaderAuthActions
               isAuthenticated={!!session?.user}

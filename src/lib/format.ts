@@ -40,7 +40,13 @@ export function calculerDluoSuggeree(categorie: string, depuis: Date = new Date(
   const mois = dluoSuggereeMois[categorie] ?? 6;
   const date = new Date(depuis);
   date.setMonth(date.getMonth() + mois);
-  return date.toISOString().slice(0, 10);
+  // Formatage à partir des getters locaux (pas toISOString, qui convertit
+  // en UTC et peut décaler d'un jour si un changement d'heure d'été a lieu
+  // entre la date de départ et la date calculée).
+  const annee = date.getFullYear();
+  const moisAffiche = String(date.getMonth() + 1).padStart(2, "0");
+  const jour = String(date.getDate()).padStart(2, "0");
+  return `${annee}-${moisAffiche}-${jour}`;
 }
 
 export const emojiCategorie: Record<string, string> = {
@@ -105,23 +111,39 @@ export const couleurUrgence: Record<string, string> = {
   URGENT: "bg-kagette-framboise-50 text-kagette-framboise-600",
 };
 
+function debutDuJour(date: Date): Date {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+/**
+ * disponibleDu/disponibleAu sont des dates sans heure (champs <input
+ * type="date">) : "disponible au 27 août" veut dire disponible toute la
+ * journée du 27, pas juste jusqu'à minuit. On compare donc jour calendaire
+ * par jour calendaire plutôt que par différence d'instants exacts, sinon
+ * le dernier jour de récolte est traité comme déjà expiré dès 00h01.
+ */
 export function fraicheurRecolte(
   disponibleDu: Date | string,
   disponibleAu: Date | string
 ): { texte: string; urgent: boolean } | null {
-  const maintenant = new Date();
   const debut = typeof disponibleDu === "string" ? new Date(disponibleDu) : disponibleDu;
   const fin = typeof disponibleAu === "string" ? new Date(disponibleAu) : disponibleAu;
 
-  if (maintenant < debut) {
+  const aujourdHui = debutDuJour(new Date());
+  const jourDebut = debutDuJour(debut);
+  const jourFin = debutDuJour(fin);
+
+  if (aujourdHui < jourDebut) {
     return { texte: `Récolte à partir du ${formatDate(debut)}`, urgent: false };
   }
-  if (maintenant > fin) {
+  if (aujourdHui > jourFin) {
     return null;
   }
 
-  const joursRestants = Math.ceil((fin.getTime() - maintenant.getTime()) / (1000 * 60 * 60 * 24));
-  if (joursRestants <= 0) {
+  const joursRestants = Math.round((jourFin.getTime() - aujourdHui.getTime()) / (1000 * 60 * 60 * 24));
+  if (joursRestants === 0) {
     return { texte: "Dernier jour pour passer !", urgent: true };
   }
   if (joursRestants === 1) {

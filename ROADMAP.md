@@ -284,6 +284,26 @@ connecter. On avance module par module — coche au fur et à mesure.
   comptes aux profils différents (donneur seul, cuisinier+donneur,
   acheteur) — chiffres et chaînes vérifiés exacts par recoupement SQL
 
+- **Audit de cohérence + 2 bugs corrigés** : passage complet des liens
+  internes (aucun lien mort), du menu mobile et de la doc. À l'occasion,
+  deux vrais bugs trouvés en écrivant des tests et corrigés :
+  - `fraicheurRecolte` traitait le dernier jour de récolte comme déjà
+    expiré dès 00h01 (comparaison par instant exact au lieu de jour
+    calendaire) — une annonce disparaissait un jour trop tôt
+  - `calculerDluoSuggeree` pouvait suggérer une DLUO décalée d'un jour
+    autour d'un changement d'heure été/hiver (conversion via
+    `toISOString`/UTC au lieu de rester en heure locale)
+  - Menu mobile (☰) : remplacé la liste de texte par une grille
+    d'icônes, ajouté les raccourcis manquants "Mes achats" et "Mes
+    ventes" (ce dernier réservé aux cuisiniers)
+  - Tableau des services externes remis à jour (Mapbox, base de données
+    de prod et hébergement étaient déjà branchés mais encore listés
+    comme "à faire")
+  - Nouveaux tests unitaires : `periodeTexte`, `fruitsDeSaison`,
+    `fraicheurRecolte`, `calculerDluoSuggeree`, `distanceKm`,
+    `kgFruitsVersCo2`/`co2VersKmVoiture` (23 tests, suite passée de 25 à
+    48)
+
 ## 🔲 À faire
 
 ### Priorité moyenne (qualité / robustesse)
@@ -304,23 +324,29 @@ remplir (tu es le seul à connaître ton statut juridique réel) :
   professionnel (avocat ou service en ligne type Legalstart/Captain
   Contrat) — ce que j'ai écrit décrit fidèlement le fonctionnement de
   l'app mais n'a pas de valeur de conseil juridique
-- [ ] Hébergement de production (voir section API ci-dessous)
 
-## 🔑 Services externes à connecter (quand tu seras prêt)
+## ✅ Déjà connectés (production)
+
+- **Mapbox** (`NEXT_PUBLIC_MAPBOX_TOKEN`) — carte + recherche d'adresse en
+  ligne
+- **Base de données de production** — Neon Postgres, migrations déployées
+  au fil de l'eau
+- **Hébergement** — Netlify (`kagette.netlify.app`), déploiement continu
+  depuis `main`
+
+## 🔑 Services externes encore à connecter (quand tu seras prêt)
 
 Rien de bloquant aujourd'hui — l'app se dégrade proprement partout tant que
-ces clés sont absentes (messages clairs à la place de plantages). À faire
-d'un coup quand tu veux tester le parcours réel de bout en bout :
+ces clés sont absentes (messages clairs à la place de plantages). C'est ce
+qu'il reste à faire pour tester le parcours réel de bout en bout avec de
+vrais paiements, photos et emails :
 
 | Service | Variables `.env` | Sert à | Où l'obtenir |
 |---|---|---|---|
-| **Mapbox** | `NEXT_PUBLIC_MAPBOX_TOKEN` | Carte des annonces sur l'accueil | account.mapbox.com/access-tokens |
 | **Stripe Connect** | `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET` | Paiement + split 3 parts + onboarding vendeurs | dashboard.stripe.com (mode test) |
+| **Cloudflare R2** | `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` (bucket et URL publique déjà renseignés) | Upload de vraies photos sur les annonces | dash.cloudflare.com → R2 |
+| **Resend** | `RESEND_API_KEY` (adresse d'expédition déjà renseignée) | Emails transactionnels (confirmation de commande, etc.) | resend.com/api-keys |
 | **Google OAuth** | `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` | Connexion "avec Google" | console.cloud.google.com/apis/credentials |
-| **Cloudflare R2** | `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET_NAME`, `R2_PUBLIC_URL` | Upload de vraies photos sur les annonces | dash.cloudflare.com → R2 |
-| **Resend** | `RESEND_API_KEY`, `RESEND_FROM_EMAIL` | Emails transactionnels (à câbler côté code, voir liste ci-dessus) | resend.com/api-keys |
-| **Base de données prod** | `DATABASE_URL` | Remplace le Postgres local pour la mise en ligne | Neon, Railway, ou équivalent |
-| **Hébergement** | — | Déployer le site en ligne | Vercel (recommandé pour Next.js) |
 
 Détails de configuration pas à pas déjà écrits dans le [README](README.md).
 

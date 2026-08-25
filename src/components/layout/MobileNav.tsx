@@ -4,18 +4,41 @@ import { useState } from "react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 
+interface MenuItem {
+  href: string;
+  icon: string;
+  label: string;
+}
+
 export function MobileNav({
   isAuthenticated,
   isAdmin,
   isDonneur,
+  isCuisinier,
 }: {
   isAuthenticated: boolean;
   isAdmin: boolean;
   isDonneur: boolean;
+  isCuisinier: boolean;
 }) {
   const [open, setOpen] = useState(false);
 
   if (!isAuthenticated) return null;
+
+  const items: MenuItem[] = [
+    { href: "/calendrier", icon: "📅", label: "Calendrier" },
+    { href: "/profil/impact", icon: "🌍", label: "Mon impact" },
+    { href: "/fruits/recherches", icon: "🔍", label: "Recherches" },
+    { href: "/messagerie", icon: "💬", label: "Messagerie" },
+    { href: "/profil", icon: "👤", label: "Mon profil" },
+    { href: "/profil/annonces", icon: "📋", label: "Mes annonces" },
+    { href: "/profil/demandes", icon: "🙋", label: "Mes demandes" },
+    { href: "/profil/favoris", icon: "⭐", label: "Mes favoris" },
+    { href: "/commandes", icon: "🛍️", label: "Mes achats" },
+    ...(isCuisinier ? [{ href: "/ventes", icon: "🏷️", label: "Mes ventes" }] : []),
+    ...(isDonneur ? [{ href: "/profil/gains", icon: "💰", label: "Mes gains" }] : []),
+    ...(isAdmin ? [{ href: "/admin", icon: "⚙️", label: "Backoffice" }] : []),
+  ];
 
   return (
     <div className="relative sm:hidden">
@@ -35,87 +58,28 @@ export function MobileNav({
       {open && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 top-11 z-50 w-48 overflow-hidden rounded-2xl border border-kagette-prune-700/10 bg-white py-1 shadow-lg">
-            <Link
-              href="/calendrier"
-              onClick={() => setOpen(false)}
-              className="block px-4 py-3 text-sm font-medium text-kagette-prune-700 hover:bg-kagette-feuille-50"
-            >
-              Calendrier
-            </Link>
-            <Link
-              href="/profil/impact"
-              onClick={() => setOpen(false)}
-              className="block px-4 py-3 text-sm font-medium text-kagette-prune-700 hover:bg-kagette-feuille-50"
-            >
-              Mon impact
-            </Link>
-            <Link
-              href="/fruits/recherches"
-              onClick={() => setOpen(false)}
-              className="block px-4 py-3 text-sm font-medium text-kagette-prune-700 hover:bg-kagette-feuille-50"
-            >
-              Recherches
-            </Link>
-            <Link
-              href="/messagerie"
-              onClick={() => setOpen(false)}
-              className="block px-4 py-3 text-sm font-medium text-kagette-prune-700 hover:bg-kagette-feuille-50"
-            >
-              Messagerie
-            </Link>
-            <Link
-              href="/profil"
-              onClick={() => setOpen(false)}
-              className="block px-4 py-3 text-sm font-medium text-kagette-prune-700 hover:bg-kagette-feuille-50"
-            >
-              Mon profil
-            </Link>
-            <Link
-              href="/profil/annonces"
-              onClick={() => setOpen(false)}
-              className="block px-4 py-3 text-sm font-medium text-kagette-prune-700 hover:bg-kagette-feuille-50"
-            >
-              Mes annonces
-            </Link>
-            <Link
-              href="/profil/demandes"
-              onClick={() => setOpen(false)}
-              className="block px-4 py-3 text-sm font-medium text-kagette-prune-700 hover:bg-kagette-feuille-50"
-            >
-              Mes demandes
-            </Link>
-            <Link
-              href="/profil/favoris"
-              onClick={() => setOpen(false)}
-              className="block px-4 py-3 text-sm font-medium text-kagette-prune-700 hover:bg-kagette-feuille-50"
-            >
-              Mes favoris
-            </Link>
-            {isDonneur && (
-              <Link
-                href="/profil/gains"
-                onClick={() => setOpen(false)}
-                className="block px-4 py-3 text-sm font-medium text-kagette-prune-700 hover:bg-kagette-feuille-50"
-              >
-                Mes gains
-              </Link>
-            )}
-            {isAdmin && (
-              <Link
-                href="/admin"
-                onClick={() => setOpen(false)}
-                className="block px-4 py-3 text-sm font-medium text-kagette-prune-700 hover:bg-kagette-feuille-50"
-              >
-                Backoffice
-              </Link>
-            )}
+          <div className="absolute right-0 top-11 z-50 w-64 overflow-hidden rounded-2xl border border-kagette-prune-700/10 bg-white p-2 shadow-lg">
+            <div className="grid grid-cols-3 gap-1">
+              {items.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="flex flex-col items-center gap-1 rounded-xl px-2 py-3 text-center hover:bg-kagette-feuille-50"
+                >
+                  <span className="text-xl">{item.icon}</span>
+                  <span className="text-[10px] font-medium leading-tight text-kagette-prune-700">
+                    {item.label}
+                  </span>
+                </Link>
+              ))}
+            </div>
             <button
               type="button"
               onClick={() => signOut({ callbackUrl: "/" })}
-              className="block w-full border-t border-kagette-prune-700/10 px-4 py-3 text-left text-sm font-medium text-kagette-framboise-600 hover:bg-kagette-feuille-50"
+              className="mt-1 flex w-full items-center justify-center gap-1.5 rounded-xl border-t border-kagette-prune-700/10 px-4 py-3 text-sm font-medium text-kagette-framboise-600 hover:bg-kagette-feuille-50"
             >
-              Déconnexion
+              🚪 Déconnexion
             </button>
           </div>
         </>

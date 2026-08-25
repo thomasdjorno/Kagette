@@ -29,6 +29,20 @@ export const libellesCategorie: Record<string, string> = {
   FRUITS_SECS: "Fruits secs",
 };
 
+export const dluoSuggereeMois: Record<string, number> = {
+  CONFITURE: 12,
+  SIROP: 6,
+  CHUTNEY: 6,
+  FRUITS_SECS: 6,
+};
+
+export function calculerDluoSuggeree(categorie: string, depuis: Date = new Date()): string {
+  const mois = dluoSuggereeMois[categorie] ?? 6;
+  const date = new Date(depuis);
+  date.setMonth(date.getMonth() + mois);
+  return date.toISOString().slice(0, 10);
+}
+
 export const emojiCategorie: Record<string, string> = {
   CONFITURE: "🍯",
   SIROP: "🧃",

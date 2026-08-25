@@ -230,6 +230,13 @@ connecter. On avance module par module — coche au fur et à mesure.
   optimisée pour l'impression (header/footer masqués automatiquement à
   l'impression). Ancienne idée notée "pour plus tard", maintenant faite
 
+- **DLUO suggérée automatiquement** *(vérifiée en live)* : sur le formulaire
+  produit, la date de DLUO se pré-remplit selon la catégorie (confiture 12
+  mois, sirop/chutney/fruits secs 6 mois), recalculée à chaque changement
+  de catégorie tant que le cuisinier n'a pas modifié la date à la main
+  (auquel cas son choix est respecté). Une note rappelle que c'est une
+  suggestion à ajuster selon la recette, pas une garantie
+
 ## 🔲 À faire
 
 ### Priorité moyenne (qualité / robustesse)

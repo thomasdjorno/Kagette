@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/Button";
 import { PhotoUploader } from "@/components/listings/PhotoUploader";
 import { AddressSearchInput } from "@/components/ui/AddressSearchInput";
 import { productCategories } from "@/lib/validation";
-import { libellesCategorie, formatPrix } from "@/lib/format";
+import { libellesCategorie, formatPrix, calculerDluoSuggeree } from "@/lib/format";
 import { calculerRepartition, type Pourcentages } from "@/lib/payment-split";
 
 type FruitListingAvecDonneur = FruitListing & { donneur: { prenom: string } };
@@ -35,6 +35,9 @@ export function ProductListingForm({
   const [ingredientsTexte, setIngredientsTexte] = useState("");
   const [allergenesTexte, setAllergenesTexte] = useState("");
   const [prixTexte, setPrixTexte] = useState("");
+  const [categorie, setCategorie] = useState<string>(productCategories[0]);
+  const [dluo, setDluo] = useState(calculerDluoSuggeree(productCategories[0]));
+  const [dluoModifieeManuellement, setDluoModifieeManuellement] = useState(false);
   const [origineId, setOrigineId] = useState(fruitListingIdPreselectionne ?? "");
   const [latitude, setLatitude] = useState(regionParDefaut?.latitude ?? 0);
   const [longitude, setLongitude] = useState(regionParDefaut?.longitude ?? 0);
@@ -119,6 +122,14 @@ export function ProductListingForm({
           id="categorie"
           name="categorie"
           required
+          value={categorie}
+          onChange={(e) => {
+            const nouvelleCategorie = e.target.value;
+            setCategorie(nouvelleCategorie);
+            if (!dluoModifieeManuellement) {
+              setDluo(calculerDluoSuggeree(nouvelleCategorie));
+            }
+          }}
           className="w-full rounded-xl border border-kagette-prune-700/15 bg-white px-4 py-2.5 text-sm"
         >
           {productCategories.map((cat) => (
@@ -185,7 +196,21 @@ export function ProductListingForm({
 
       <div>
         <Label htmlFor="dluo">DLUO (date limite d&apos;utilisation optimale)</Label>
-        <Input id="dluo" name="dluo" type="date" required />
+        <Input
+          id="dluo"
+          name="dluo"
+          type="date"
+          required
+          value={dluo}
+          onChange={(e) => {
+            setDluo(e.target.value);
+            setDluoModifieeManuellement(true);
+          }}
+        />
+        <p className="mt-1 text-xs text-kagette-prune-700/50">
+          Suggestion basée sur la catégorie, à ajuster selon ta recette (moins de sucre/vinaigre =
+          conservation plus courte).
+        </p>
       </div>
 
       <div className="grid grid-cols-2 gap-3">

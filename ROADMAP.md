@@ -213,6 +213,15 @@ connecter. On avance module par module — coche au fur et à mesure.
   côté donneur comme côté demandeur). Affiché sur le profil public, et à
   côté du nom du donneur/cuisinier sur les fiches fruits et produits
 
+- **Récolte collective** *(vérifiée en live)* : un donneur avec beaucoup de
+  fruits d'un coup peut organiser une journée de cueillette sur son annonce
+  (date, nombre de places, précisions) ; les autres utilisateurs voient
+  l'événement et cliquent "Je viens !" (avec limite de places si définie),
+  le donneur reçoit une notification à chaque inscription et peut annuler
+  l'événement. Nouveaux modèles `RecolteCollective` et
+  `ParticipationRecolte` — testé de bout en bout (création par un compte,
+  inscription par un autre, notification reçue, données vérifiées en base)
+
 ## 🔲 À faire
 
 ### Priorité moyenne (qualité / robustesse)

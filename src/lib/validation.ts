@@ -80,6 +80,13 @@ export const fruitSearchRequestSchema = z.object({
   regionId: z.string().min(1),
 });
 
+export const recolteCollectiveSchema = z.object({
+  fruitListingId: z.string().min(1),
+  dateEvenement: z.coerce.date(),
+  placesMax: z.coerce.number().int().positive().optional(),
+  notes: z.string().max(500).optional().or(z.literal("")),
+});
+
 export const saisons = ["PRINTEMPS", "ETE", "AUTOMNE", "HIVER"] as const;
 export const unitesQuantite = ["KG", "CAGETTE", "AUTRE"] as const;
 export const urgencesRecolte = ["PAS_PRESSE", "BIENTOT", "URGENT"] as const;

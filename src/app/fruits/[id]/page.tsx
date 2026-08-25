@@ -12,6 +12,8 @@ import { BadgeConfiance } from "@/components/ui/BadgeConfiance";
 import { calculerReputation } from "@/lib/reputation";
 import { FruitRequestForm } from "./FruitRequestForm";
 import { FruitRequestsManager } from "./FruitRequestsManager";
+import { OrganiserRecolteForm } from "./OrganiserRecolteForm";
+import { RecolteCollectiveCard } from "./RecolteCollectiveCard";
 
 const statutLibelle: Record<string, string> = {
   DISPONIBLE: "Disponible",
@@ -30,6 +32,9 @@ export default async function FruitListingPage({ params }: { params: { id: strin
         demandes: {
           include: { demandeur: { select: { prenom: true, nom: true } } },
           orderBy: { createdAt: "desc" },
+        },
+        recolteCollective: {
+          include: { participants: { include: { participant: { select: { prenom: true } } } } },
         },
       },
     }),
@@ -142,6 +147,27 @@ export default async function FruitListingPage({ params }: { params: { id: strin
           </div>
         )}
       </Card>
+
+      {listing.recolteCollective ? (
+        <RecolteCollectiveCard
+          recolteId={listing.recolteCollective.id}
+          dateEvenement={listing.recolteCollective.dateEvenement.toISOString()}
+          placesMax={listing.recolteCollective.placesMax}
+          notes={listing.recolteCollective.notes}
+          participants={listing.recolteCollective.participants.map((p) => ({
+            id: p.participantId,
+            prenom: p.participant.prenom,
+          }))}
+          estProprietaire={estProprietaire}
+          jeParticipe={
+            !!session?.user &&
+            listing.recolteCollective.participants.some((p) => p.participantId === session.user.id)
+          }
+        />
+      ) : (
+        estProprietaire &&
+        listing.statut === "DISPONIBLE" && <OrganiserRecolteForm fruitListingId={listing.id} />
+      )}
 
       {mesDemandes.length > 0 && (
         <Card>

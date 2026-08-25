@@ -140,20 +140,21 @@ model User {
   accounts Account[]
   sessions Session[]
 
-  fruitListings       FruitListing[]
-  productListings     ProductListing[]
-  orders              Order[]
-  reviewsEcrites      Review[]                  @relation("ReviewsEcrites")
-  reviewsRecues       Review[]                  @relation("ReviewsRecues")
-  messages            Message[]
-  conversations       ConversationParticipant[]
-  reports             Report[]                  @relation("ReportsSoumis")
-  fruitRequests       FruitRequest[]
-  jardin              Jardin?
-  suivis              Follow[]                  @relation("Suivis")
-  abonnes             Follow[]                  @relation("Abonnes")
-  fruitSearchRequests FruitSearchRequest[]
-  notifications       Notification[]
+  fruitListings         FruitListing[]
+  productListings       ProductListing[]
+  orders                Order[]
+  reviewsEcrites        Review[]                  @relation("ReviewsEcrites")
+  reviewsRecues         Review[]                  @relation("ReviewsRecues")
+  messages              Message[]
+  conversations         ConversationParticipant[]
+  reports               Report[]                  @relation("ReportsSoumis")
+  fruitRequests         FruitRequest[]
+  jardin                Jardin?
+  suivis                Follow[]                  @relation("Suivis")
+  abonnes               Follow[]                  @relation("Abonnes")
+  fruitSearchRequests   FruitSearchRequest[]
+  notifications         Notification[]
+  participationsRecolte ParticipationRecolte[]
 }
 
 model Follow {
@@ -216,10 +217,40 @@ model FruitListing {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  productListings ProductListing[]
-  conversations   Conversation[]
-  reports         Report[]
-  demandes        FruitRequest[]
+  productListings   ProductListing[]
+  conversations     Conversation[]
+  reports           Report[]
+  demandes          FruitRequest[]
+  recolteCollective RecolteCollective?
+}
+
+// Un donneur avec beaucoup de fruits d'un coup peut organiser une journée de
+// cueillette collective sur une de ses annonces : les gens qui viennent
+// aider repartent avec leur part. Une annonce = au plus un événement.
+model RecolteCollective {
+  id             String       @id @default(cuid())
+  fruitListingId String       @unique
+  fruitListing   FruitListing @relation(fields: [fruitListingId], references: [id])
+
+  dateEvenement DateTime
+  placesMax     Int?
+  notes         String?
+
+  createdAt DateTime @default(now())
+
+  participants ParticipationRecolte[]
+}
+
+model ParticipationRecolte {
+  id                  String            @id @default(cuid())
+  recolteCollectiveId String
+  recolteCollective   RecolteCollective @relation(fields: [recolteCollectiveId], references: [id])
+  participantId       String
+  participant         User              @relation(fields: [participantId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([recolteCollectiveId, participantId])
 }
 
 // ───────────────────────── Jardin ─────────────────────────

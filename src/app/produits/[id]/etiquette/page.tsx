@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatDate, libellesCategorie } from "@/lib/format";
 import { genererQrCodeDataUrl } from "@/lib/qrcode";
-import { ImprimerButton } from "./ImprimerButton";
+import { ImprimerButton } from "@/components/ui/ImprimerButton";
 
 export default async function EtiquetteProduitPage({ params }: { params: { id: string } }) {
   const session = await auth();
@@ -26,7 +26,7 @@ export default async function EtiquetteProduitPage({ params }: { params: { id: s
     <div className="mx-auto max-w-md space-y-4">
       <div className="no-print flex items-center justify-between">
         <h1 className="font-serif text-xl font-bold text-kagette-prune-700">Étiquette du produit</h1>
-        <ImprimerButton />
+        <ImprimerButton label="🖨️ Imprimer l'étiquette" />
       </div>
 
       <div className="rounded-2xl border-2 border-kagette-prune-700/20 bg-white p-6">

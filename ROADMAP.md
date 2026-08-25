@@ -262,6 +262,13 @@ connecter. On avance module par module — coche au fur et à mesure.
   cuisinier), sans doublon entre les deux. N'apparaît que s'il y a
   effectivement quelque chose à suggérer
 
+- **QR code de partage sur le profil** *(vérifié en live)* : sur `/profil`,
+  un QR code renvoie directement vers son profil public, avec un bouton
+  "Copier le lien" et une carte imprimable dédiée (`/profil/carte`, nom +
+  casquettes + QR) à afficher au marché ou sur son portail pour que les
+  voisins retrouvent facilement ses annonces sur Kagette. Réutilise le
+  générateur de QR code déjà en place pour les étiquettes produit
+
 ## 🔲 À faire
 
 ### Priorité moyenne (qualité / robustesse)

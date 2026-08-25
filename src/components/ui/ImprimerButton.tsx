@@ -2,10 +2,10 @@
 
 import { Button } from "@/components/ui/Button";
 
-export function ImprimerButton() {
+export function ImprimerButton({ label = "🖨️ Imprimer" }: { label?: string }) {
   return (
     <Button onClick={() => window.print()} className="no-print">
-      🖨️ Imprimer l&apos;étiquette
+      {label}
     </Button>
   );
 }

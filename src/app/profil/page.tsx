@@ -3,6 +3,8 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Card } from "@/components/ui/Card";
+import { CopierLienButton } from "@/components/profil/CopierLienButton";
+import { genererQrCodeDataUrl } from "@/lib/qrcode";
 import { DonneurToggle } from "./DonneurToggle";
 import { CuisinierPanel } from "./CuisinierPanel";
 import { StripeConnectPanel } from "./StripeConnectPanel";
@@ -22,6 +24,10 @@ export default async function ProfilPage() {
   // le développement), on force une reconnexion propre plutôt que de planter.
   if (!user) redirect("/api/auth/signout?callbackUrl=/connexion");
 
+  const baseUrl = process.env.AUTH_URL || "http://localhost:3000";
+  const lienProfil = `${baseUrl}/profil/${user.id}`;
+  const qrCodeDataUrl = await genererQrCodeDataUrl(lienProfil);
+
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div className="flex items-center gap-4">
@@ -36,6 +42,33 @@ export default async function ProfilPage() {
           )}
         </div>
       </div>
+
+      <Card className="flex items-center gap-4">
+        {/* eslint-disable-next-line @next/next/no-img-element -- QR code en data URL, next/image ne le gère pas bien */}
+        <img
+          src={qrCodeDataUrl}
+          alt="QR code vers mon profil public Kagette"
+          width={72}
+          height={72}
+          className="shrink-0 rounded-lg"
+        />
+        <div className="flex-1">
+          <h2 className="font-semibold text-kagette-prune-700">Partager mon profil</h2>
+          <p className="mt-1 text-sm text-kagette-prune-700/60">
+            Fais scanner ce QR code ou partage ton lien pour que tes voisins retrouvent tes
+            annonces sur Kagette.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <CopierLienButton lien={lienProfil} />
+            <Link
+              href="/profil/carte"
+              className="inline-flex items-center rounded-full bg-kagette-prune-700/5 px-5 py-2.5 text-sm font-bold text-kagette-prune-700 hover:bg-kagette-prune-700/10"
+            >
+              🖨️ Carte à imprimer
+            </Link>
+          </div>
+        </div>
+      </Card>
 
       <ModifierProfilForm prenom={user.prenom} nom={user.nom} telephone={user.telephone} />
 

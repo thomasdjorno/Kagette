@@ -8,6 +8,8 @@ import { ReviewList } from "@/components/reviews/ReviewList";
 import { ContactButton } from "@/components/messaging/ContactButton";
 import { ReportButton } from "@/components/moderation/ReportButton";
 import { formatDate, libellesModeRecolte, libellesRaisonDemande, libellesStatutDemande, couleurStatutDemande, fraicheurRecolte } from "@/lib/format";
+import { BadgeConfiance } from "@/components/ui/BadgeConfiance";
+import { calculerReputation } from "@/lib/reputation";
 import { FruitRequestForm } from "./FruitRequestForm";
 import { FruitRequestsManager } from "./FruitRequestsManager";
 
@@ -36,11 +38,14 @@ export default async function FruitListingPage({ params }: { params: { id: strin
 
   if (!listing) notFound();
 
-  const reviews = await prisma.review.findMany({
-    where: { cibleId: listing.donneurId },
-    include: { auteur: { select: { prenom: true } } },
-    orderBy: { createdAt: "desc" },
-  });
+  const [reviews, reputation] = await Promise.all([
+    prisma.review.findMany({
+      where: { cibleId: listing.donneurId },
+      include: { auteur: { select: { prenom: true } } },
+      orderBy: { createdAt: "desc" },
+    }),
+    calculerReputation(listing.donneurId),
+  ]);
 
   const dejaAccepte = listing.demandes
     .filter((d) => d.statut === "ACCEPTEE")
@@ -119,12 +124,15 @@ export default async function FruitListingPage({ params }: { params: { id: strin
 
       <Card>
         <p className="text-sm font-semibold text-kagette-prune-700">Proposé par</p>
-        <Link
-          href={`/profil/${listing.donneur.id}`}
-          className="mt-1 inline-block text-kagette-framboise-600 hover:underline"
-        >
-          {listing.donneur.prenom} {listing.donneur.nom.charAt(0)}.
-        </Link>
+        <div className="mt-1 flex flex-wrap items-center gap-2">
+          <Link
+            href={`/profil/${listing.donneur.id}`}
+            className="text-kagette-framboise-600 hover:underline"
+          >
+            {listing.donneur.prenom} {listing.donneur.nom.charAt(0)}.
+          </Link>
+          <BadgeConfiance {...reputation} />
+        </div>
         {session?.user && !estProprietaire && (
           <div className="mt-3 flex flex-col gap-3 sm:flex-row">
             <ContactButton

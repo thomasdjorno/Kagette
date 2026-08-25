@@ -8,6 +8,8 @@ import { ReviewList } from "@/components/reviews/ReviewList";
 import { ArbreDisplay } from "@/components/jardin/ArbreDisplay";
 import { FollowButton } from "@/components/profil/FollowButton";
 import { Avatar } from "@/components/ui/Avatar";
+import { BadgeConfiance } from "@/components/ui/BadgeConfiance";
+import { calculerReputation } from "@/lib/reputation";
 
 export default async function ProfilPublicPage({ params }: { params: { userId: string } }) {
   const session = await auth();
@@ -30,7 +32,7 @@ export default async function ProfilPublicPage({ params }: { params: { userId: s
 
   if (!user) notFound();
 
-  const [reviews, dejaSuivi] = await Promise.all([
+  const [reviews, dejaSuivi, reputation] = await Promise.all([
     prisma.review.findMany({
       where: { cibleId: user.id },
       include: { auteur: { select: { prenom: true } } },
@@ -41,6 +43,7 @@ export default async function ProfilPublicPage({ params }: { params: { userId: s
           where: { suiveurId_suiviId: { suiveurId: session.user.id, suiviId: user.id } },
         })
       : null,
+    calculerReputation(user.id),
   ]);
 
   return (
@@ -58,6 +61,7 @@ export default async function ProfilPublicPage({ params }: { params: { userId: s
           )}
         </div>
         <div className="mt-2 flex flex-wrap gap-2">
+          <BadgeConfiance {...reputation} />
           {user.estDonneur && (
             <span className="rounded-full bg-kagette-feuille-50 px-3 py-1 text-xs font-semibold text-kagette-feuille-600">
               🌱 Donneur

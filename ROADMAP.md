@@ -205,6 +205,14 @@ connecter. On avance module par module — coche au fur et à mesure.
   externe — testé de bout en bout (demande créée par un compte, notif
   reçue et cliquable par l'autre, marquage lu vérifié en base)
 
+- **Badge de confiance visible** *(vérifié en live)* : au-delà des étoiles
+  d'avis, chaque profil affiche un niveau ("👋 Nouveau membre", "🌱
+  Kagetteur actif", "🤝 Kagetteur de confiance" à partir de 5 échanges,
+  "🌟 Pilier de la communauté" à partir de 15) calculé depuis les vrais
+  échanges terminés (commandes récupérées, demandes de fruits acceptées,
+  côté donneur comme côté demandeur). Affiché sur le profil public, et à
+  côté du nom du donneur/cuisinier sur les fiches fruits et produits
+
 ## 🔲 À faire
 
 ### Priorité moyenne (qualité / robustesse)

@@ -11,6 +11,8 @@ import { ReviewList } from "@/components/reviews/ReviewList";
 import { ContactButton } from "@/components/messaging/ContactButton";
 import { ReportButton } from "@/components/moderation/ReportButton";
 import { formatDate, formatPrix, libellesCategorie, emojiCategorie } from "@/lib/format";
+import { BadgeConfiance } from "@/components/ui/BadgeConfiance";
+import { calculerReputation } from "@/lib/reputation";
 import { BuyButton } from "./BuyButton";
 
 export default async function ProductListingPage({ params }: { params: { id: string } }) {
@@ -27,11 +29,14 @@ export default async function ProductListingPage({ params }: { params: { id: str
 
   if (!listing) notFound();
 
-  const reviews = await prisma.review.findMany({
-    where: { cibleId: listing.cuisinierId },
-    include: { auteur: { select: { prenom: true } } },
-    orderBy: { createdAt: "desc" },
-  });
+  const [reviews, reputation] = await Promise.all([
+    prisma.review.findMany({
+      where: { cibleId: listing.cuisinierId },
+      include: { auteur: { select: { prenom: true } } },
+      orderBy: { createdAt: "desc" },
+    }),
+    calculerReputation(listing.cuisinierId),
+  ]);
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
@@ -199,12 +204,15 @@ export default async function ProductListingPage({ params }: { params: { id: str
 
       <Card>
         <p className="text-sm font-semibold text-kagette-prune-700">Cuisiné par</p>
-        <Link
-          href={`/profil/${listing.cuisinier.id}`}
-          className="mt-1 inline-block text-kagette-framboise-600 hover:underline"
-        >
-          {listing.cuisinier.prenom} {listing.cuisinier.nom.charAt(0)}.
-        </Link>
+        <div className="mt-1 flex flex-wrap items-center gap-2">
+          <Link
+            href={`/profil/${listing.cuisinier.id}`}
+            className="text-kagette-framboise-600 hover:underline"
+          >
+            {listing.cuisinier.prenom} {listing.cuisinier.nom.charAt(0)}.
+          </Link>
+          <BadgeConfiance {...reputation} />
+        </div>
         {session?.user && session.user.id !== listing.cuisinierId && (
           <div className="mt-3">
             <ContactButton

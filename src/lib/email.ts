@@ -118,6 +118,24 @@ export async function envoyerEmailBadgeHygiene({
   });
 }
 
+export async function envoyerEmailNouvelleDemandeBadge({
+  to,
+  prenomDemandeur,
+}: {
+  to: string;
+  prenomDemandeur: string;
+}) {
+  await envoyerEmail({
+    to,
+    subject: `Nouvelle demande de badge hygiène — ${prenomDemandeur}`,
+    html: gabarit(
+      "Nouvelle demande de badge hygiène",
+      `<p>${echapper(prenomDemandeur)} vient de demander le badge cuisinier.</p>
+       <p><a href="${BASE_URL}/admin/badges">Traiter la demande →</a></p>`
+    ),
+  });
+}
+
 export async function envoyerEmailReinitialisationMotDePasse({
   to,
   prenom,

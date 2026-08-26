@@ -3,7 +3,6 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
 import { ListingPhoto } from "@/components/listings/ListingPhoto";
 import { ProvenanceTimeline } from "@/components/provenance/ProvenanceTimeline";
 import { Avatar } from "@/components/ui/Avatar";
@@ -93,16 +92,7 @@ export default async function ProductListingPage({ params }: { params: { id: str
       <Card>
         {listing.statut !== "EN_VENTE" || listing.quantiteDisponible <= 0 ? (
           <p className="text-sm text-kagette-prune-700/60">Ce produit n&apos;est plus disponible.</p>
-        ) : !session?.user ? (
-          <>
-            <p className="mb-3 text-sm text-kagette-prune-700/70">
-              Connecte-toi pour acheter ce produit.
-            </p>
-            <Link href={`/connexion?callbackUrl=/produits/${listing.id}`}>
-              <Button variant="secondary">Se connecter</Button>
-            </Link>
-          </>
-        ) : session.user.id === listing.cuisinierId ? (
+        ) : session?.user?.id === listing.cuisinierId ? (
           <>
             <p className="text-sm text-kagette-prune-700/60">C&apos;est ton propre produit.</p>
             <Link

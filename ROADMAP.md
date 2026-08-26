@@ -331,6 +331,22 @@ connecter. On avance module par module — coche au fur et à mesure.
     `true` en base, badge "Mes ventes"/"Mes gains" visibles dans le menu
     mobile dès avant toute activité
 
+- **Panier accessible aux invités** *(vérifié en live)* : un visiteur non
+  connecté voit maintenant directement le produit et le bouton "Ajouter au
+  panier" au lieu d'un mur "Connecte-toi pour acheter" — la connexion n'est
+  demandée qu'au moment de payer (`/panier`), pas avant. Testé : ajout au
+  panier en étant déconnecté, produit bien présent dans `/panier`, message
+  "Se connecter pour payer" affiché seulement au moment de passer commande
+
+- **Notification admin sur une nouvelle demande de badge** *(vérifié en
+  live)* : le badge hygiène étant désormais le seul vrai verrou pour
+  vendre, un admin est notifié (in-app + email dès que Resend sera
+  branché) dès qu'un cuisinier envoie sa demande, au lieu de devoir penser
+  à vérifier le backoffice — réduit le délai avant qu'un cuisinier bloqué
+  puisse vendre. Testé : demande envoyée par un compte test, notification
+  bien créée pour l'admin avec le lien `/admin/badges`, tentative d'email
+  bien loggée (Resend pas encore branché)
+
 ## 🔲 À faire
 
 ### Priorité moyenne (qualité / robustesse)

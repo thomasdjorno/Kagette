@@ -83,6 +83,13 @@ export function ConnexionForm() {
       >
         Continuer avec Google
       </Button>
+
+      <p className="mt-4 text-center text-sm text-kagette-prune-700/60">
+        Pas encore de compte ?{" "}
+        <Link href="/inscription" className="font-medium text-kagette-framboise-600 hover:underline">
+          S&apos;inscrire
+        </Link>
+      </p>
     </>
   );
 }

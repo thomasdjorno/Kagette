@@ -15,26 +15,25 @@ export async function Header() {
     <header className="sticky top-0 z-50">
       <div className="h-2 bg-kagette-framboise-500" />
       <div className="border-b border-kagette-prune-700/10 bg-kagette-creme/95 backdrop-blur">
-        <div className="relative mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          {/* Mobile : mascotte à gauche, logo (sans mascotte) centré en grand */}
-          <Image
-            src="/mascotte/mascotte.png"
-            alt=""
-            width={220}
-            height={294}
-            className="h-12 w-auto shrink-0 sm:hidden"
-          />
-          <Link
-            href="/"
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 sm:hidden"
-          >
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+          {/* Mobile : mascotte + logo texte, alignés à gauche (jamais en
+              position absolue : le contenu à droite varie selon l'état de
+              connexion, un logo centré finissait par le recouvrir) */}
+          <Link href="/" className="flex min-w-0 shrink items-center gap-1.5 sm:hidden">
+            <Image
+              src="/mascotte/mascotte.png"
+              alt=""
+              width={220}
+              height={294}
+              className="h-9 w-auto shrink-0"
+            />
             <Image
               src="/logo/logo-sans-mascotte.png"
               alt="Kagette"
               width={264}
               height={39}
               priority
-              className="h-8 w-auto"
+              className="h-6 w-auto shrink-0"
             />
           </Link>
 

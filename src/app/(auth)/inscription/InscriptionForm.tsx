@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
@@ -49,38 +50,47 @@ export function InscriptionForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="mt-6 space-y-4">
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <Label htmlFor="prenom">Prénom</Label>
-          <Input id="prenom" name="prenom" required autoComplete="given-name" />
+    <>
+      <form onSubmit={onSubmit} className="mt-6 space-y-4">
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <Label htmlFor="prenom">Prénom</Label>
+            <Input id="prenom" name="prenom" required autoComplete="given-name" />
+          </div>
+          <div>
+            <Label htmlFor="nom">Nom</Label>
+            <Input id="nom" name="nom" required autoComplete="family-name" />
+          </div>
         </div>
         <div>
-          <Label htmlFor="nom">Nom</Label>
-          <Input id="nom" name="nom" required autoComplete="family-name" />
+          <Label htmlFor="email">Email</Label>
+          <Input id="email" name="email" type="email" required autoComplete="email" />
         </div>
-      </div>
-      <div>
-        <Label htmlFor="email">Email</Label>
-        <Input id="email" name="email" type="email" required autoComplete="email" />
-      </div>
-      <div>
-        <Label htmlFor="password">Mot de passe</Label>
-        <Input
-          id="password"
-          name="password"
-          type="password"
-          required
-          minLength={8}
-          autoComplete="new-password"
-        />
-      </div>
+        <div>
+          <Label htmlFor="password">Mot de passe</Label>
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            required
+            minLength={8}
+            autoComplete="new-password"
+          />
+        </div>
 
-      {erreur && <p className="text-sm text-kagette-framboise-600">{erreur}</p>}
+        {erreur && <p className="text-sm text-kagette-framboise-600">{erreur}</p>}
 
-      <Button type="submit" disabled={chargement} className="w-full">
-        {chargement ? "Création..." : "Créer mon compte"}
-      </Button>
-    </form>
+        <Button type="submit" disabled={chargement} className="w-full">
+          {chargement ? "Création..." : "Créer mon compte"}
+        </Button>
+      </form>
+
+      <p className="mt-4 text-center text-sm text-kagette-prune-700/60">
+        Déjà un compte ?{" "}
+        <Link href="/connexion" className="font-medium text-kagette-framboise-600 hover:underline">
+          Se connecter
+        </Link>
+      </p>
+    </>
   );
 }

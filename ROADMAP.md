@@ -388,6 +388,20 @@ connecter. On avance module par module — coche au fur et à mesure.
   panier, avatar. "Calendrier" ajouté aussi dans la grille pour rester
   atteignable sur mobile où le lien texte est caché
 
+- **Bug corrigé : header mobile illisible pour un visiteur non connecté**
+  *(vérifié en live)* : le logo mobile était centré en position absolue,
+  ce qui fonctionnait tant que le contenu à droite restait étroit (panier
+  + avatar). Pour un invité, les boutons "Connexion"/"S'inscrire"
+  recouvraient complètement le logo (mesuré : logo 94-281px, boutons
+  98-359px sur un écran de 375px). Le logo mobile (mascotte + texte) est
+  maintenant en flux normal à gauche, plus jamais en position absolue,
+  donc plus jamais de recouvrement possible quel que soit le contenu à
+  droite. Sur mobile, l'invité voit un seul lien compact "Connexion" (au
+  lieu des deux boutons, qui ne rentraient pas) ; "S'inscrire" reste
+  accessible via un nouveau lien croisé ajouté sur les pages
+  `/connexion` ↔ `/inscription` (qui ne se renvoyaient à aucun moment
+  l'une vers l'autre auparavant)
+
 ### Priorité moyenne (qualité / robustesse)
 - [ ] Gestion des sessions "fantômes" ailleurs que `/profil` (pas
   bloquant : ces pages renvoient juste "aucune donnée" pour un compte

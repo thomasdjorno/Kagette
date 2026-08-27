@@ -44,11 +44,11 @@ connecter. On avance module par module — coche au fur et à mesure.
   d'un donneur ou cuisinier, page `/profil/favoris` pour gérer qui on suit,
   section "🔔 Nouveautés de tes favoris" mise en avant en haut de l'accueil
   avec les annonces récentes des personnes suivies
-- **Emails transactionnels (Resend)** *(vérifié en mode dégradé)* :
-  confirmation de commande, nouveau message reçu, badge hygiène
-  validé/refusé, nouvelle demande de fruits reçue — sans clé Resend, les
-  emails sont juste loggés côté serveur au lieu d'être envoyés (aucun
-  plantage), testé en conditions réelles (requête API bout en bout)
+- **Emails transactionnels (Resend)** *(vérifié en live, Resend branché en
+  local)* : confirmation de commande, nouveau message reçu, badge hygiène
+  validé/refusé, nouvelle demande de badge (admin), nouvelle recherche de
+  fruits acceptée. Se dégrade toujours proprement (juste loggé côté
+  serveur) si la clé venait à manquer
 
 - **Audit robustesse/sécurité** *(vérifié)* — passe non demandée mais faite
   "en coulisses" pour combler des trous qu'on ne voit pas de l'extérieur :
@@ -393,18 +393,27 @@ remplir (tu es le seul à connaître ton statut juridique réel) :
   réel via le formulaire, lecture publique, suppression) — **à répliquer
   sur Netlify** : ajouter les 5 variables `R2_*` dans Site configuration →
   Environment variables, puis redéployer
+- **Resend** — clé API active, expéditeur temporaire `onboarding@resend.dev`
+  (pas encore de domaine vérifié : à basculer sur une adresse
+  `@tondomaine.fr` dès que tu en as un). Tous les emails déjà câblés en
+  mode dégradé se déclenchent maintenant pour de vrai : confirmation de
+  commande, badge hygiène validé/refusé, nouvelle demande de badge
+  (admin), nouvelle recherche de fruits acceptée. Testé en local (envoi
+  réel confirmé par l'API Resend + déclenché via le vrai parcours demande
+  de badge, aucune erreur) — **à répliquer sur Netlify** : ajouter
+  `RESEND_API_KEY` et `RESEND_FROM_EMAIL` dans Site configuration →
+  Environment variables, puis redéployer
 
 ## 🔑 Services externes encore à connecter (quand tu seras prêt)
 
 Rien de bloquant aujourd'hui — l'app se dégrade proprement partout tant que
 ces clés sont absentes (messages clairs à la place de plantages). C'est ce
 qu'il reste à faire pour tester le parcours réel de bout en bout avec de
-vrais paiements et emails :
+vrais paiements :
 
 | Service | Variables `.env` | Sert à | Où l'obtenir |
 |---|---|---|---|
 | **Stripe Connect** | `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET` | Paiement + split 3 parts + onboarding vendeurs | dashboard.stripe.com (mode test) |
-| **Resend** | `RESEND_API_KEY` (adresse d'expédition déjà renseignée) | Emails transactionnels (confirmation de commande, etc.) | resend.com/api-keys |
 | **Google OAuth** | `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` | Connexion "avec Google" | console.cloud.google.com/apis/credentials |
 
 Détails de configuration pas à pas déjà écrits dans le [README](README.md).

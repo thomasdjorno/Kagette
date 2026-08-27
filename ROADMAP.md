@@ -347,6 +347,17 @@ connecter. On avance module par module — coche au fur et à mesure.
   bien créée pour l'admin avec le lien `/admin/badges`, tentative d'email
   bien loggée (Resend pas encore branché)
 
+- **Alerte de disponibilité** *(vérifié en live)* : sur l'accueil, quand
+  une recherche de produit (mot-clé et/ou catégorie) ne donne aucun
+  résultat, un acheteur peut demander à être prévenu dès qu'une annonce
+  correspondante sera publiée, au lieu de devoir revenir vérifier
+  manuellement. Se déclenche une seule fois (in-app, email dès que Resend
+  sera branché), gérable depuis `/profil` (liste des alertes actives +
+  annulation). Testé de bout en bout : recherche "myrtille" sans résultat
+  → alerte créée → publication d'un produit "Confiture de myrtille" par un
+  autre compte → notification bien reçue avec le lien direct vers le
+  produit, alerte marquée comme déclenchée en base
+
 ## 🔲 À faire
 
 ### Priorité moyenne (qualité / robustesse)

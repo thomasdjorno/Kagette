@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { productListingSchema } from "@/lib/validation";
+import { declencherAlertesDisponibilite } from "@/lib/alertes";
 
 export async function POST(request: Request) {
   const session = await auth();
@@ -63,6 +64,8 @@ export async function POST(request: Request) {
       photoUrls: data.photoUrls,
     },
   });
+
+  await declencherAlertesDisponibilite(listing);
 
   return NextResponse.json({ listing }, { status: 201 });
 }

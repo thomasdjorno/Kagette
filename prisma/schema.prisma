@@ -155,6 +155,25 @@ model User {
   fruitSearchRequests   FruitSearchRequest[]
   notifications         Notification[]
   participationsRecolte ParticipationRecolte[]
+  alertesDisponibilite  AlerteDisponibilite[]
+}
+
+// Un acheteur qui cherche un produit indisponible peut demander à être
+// prévenu dès qu'une nouvelle annonce correspondante est publiée, plutôt
+// que de devoir revenir vérifier manuellement. Se déclenche une seule
+// fois puis reste en historique (declenchee = true).
+model AlerteDisponibilite {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  critere   String? // texte recherché dans le titre, insensible à la casse
+  categorie ProductCategory?
+
+  declenchee Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@index([declenchee])
 }
 
 model Follow {

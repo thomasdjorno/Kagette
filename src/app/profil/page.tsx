@@ -10,6 +10,8 @@ import { StripeConnectPanel } from "./StripeConnectPanel";
 import { AvatarUploader } from "./AvatarUploader";
 import { ModifierProfilForm } from "./ModifierProfilForm";
 import { SupprimerCompteForm } from "./SupprimerCompteForm";
+import { AlerteDisponibiliteActions } from "./AlerteDisponibiliteActions";
+import { libellesCategorie } from "@/lib/format";
 
 export default async function ProfilPage() {
   const session = await auth();
@@ -26,6 +28,11 @@ export default async function ProfilPage() {
   const baseUrl = process.env.AUTH_URL || "http://localhost:3000";
   const lienProfil = `${baseUrl}/profil/${user.id}`;
   const qrCodeDataUrl = await genererQrCodeDataUrl(lienProfil);
+
+  const alertesActives = await prisma.alerteDisponibilite.findMany({
+    where: { userId: user.id, declenchee: false },
+    orderBy: { createdAt: "desc" },
+  });
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
@@ -152,6 +159,30 @@ export default async function ProfilPage() {
           </Link>
         </div>
       </Card>
+
+      {alertesActives.length > 0 && (
+        <Card>
+          <h2 className="font-semibold text-kagette-prune-700">🔔 Mes alertes disponibilité</h2>
+          <p className="mt-1 text-sm text-kagette-prune-700/60">
+            Tu seras prévenu dès qu&apos;un produit correspondant sera publié.
+          </p>
+          <div className="mt-3 space-y-2">
+            {alertesActives.map((alerte) => (
+              <div
+                key={alerte.id}
+                className="flex items-center justify-between rounded-xl bg-kagette-prune-700/5 px-3 py-2 text-sm"
+              >
+                <span className="text-kagette-prune-700">
+                  {[alerte.critere, alerte.categorie ? libellesCategorie[alerte.categorie] : null]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </span>
+                <AlerteDisponibiliteActions id={alerte.id} />
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
 
       <Card className="border-kagette-framboise-200">
         <h2 className="font-semibold text-kagette-prune-700">Zone dangereuse</h2>

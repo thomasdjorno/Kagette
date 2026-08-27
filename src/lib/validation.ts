@@ -87,6 +87,15 @@ export const recolteCollectiveSchema = z.object({
   notes: z.string().max(500).optional().or(z.literal("")),
 });
 
+export const alerteDisponibiliteSchema = z
+  .object({
+    critere: z.string().trim().max(100).optional().or(z.literal("")),
+    categorie: z.enum(["CONFITURE", "SIROP", "CHUTNEY", "FRUITS_SECS"]).optional().or(z.literal("")),
+  })
+  .refine((data) => (data.critere && data.critere.length > 0) || (data.categorie && data.categorie.length > 0), {
+    message: "Indique au moins un mot-clé ou une catégorie",
+  });
+
 export const panierCheckoutSchema = z.object({
   items: z
     .array(

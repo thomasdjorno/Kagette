@@ -8,6 +8,7 @@ import { Pagination } from "@/components/ui/Pagination";
 import { productCategories } from "@/lib/validation";
 import { libellesCategorie } from "@/lib/format";
 import { distanceKm } from "@/lib/geo";
+import { AlerteDisponibiliteForm } from "@/components/home/AlerteDisponibiliteForm";
 
 const TAILLE_PAGE = 6;
 
@@ -247,7 +248,20 @@ export default async function HomePage({
           </span>
         </div>
         {productListings.length === 0 ? (
-          <p className="text-sm text-kagette-prune-700/60">Aucun produit en vente pour l&apos;instant.</p>
+          <div className="space-y-3">
+            <p className="text-sm text-kagette-prune-700/60">
+              {aDesFiltres
+                ? "Aucun produit ne correspond à ta recherche pour l'instant."
+                : "Aucun produit en vente pour l'instant."}
+            </p>
+            {aDesFiltres && (
+              <AlerteDisponibiliteForm
+                critere={q}
+                categorie={categorie}
+                isAuthenticated={!!session?.user}
+              />
+            )}
+          </div>
         ) : (
           <>
             <div className="grid grid-cols-3 gap-2 sm:gap-4">

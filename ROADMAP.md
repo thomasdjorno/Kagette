@@ -358,6 +358,16 @@ connecter. On avance module par module — coche au fur et à mesure.
   autre compte → notification bien reçue avec le lien direct vers le
   produit, alerte marquée comme déclenchée en base
 
+- **Moins de champs à remplir pour la première annonce** *(vérifié en
+  live)* : sur les formulaires fruits et produits, le "Lieu de retrait"
+  se pré-remplit automatiquement depuis l'adresse choisie dans la
+  recherche Mapbox (reste modifiable pour préciser un repère), au lieu de
+  redemander la même information deux fois. "Disponible du" et
+  "Disponible au" ont maintenant des dates par défaut sensées
+  (aujourd'hui → +14 jours) au lieu de champs vides à remplir à la main.
+  Nouvelle fonction `formatDateInput` (testée) pour éviter le même bug de
+  fuseau horaire que celui corrigé sur la DLUO
+
 ## 🔲 À faire
 
 ### Priorité moyenne (qualité / robustesse)

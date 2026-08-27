@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 import { PhotoUploader } from "@/components/listings/PhotoUploader";
 import { AddressSearchInput } from "@/components/ui/AddressSearchInput";
+import { formatDateInput } from "@/lib/format";
 
 interface ArbreOption {
   id: string;
@@ -34,9 +35,12 @@ export function FruitListingForm({
   const [arbreId, setArbreId] = useState("");
   const [variete, setVariete] = useState("");
   const [quantiteKg, setQuantiteKg] = useState("");
+  const [zoneRetrait, setZoneRetrait] = useState("");
   const [photoUrls, setPhotoUrls] = useState<string[]>([]);
   const [latitude, setLatitude] = useState(regionParDefaut?.latitude ?? 0);
   const [longitude, setLongitude] = useState(regionParDefaut?.longitude ?? 0);
+  const aujourdHui = formatDateInput(new Date());
+  const dansDeuxSemaines = formatDateInput(new Date(Date.now() + 14 * 24 * 60 * 60 * 1000));
   const [erreur, setErreur] = useState<string | null>(null);
   const [chargement, setChargement] = useState(false);
   const mapboxConfigure = !!process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
@@ -206,23 +210,14 @@ export function FruitListingForm({
         <Textarea id="description" name="description" rows={3} />
       </div>
 
-      <div>
-        <Label htmlFor="zoneRetrait">Lieu de retrait</Label>
-        <Input
-          id="zoneRetrait"
-          name="zoneRetrait"
-          placeholder="Ex : Mensignac, devant la mairie"
-          required
-        />
-      </div>
-
       {mapboxConfigure ? (
         <div>
           <Label>Adresse ou commune la plus proche</Label>
           <AddressSearchInput
-            onSelect={({ latitude, longitude }) => {
+            onSelect={({ label, latitude, longitude }) => {
               setLatitude(latitude);
               setLongitude(longitude);
+              if (!zoneRetrait) setZoneRetrait(label);
             }}
           />
           <input type="hidden" name="latitude" value={latitude} />
@@ -255,14 +250,31 @@ export function FruitListingForm({
         </div>
       )}
 
+      <div>
+        <Label htmlFor="zoneRetrait">Lieu de retrait précis</Label>
+        <Input
+          id="zoneRetrait"
+          name="zoneRetrait"
+          placeholder="Ex : Mensignac, devant la mairie"
+          value={zoneRetrait}
+          onChange={(e) => setZoneRetrait(e.target.value)}
+          required
+        />
+        {mapboxConfigure && (
+          <p className="mt-1 text-xs text-kagette-prune-700/50">
+            Pré-rempli depuis l&apos;adresse choisie ci-dessus, précise si besoin (repère, nom de rue...).
+          </p>
+        )}
+      </div>
+
       <div className="grid grid-cols-2 gap-3">
         <div>
           <Label htmlFor="disponibleDu">Disponible du</Label>
-          <Input id="disponibleDu" name="disponibleDu" type="date" required />
+          <Input id="disponibleDu" name="disponibleDu" type="date" defaultValue={aujourdHui} required />
         </div>
         <div>
           <Label htmlFor="disponibleAu">Disponible au</Label>
-          <Input id="disponibleAu" name="disponibleAu" type="date" required />
+          <Input id="disponibleAu" name="disponibleAu" type="date" defaultValue={dansDeuxSemaines} required />
         </div>
       </div>
 

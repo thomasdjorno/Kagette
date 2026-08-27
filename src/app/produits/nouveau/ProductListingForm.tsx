@@ -39,6 +39,7 @@ export function ProductListingForm({
   const [dluo, setDluo] = useState(calculerDluoSuggeree(productCategories[0]));
   const [dluoModifieeManuellement, setDluoModifieeManuellement] = useState(false);
   const [origineId, setOrigineId] = useState(fruitListingIdPreselectionne ?? "");
+  const [zoneRetrait, setZoneRetrait] = useState("");
   const [latitude, setLatitude] = useState(regionParDefaut?.latitude ?? 0);
   const [longitude, setLongitude] = useState(regionParDefaut?.longitude ?? 0);
   const [erreur, setErreur] = useState<string | null>(null);
@@ -252,23 +253,14 @@ export function ProductListingForm({
         </div>
       )}
 
-      <div>
-        <Label htmlFor="zoneRetrait">Lieu de retrait</Label>
-        <Input
-          id="zoneRetrait"
-          name="zoneRetrait"
-          placeholder="Ex : Mensignac, marché du samedi"
-          required
-        />
-      </div>
-
       {mapboxConfigure ? (
         <div>
           <Label>Adresse ou commune la plus proche</Label>
           <AddressSearchInput
-            onSelect={({ latitude, longitude }) => {
+            onSelect={({ label, latitude, longitude }) => {
               setLatitude(latitude);
               setLongitude(longitude);
+              if (!zoneRetrait) setZoneRetrait(label);
             }}
           />
           <input type="hidden" name="latitude" value={latitude} />
@@ -300,6 +292,24 @@ export function ProductListingForm({
           </div>
         </div>
       )}
+
+      <div>
+        <Label htmlFor="zoneRetrait">Lieu de retrait précis</Label>
+        <Input
+          id="zoneRetrait"
+          name="zoneRetrait"
+          placeholder="Ex : Mensignac, marché du samedi"
+          value={zoneRetrait}
+          onChange={(e) => setZoneRetrait(e.target.value)}
+          required
+        />
+        {mapboxConfigure && (
+          <p className="mt-1 text-xs text-kagette-prune-700/50">
+            Pré-rempli depuis l&apos;adresse choisie ci-dessus, précise si besoin (repère, nom de
+            marché...).
+          </p>
+        )}
+      </div>
 
       {regions.length > 1 ? (
         <div>

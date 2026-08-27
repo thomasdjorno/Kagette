@@ -1,5 +1,15 @@
 import { describe, it, expect } from "vitest";
-import { fraicheurRecolte, calculerDluoSuggeree } from "@/lib/format";
+import { fraicheurRecolte, calculerDluoSuggeree, formatDateInput } from "@/lib/format";
+
+describe("formatDateInput", () => {
+  it("formate une date en YYYY-MM-DD à partir des getters locaux", () => {
+    expect(formatDateInput(new Date(2026, 0, 5))).toBe("2026-01-05");
+  });
+
+  it("ajoute bien les zéros de tête pour le mois et le jour", () => {
+    expect(formatDateInput(new Date(2026, 8, 9))).toBe("2026-09-09");
+  });
+});
 
 describe("fraicheurRecolte", () => {
   it("annonce une récolte à venir si la fenêtre commence dans le futur", () => {

@@ -8,6 +8,18 @@ export function formatDistance(km: number) {
   return `à ${km.toFixed(1).replace(".", ",")} km`;
 }
 
+/**
+ * Formate une date pour un <input type="date"> à partir des getters
+ * locaux (pas toISOString, qui convertit en UTC et peut afficher la
+ * veille ou le lendemain selon le fuseau de l'utilisateur).
+ */
+export function formatDateInput(date: Date): string {
+  const annee = date.getFullYear();
+  const mois = String(date.getMonth() + 1).padStart(2, "0");
+  const jour = String(date.getDate()).padStart(2, "0");
+  return `${annee}-${mois}-${jour}`;
+}
+
 export function formatDate(date: Date | string) {
   const valeur = typeof date === "string" ? new Date(date) : date;
   return new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", year: "numeric" }).format(

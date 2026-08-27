@@ -49,6 +49,15 @@ connecter. On avance module par module — coche au fur et à mesure.
   validé/refusé, nouvelle demande de badge (admin), nouvelle recherche de
   fruits acceptée. Se dégrade toujours proprement (juste loggé côté
   serveur) si la clé venait à manquer
+  - Sans domaine vérifié sur Resend, impossible d'envoyer à n'importe qui
+    (l'API refuse avec une 403) : `RESEND_TEST_REDIRECT_TO` redirige
+    temporairement tous les emails vers une seule adresse (le vrai
+    destinataire reste visible dans le sujet, ex. `[à marc@...] Sujet`) —
+    à retirer du `.env` une fois un domaine vérifié. Bug corrigé au
+    passage : le SDK Resend renvoie ses erreurs de validation dans la
+    réponse plutôt que de lever une exception, `envoyerEmail` ne les
+    vérifiait pas et un échec d'envoi passait inaperçu (loggé "succès"
+    alors que l'email n'était jamais parti)
 
 - **Audit robustesse/sécurité** *(vérifié)* — passe non demandée mais faite
   "en coulisses" pour combler des trous qu'on ne voit pas de l'extérieur :

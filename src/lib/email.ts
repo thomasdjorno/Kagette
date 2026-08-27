@@ -10,13 +10,28 @@ function isResendConfigured() {
 
 const resend = isResendConfigured() ? new Resend(process.env.RESEND_API_KEY) : null;
 
+// Tant qu'aucun domaine n'est vérifié sur Resend, tous les emails sont
+// redirigés vers cette adresse (le vrai destinataire reste visible dans
+// le sujet) plutôt que d'échouer silencieusement pour de vrais
+// utilisateurs. Retirer RESEND_TEST_REDIRECT_TO du .env une fois un
+// domaine vérifié pour repasser en envoi normal.
+const REDIRECT_TEST = process.env.RESEND_TEST_REDIRECT_TO || null;
+
 async function envoyerEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
   if (!resend) {
     console.log(`[email désactivé, RESEND_API_KEY absente] à ${to} : ${subject}`);
     return;
   }
+  const destinataire = REDIRECT_TEST || to;
+  const sujetAffiche = REDIRECT_TEST ? `[à ${to}] ${subject}` : subject;
   try {
-    await resend.emails.send({ from: FROM, to, subject, html });
+    const { error } = await resend.emails.send({ from: FROM, to: destinataire, subject: sujetAffiche, html });
+    // Le SDK Resend renvoie les erreurs de validation (ex : destinataire
+    // non autorisé sans domaine vérifié) dans la réponse plutôt que de
+    // lever une exception — sans ce check elles passaient inaperçues.
+    if (error) {
+      console.error("Erreur envoi email Resend", error);
+    }
   } catch (error) {
     console.error("Erreur envoi email Resend", error);
   }

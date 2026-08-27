@@ -377,7 +377,16 @@ connecter. On avance module par module — coche au fur et à mesure.
   Nouvelle fonction `formatDateInput` (testée) pour éviter le même bug de
   fuseau horaire que celui corrigé sur la DLUO
 
-## 🔲 À faire
+- **Barre de navigation simplifiée et harmonisée mobile/desktop**
+  *(vérifié en live)* : le header desktop empilait 5 liens texte + cloche
+  + panier + avatar + nom + bouton déconnexion sur une seule ligne.
+  `MobileNav` (menu ☰ mobile uniquement) devient `NavMenu`, utilisé
+  maintenant sur mobile ET desktop : l'avatar remplace le hamburger et
+  déclenche la même grille d'icônes, ce qui absorbe aussi "Bonjour
+  {prénom}" et le bouton "Déconnexion" (déjà dans le menu). Reste apparent
+  en permanence dans la barre : logo, "Calendrier" (accès public), cloche,
+  panier, avatar. "Calendrier" ajouté aussi dans la grille pour rester
+  atteignable sur mobile où le lien texte est caché
 
 ### Priorité moyenne (qualité / robustesse)
 - [ ] Gestion des sessions "fantômes" ailleurs que `/profil` (pas

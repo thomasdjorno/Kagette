@@ -2,12 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { auth } from "@/lib/auth";
 import { HeaderAuthActions } from "./HeaderAuthActions";
-import { MobileNav } from "./MobileNav";
+import { NavMenu } from "./NavMenu";
 import { NotificationBell } from "./NotificationBell";
 import { CartIcon } from "./CartIcon";
 
 export async function Header() {
   const session = await auth();
+  const nomComplet = session?.user?.name?.trim() ?? "";
+  const [prenom, ...resteNom] = nomComplet.split(" ");
 
   return (
     <header className="sticky top-0 z-50">
@@ -48,60 +50,25 @@ export async function Header() {
             />
           </Link>
 
-          <nav className="flex items-center gap-4">
+          <nav className="flex items-center gap-3">
             <Link
               href="/calendrier"
               className="hidden text-sm font-medium text-kagette-prune-700 hover:text-kagette-framboise-500 sm:block"
             >
               Calendrier
             </Link>
-            {session?.user && (
-              <>
-                <Link
-                  href="/fruits/recherches"
-                  className="hidden text-sm font-medium text-kagette-prune-700 hover:text-kagette-framboise-500 sm:block"
-                >
-                  Recherches
-                </Link>
-                <Link
-                  href="/messagerie"
-                  className="hidden text-sm font-medium text-kagette-prune-700 hover:text-kagette-framboise-500 sm:block"
-                >
-                  Messagerie
-                </Link>
-                <Link
-                  href="/profil/impact"
-                  className="hidden text-sm font-medium text-kagette-prune-700 hover:text-kagette-framboise-500 sm:block"
-                >
-                  Mon impact
-                </Link>
-                <Link
-                  href="/profil"
-                  className="hidden text-sm font-medium text-kagette-prune-700 hover:text-kagette-framboise-500 sm:block"
-                >
-                  Mon profil
-                </Link>
-              </>
-            )}
-            {session?.user?.estAdmin && (
-              <Link
-                href="/admin"
-                className="hidden text-sm font-medium text-kagette-prune-700 hover:text-kagette-framboise-500 sm:block"
-              >
-                Backoffice
-              </Link>
-            )}
             {session?.user && <NotificationBell />}
             <CartIcon />
-            <MobileNav
-              isAuthenticated={!!session?.user}
-              isAdmin={!!session?.user?.estAdmin}
-            />
-            <HeaderAuthActions
-              isAuthenticated={!!session?.user}
-              prenom={session?.user?.name?.split(" ")[0]}
-              photoUrl={session?.user?.image}
-            />
+            {session?.user ? (
+              <NavMenu
+                isAdmin={!!session.user.estAdmin}
+                prenom={prenom || "Kagetteur"}
+                nom={resteNom.join(" ")}
+                photoUrl={session.user.image}
+              />
+            ) : (
+              <HeaderAuthActions />
+            )}
           </nav>
         </div>
       </div>

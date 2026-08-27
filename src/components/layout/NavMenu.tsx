@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
+import { Avatar } from "@/components/ui/Avatar";
 
 interface MenuItem {
   href: string;
@@ -10,16 +11,18 @@ interface MenuItem {
   label: string;
 }
 
-export function MobileNav({
-  isAuthenticated,
+export function NavMenu({
   isAdmin,
+  prenom,
+  nom,
+  photoUrl,
 }: {
-  isAuthenticated: boolean;
   isAdmin: boolean;
+  prenom: string;
+  nom?: string | null;
+  photoUrl?: string | null;
 }) {
   const [open, setOpen] = useState(false);
-
-  if (!isAuthenticated) return null;
 
   const items: MenuItem[] = [
     { href: "/calendrier", icon: "📅", label: "Calendrier" },
@@ -37,18 +40,14 @@ export function MobileNav({
   ];
 
   return (
-    <div className="relative sm:hidden">
+    <div className="relative">
       <button
         type="button"
-        aria-label="Menu"
+        aria-label={`Menu de ${prenom}`}
         onClick={() => setOpen((o) => !o)}
-        className="flex h-9 w-9 items-center justify-center rounded-full text-kagette-prune-700 hover:bg-kagette-prune-700/10"
+        className="block rounded-full ring-offset-2 hover:ring-2 hover:ring-kagette-framboise-200"
       >
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-          <line x1="2" y1="5" x2="18" y2="5" />
-          <line x1="2" y1="10" x2="18" y2="10" />
-          <line x1="2" y1="15" x2="18" y2="15" />
-        </svg>
+        <Avatar photoUrl={photoUrl} prenom={prenom} nom={nom ?? undefined} size="sm" />
       </button>
 
       {open && (

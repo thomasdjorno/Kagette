@@ -425,6 +425,17 @@ connecter. On avance module par module — coche au fur et à mesure.
   uniquement pour les comptes connectés (le menu suffit) ; gardée pour les
   invités, qui n'ont pas ce menu
 
+- **Pages dédiées "Voir tout" pour fruits et produits** *(vérifié en
+  live)* : l'accueil mélangeait aperçu (6 annonces) et pagination
+  complète sur la même page, un peu confus. Désormais l'accueil montre un
+  aperçu de 6 annonces par catégorie avec un lien "Voir tout →", qui ouvre
+  une page dédiée (`/fruits` ou `/produits`) avec ses propres filtres
+  (recherche + mode de don pour les fruits, recherche + catégorie pour les
+  produits) et sa pagination complète (12 par page). La carte de l'accueil
+  continue d'afficher toutes les annonces correspondantes, pas seulement
+  les 6 de l'aperçu. Testé : 8 fruits et 8 produits, aperçu à 6 sur
+  l'accueil, liste complète sur les pages dédiées
+
 ### Priorité moyenne (qualité / robustesse)
 - [ ] Gestion des sessions "fantômes" ailleurs que `/profil` (pas
   bloquant : ces pages renvoient juste "aucune donnée" pour un compte

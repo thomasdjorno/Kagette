@@ -16,6 +16,19 @@ export const metadata: Metadata = {
   title: "Kagette, les fruits du jardin, transformés près de chez vous",
   description:
     "Kagette relie donneurs de fruits, cuisiniers locaux et gourmands autour de confitures, sirops et chutneys faits maison, en Dordogne.",
+  manifest: "/manifest.json",
+  icons: {
+    icon: "/favicon.png",
+    apple: "/apple-touch-icon.png",
+  },
+  appleWebApp: {
+    title: "Kagette",
+    statusBarStyle: "default",
+  },
+};
+
+export const viewport = {
+  themeColor: "#2C4F3E",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -402,6 +402,14 @@ connecter. On avance module par module — coche au fur et à mesure.
   `/connexion` ↔ `/inscription` (qui ne se renvoyaient à aucun moment
   l'une vers l'autre auparavant)
 
+- **Icône et manifest PWA** *(vérifié en live)* : "Ajouter à l'écran
+  d'accueil" affiche maintenant le bon nom ("Kagette") et une vraie icône
+  carrée (la mascotte recadrée sur fond crème de la marque) au lieu de
+  l'icône générique du navigateur — `manifest.json`, favicon,
+  apple-touch-icon (iOS) et icônes Android (standard + maskable, 192/512px)
+  générés depuis `public/mascotte/mascotte.png`. Couleur de thème
+  (#2C4F3E) appliquée à la barre du navigateur mobile
+
 ### Priorité moyenne (qualité / robustesse)
 - [ ] Gestion des sessions "fantômes" ailleurs que `/profil` (pas
   bloquant : ces pages renvoient juste "aucune donnée" pour un compte
@@ -413,9 +421,10 @@ l'app fait déjà (rôles, répartition des paiements, données collectées),
 mais contiennent des champs entre crochets `[...]` que **toi seul** peux
 remplir (tu es le seul à connaître ton statut juridique réel) :
 - `/mentions-legales` : nom/raison sociale, forme juridique, adresse,
-  SIRET, email de contact, nom de l'hébergeur définitif
-- `/confidentialite` : email de contact RGPD, durée de conservation des
-  données
+  SIRET, nom de l'hébergeur définitif (email de contact déjà rempli :
+  contact.kagette@gmail.com)
+- `/confidentialite` : durée de conservation des données (email de contact
+  RGPD déjà rempli)
 - Avant un vrai lancement commercial, fais relire ces 3 pages par un
   professionnel (avocat ou service en ligne type Legalstart/Captain
   Contrat) — ce que j'ai écrit décrit fidèlement le fonctionnement de
@@ -446,17 +455,22 @@ remplir (tu es le seul à connaître ton statut juridique réel) :
   `RESEND_API_KEY` et `RESEND_FROM_EMAIL` dans Site configuration →
   Environment variables, puis redéployer
 
-## 🔑 Services externes encore à connecter (quand tu seras prêt)
+## 🔑 Services externes en cours de connexion
 
-Rien de bloquant aujourd'hui — l'app se dégrade proprement partout tant que
-ces clés sont absentes (messages clairs à la place de plantages). C'est ce
-qu'il reste à faire pour tester le parcours réel de bout en bout avec de
-vrais paiements :
-
-| Service | Variables `.env` | Sert à | Où l'obtenir |
-|---|---|---|---|
-| **Stripe Connect** | `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET` | Paiement + split 3 parts + onboarding vendeurs | dashboard.stripe.com (mode test) |
-| **Google OAuth** | `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` | Connexion "avec Google" | console.cloud.google.com/apis/credentials |
+- **Stripe Connect** — clé secrète + webhook signing secret (mode test)
+  configurés en local, testé directement en connexion API (compte "Kagette"
+  atteint, balance récupérée). Webhook pointé vers
+  `https://kagette.netlify.app/api/stripe/webhook` (événement
+  `checkout.session.completed`) — **à répliquer sur Netlify** :
+  `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`,
+  puis tester un vrai achat de bout en bout (carte test) une fois déployé
+- **Google OAuth** — en cours de configuration (écran de consentement +
+  identifiants sur console.cloud.google.com, contact
+  contact.kagette@gmail.com). Comme Kagette n'a pas encore de nom de
+  domaine à lui (seulement `kagette.netlify.app`), Google ne permet pas de
+  publier l'appli en "production" ouverte à tous pour l'instant — la
+  connexion Google restera limitée aux comptes ajoutés comme testeurs
+  jusqu'à l'achat d'un domaine
 
 Détails de configuration pas à pas déjà écrits dans le [README](README.md).
 

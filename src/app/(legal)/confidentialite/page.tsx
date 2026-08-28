@@ -61,7 +61,7 @@ export default function ConfidentialitePage() {
           ton profil. Lors d&apos;une suppression, tes informations personnelles sont effacées ;
           les commandes, avis et messages déjà échangés restent visibles pour les autres
           utilisateurs mais ne sont plus associés à ton identité (nom remplacé par « Utilisateur
-          supprimé »). Pour toute autre demande, écris à [email de contact].
+          supprimé »). Pour toute autre demande, écris à contact.kagette@gmail.com.
         </p>
       </section>
     </div>

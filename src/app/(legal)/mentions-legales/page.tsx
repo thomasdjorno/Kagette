@@ -21,7 +21,7 @@ export default function MentionsLegalesPage() {
           <br />
           SIRET : [numéro SIRET]
           <br />
-          Email : [email de contact]
+          Email : contact.kagette@gmail.com
           <br />
           Directeur de la publication : [nom]
         </p>

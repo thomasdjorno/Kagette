@@ -19,8 +19,10 @@ export const fruitsSaisonDordogne: FruitSaison[] = [
   { nom: "Poire", emoji: "🍐", mois: [9, 10, 11] },
   { nom: "Coing", emoji: "🍐", mois: [10, 11] },
   { nom: "Noix", emoji: "🌰", mois: [10, 11] },
+  { nom: "Noisette", emoji: "🌰", mois: [9, 10] },
   { nom: "Châtaigne", emoji: "🌰", mois: [10, 11] },
   { nom: "Kiwi", emoji: "🥝", mois: [11, 12, 1] },
+  { nom: "Olive", emoji: "🫒", mois: [10, 11, 12] },
 ];
 
 export const libellesMois = [

@@ -61,8 +61,12 @@ export function CuisinierPanel({
       {peutSoumettre && (
         <form onSubmit={onSubmit} className="space-y-3 rounded-xl bg-kagette-mangue-50 p-4">
           <div>
-            <Label htmlFor="siret">Numéro SIRET (optionnel en V1)</Label>
+            <Label htmlFor="siret">Numéro SIRET (facultatif)</Label>
             <Input id="siret" name="siret" placeholder="14 chiffres" maxLength={14} />
+            <p className="mt-1 text-xs text-kagette-prune-700/50">
+              Comme sur Leboncoin ou Vinted, vendre occasionnellement entre particuliers
+              n&apos;exige pas de SIRET. Renseigne-le seulement si tu en as déjà un (micro-entreprise).
+            </p>
           </div>
           <div className="flex items-start gap-2">
             <input

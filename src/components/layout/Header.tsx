@@ -50,11 +50,8 @@ export async function Header() {
           </Link>
 
           <nav className="flex items-center gap-3">
-            <Link
-              href="/calendrier"
-              className="hidden text-sm font-medium text-kagette-prune-700 hover:text-kagette-framboise-500 sm:block"
-            >
-              Calendrier
+            <Link href="/calendrier" className="text-xl" aria-label="Calendrier des fruits">
+              📅
             </Link>
             {session?.user && <NotificationBell />}
             <CartIcon />

@@ -52,8 +52,8 @@ export default async function BadgeCuisinierPage() {
             (vente occasionnelle ou micro-entreprise selon ton cas).
           </li>
           <li>
-            Renseigner ton numéro SIRET si tu en as un (facultatif pour l&apos;instant, le temps
-            que Kagette soit en phase pilote).
+            Renseigner ton numéro SIRET si tu en as un — facultatif, comme sur Leboncoin ou
+            Vinted la vente occasionnelle entre particuliers ne l&apos;exige pas.
           </li>
           <li>Cocher la case d&apos;acceptation de la charte ci-dessous et envoyer ta demande.</li>
           <li>Un membre de l&apos;équipe Kagette valide ta demande manuellement, tu reçois une confirmation dès que c&apos;est fait.</li>

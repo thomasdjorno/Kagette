@@ -55,8 +55,9 @@ export default function GuideCadreLegalPage() {
       <Card>
         <h2 className="font-semibold text-kagette-prune-700">Le numéro SIRET sur Kagette</h2>
         <p className="mt-2 text-sm text-kagette-prune-700/80">
-          Le SIRET est optionnel pour demander le badge cuisinier en V1, Kagette est un pilote à
-          petite échelle. Mais si tu vends régulièrement, c&apos;est à toi de vérifier que ta
+          Kagette ne demande jamais de SIRET pour obtenir le badge cuisinier : comme sur
+          Leboncoin ou Vinted, la vente occasionnelle entre particuliers ne l&apos;exige pas
+          légalement. Mais si tu vends régulièrement, c&apos;est à toi de vérifier que ta
           situation est en règle : le badge Kagette atteste que tu as accepté notre charte
           d&apos;hygiène, pas que ton statut juridique est en ordre.
         </p>

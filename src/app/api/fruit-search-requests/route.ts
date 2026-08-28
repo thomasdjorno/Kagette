@@ -9,12 +9,6 @@ export async function POST(request: Request) {
   if (!session?.user) {
     return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
   }
-  if (!session.user.estCuisinier) {
-    return NextResponse.json(
-      { error: "Ton badge hygiène doit être validé pour publier une recherche de fruits" },
-      { status: 403 }
-    );
-  }
 
   if (!verifierLimite(`fruit-search:${session.user.id}`, 10, 60 * 60 * 1000)) {
     return NextResponse.json({ error: "Trop de recherches publiées, réessaie plus tard" }, { status: 429 });

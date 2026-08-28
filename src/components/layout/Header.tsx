@@ -50,7 +50,14 @@ export async function Header() {
           </Link>
 
           <nav className="flex items-center gap-3">
-            <Link href="/calendrier" className="text-xl" aria-label="Calendrier des fruits">
+            {/* Sur mobile, en connecté, le calendrier est déjà dans le menu
+                (avatar) : pas la peine de le dupliquer ici. Les invités
+                n'ont pas ce menu, donc on le garde visible pour eux. */}
+            <Link
+              href="/calendrier"
+              className={session?.user ? "hidden text-xl sm:block" : "text-xl"}
+              aria-label="Calendrier des fruits"
+            >
               📅
             </Link>
             {session?.user && <NotificationBell />}

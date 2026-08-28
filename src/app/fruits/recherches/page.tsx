@@ -36,15 +36,15 @@ export default async function RecherchesFruitsPage() {
           Recherches de fruits
         </h1>
         <p className="mt-1 text-sm text-kagette-prune-700/60">
-          Un espace pour que cuisiniers et donneurs se retrouvent, dans les deux sens : les
-          cuisiniers indiquent ce qui leur manque, les donneurs proposent leurs fruits.
+          Un espace pour se retrouver dans les deux sens : d&apos;un côté on indique ce qui
+          manque, de l&apos;autre les donneurs proposent leurs fruits.
         </p>
       </div>
 
-      {session?.user?.estCuisinier && regionParDefaut && (
+      {session?.user && regionParDefaut && (
         <div className="rounded-2xl border-2 border-dashed border-kagette-mangue-300 p-4">
           <h2 className="font-semibold text-kagette-prune-700">
-            📣 Tu es cuisinier et il te manque des fruits ?
+            📣 Il te manque des fruits ?
           </h2>
           <p className="mt-1 text-sm text-kagette-prune-700/60">
             Publie ta recherche, les donneurs près de chez toi pourront te contacter directement.
@@ -57,7 +57,7 @@ export default async function RecherchesFruitsPage() {
 
       <div>
         <h2 className="mb-1 font-semibold text-kagette-prune-700">
-          🔍 Ce que les cuisiniers recherchent en ce moment
+          🔍 Ce qu&apos;on recherche en ce moment
         </h2>
         <p className="mb-3 text-sm text-kagette-prune-700/60">
           Si tu as des fruits chez toi, tu peux les proposer directement à la personne concernée.

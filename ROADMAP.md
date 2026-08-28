@@ -410,6 +410,21 @@ connecter. On avance module par module — coche au fur et à mesure.
   générés depuis `public/mascotte/mascotte.png`. Couleur de thème
   (#2C4F3E) appliquée à la barre du navigateur mobile
 
+- **Recherches de fruits ouvertes à tout le monde** *(vérifié en live)* :
+  publier une recherche ("il me manque des noix") était réservé aux
+  cuisiniers au badge validé — un reste de l'ancien modèle de rôles, sans
+  vraie raison de sécurité (contrairement à la vente, demander du fruit ne
+  présente aucun risque). N'importe quel compte connecté peut maintenant
+  publier une recherche. Textes de la page dégenrés ("cuisiniers" →
+  neutre). Testé avec un compte donneur (non cuisinier) : formulaire
+  visible, publication réussie
+
+- **Doublon du calendrier dans le header mobile retiré** *(vérifié en
+  live)* : l'icône 📅 apparaissait à la fois en haut de l'écran et dans le
+  menu (avatar) pour un compte connecté. Retirée du haut sur mobile
+  uniquement pour les comptes connectés (le menu suffit) ; gardée pour les
+  invités, qui n'ont pas ce menu
+
 ### Priorité moyenne (qualité / robustesse)
 - [ ] Gestion des sessions "fantômes" ailleurs que `/profil` (pas
   bloquant : ces pages renvoient juste "aucune donnée" pour un compte
